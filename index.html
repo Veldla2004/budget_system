@@ -1350,6 +1350,10 @@
       bgInput.addEventListener('change', async () => {
         const file = bgInput.files && bgInput.files[0];
         if (!file) return;
+        if (file.size > 1 * 1024 * 1024) {
+          alert("图片太大，请选择1MB以内图片/The image is too large; please select an image smaller than 1MB.");
+          return;
+          }
         const dataUrl = await fileToDataUrl(file);
         const theme = loadThemeState();
         theme.backgroundImage = dataUrl;

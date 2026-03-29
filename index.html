@@ -6,8 +6,10 @@
   <title>个人月度预算管理系统</title>
   <style>
     :root{
-      --bg:#000000;
-      --card:#ffffff;
+      --bg:#000;
+      --sidebar:#0f172a;
+      --sidebar2:#111827;
+      --card:#fff;
       --line:#d8e0ea;
       --text:#1f2937;
       --muted:#6b7280;
@@ -22,82 +24,56 @@
     }
 
     *{box-sizing:border-box}
-
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: var(--bg);
-      background-image: none;
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-attachment: fixed;
-      background-size: cover;
+      font-family:Arial, Helvetica, sans-serif;
+      background-color:var(--bg);
+      background-image:none;
+      background-repeat:no-repeat;
+      background-position:center center;
+      background-attachment:fixed;
+      background-size:cover;
       color:var(--text);
+      overflow:hidden;
     }
 
-    .top-shell{
-      background:#000;
+    .app{display:flex;min-height:100vh;height:100vh;width:100vw}
+
+    .sidebar{
+      width:250px;
+      flex:0 0 250px;
+      background:linear-gradient(180deg,var(--sidebar2) 0%, var(--sidebar) 100%);
       color:#fff;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      box-shadow:0 6px 24px rgba(0,0,0,.35);
-      position: sticky;
-      top: 0;
-      z-index: 80;
-    }
-
-    .top-inner{
-      max-width:1600px;
-      margin:0 auto;
-      padding:14px 18px 18px;
-    }
-
-    .top-grid{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-      gap:16px;
-    }
-
-    .top-left,
-    .top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .top-right{justify-content:flex-end}
-
-    .brand{
-      justify-self:center;
-      text-align:center;
+      padding:18px;
       display:flex;
       flex-direction:column;
-      align-items:center;
-      gap:8px;
-      min-width:260px;
+      gap:16px;
+      border-right:1px solid rgba(255,255,255,.08);
+      box-shadow:6px 0 24px rgba(0,0,0,.24);
+      overflow:auto;
     }
-
-    .avatar{
-      width:92px;
-      height:92px;
-      border-radius:50%;
-      object-fit:cover;
+    .side-brand{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:center;
+      text-align:center;
+      padding-bottom:8px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .side-avatar{
+      width:84px;height:84px;border-radius:50%;object-fit:cover;
       border:3px solid rgba(255,255,255,.92);
       box-shadow:0 10px 30px rgba(0,0,0,.45);
       background:#111;
     }
+    .side-title{font-size:18px;font-weight:800;line-height:1.25}
+    .side-sub{font-size:12px;color:rgba(255,255,255,.72);line-height:1.3}
+    .month-box{display:flex;flex-direction:column;gap:8px}
+    .sidebar label,.month-box label,.month-history label{font-size:12px;color:rgba(255,255,255,.75);font-weight:700;letter-spacing:.2px}
 
-    .brand-title{
-      font-size:20px;
-      font-weight:800;
-      color:#fff;
-      line-height:1.2;
-    }
-
-    .brand-sub{
-      font-size:13px;
-      color:rgba(255,255,255,.82);
-      line-height:1.3;
-    }
-
-    .toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-
-    input[type="number"], input[type="text"], select{
+    input[type="month"], input[type="number"], input[type="text"], select{
       width:100%;
       padding:11px 12px;
       border:1px solid var(--line);
@@ -107,34 +83,97 @@
       background:#fff;
       color:var(--text);
     }
-
-    input[type="number"]:focus, input[type="text"]:focus, select:focus{
+    input[type="month"]:focus, input[type="number"]:focus, input[type="text"]:focus, select:focus{
       border-color:#86b7fe;
       box-shadow:0 0 0 4px rgba(37,99,235,.08);
     }
 
-    button{
+    .nav-section{display:flex;flex-direction:column;gap:10px}
+    .nav-btn{
+      width:100%;
       border:none;
-      padding:11px 14px;
       border-radius:12px;
-      background:var(--accent);
+      padding:11px 12px;
+      background:#1f2937;
       color:#fff;
       cursor:pointer;
       font-weight:700;
+      text-align:left;
     }
+    .nav-btn:hover{background:#273244}
+    .nav-btn.active{background:#2563eb}
 
-    button.secondary{background:#334155}
-    button.ghost{background:#e5e7eb;color:#111827}
-    button.dark{background:#111827}
+    .month-history{display:flex;flex-direction:column;gap:8px}
+    .month-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      max-height:260px;
+      overflow:auto;
+      padding-right:2px;
+    }
+    .month-chip{
+      border:none;
+      border-radius:12px;
+      padding:10px 12px;
+      background:#1f2937;
+      color:#fff;
+      cursor:pointer;
+      text-align:left;
+      font-weight:700;
+    }
+    .month-chip:hover{background:#273244}
+    .month-chip.active{background:#16a34a}
 
-    .wrap{
+    .sidebar-actions{display:flex;flex-direction:column;gap:10px;margin-top:auto}
+    .sidebar-actions button{width:100%;border:none;padding:11px 12px;border-radius:12px;cursor:pointer;font-weight:700}
+    .btn-blue{background:var(--accent);color:#fff}
+    .btn-dark{background:#111827;color:#fff}
+    .btn-gray{background:#e5e7eb;color:#111827}
+
+    .main{flex:1;min-width:0;overflow:auto}
+
+    .top-shell{
+      background:#000;
+      color:#fff;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      box-shadow:0 6px 24px rgba(0,0,0,.35);
+      position:sticky;
+      top:0;
+      z-index:80;
+    }
+    .top-inner{padding:14px 18px 18px}
+    .top-grid{
       max-width:1600px;
       margin:0 auto;
-      padding:18px;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      gap:16px;
+      align-items:center;
     }
+    .top-left,.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .top-right{justify-content:flex-end}
+    .brand{
+      justify-self:center;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      min-width:260px;
+    }
+    .avatar{
+      width:92px;height:92px;border-radius:50%;object-fit:cover;
+      border:3px solid rgba(255,255,255,.92);
+      box-shadow:0 10px 30px rgba(0,0,0,.45);
+      background:#111;
+    }
+    .brand-title{font-size:20px;font-weight:800;color:#fff;line-height:1.2}
+    .brand-sub{font-size:13px;color:rgba(255,255,255,.82);line-height:1.3}
 
+    .content{max-width:1600px;margin:0 auto;padding:18px}
     .hero{
-      background:linear-gradient(135deg, #000 0%, #111827 100%);
+      background:linear-gradient(135deg,#000 0%, #111827 100%);
       color:#fff;
       border-radius:24px;
       padding:22px 24px;
@@ -142,18 +181,15 @@
       margin-bottom:18px;
       border:1px solid rgba(255,255,255,.08);
     }
-
-    .hero h1{margin:0 0 8px 0;font-size:28px;letter-spacing:.5px}
+    .hero h1{margin:0 0 8px;font-size:28px;letter-spacing:.5px}
     .hero p{margin:0;color:rgba(255,255,255,.82)}
 
-    .summary-row{
-      display:grid;
-      gap:14px;
-      margin:18px 0 14px;
-    }
+    .page{display:none}
+    .page.active{display:block}
 
-    .summary-row.row-1{grid-template-columns:repeat(5,minmax(0,1fr));}
-    .summary-row.row-2{grid-template-columns:repeat(4,minmax(0,1fr));}
+    .summary-row{display:grid;gap:14px;margin:18px 0 14px}
+    .summary-row.row-1{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .summary-row.row-2{grid-template-columns:repeat(4,minmax(0,1fr))}
 
     .card{
       background:var(--card);
@@ -162,7 +198,6 @@
       box-shadow:var(--shadow);
       overflow:hidden;
     }
-
     .stat{padding:16px 18px}
     .stat .label{color:var(--muted);font-size:13px;margin-bottom:10px}
     .stat .value{
@@ -186,31 +221,18 @@
       margin-bottom:18px;
       overflow:hidden;
     }
-
     .section-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:14px 18px;
-      background:var(--head2);
-      border-bottom:1px solid var(--line)
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 18px;background:var(--head2);border-bottom:1px solid var(--line)
     }
-
     .section-head h2{margin:0;font-size:18px;color:var(--head)}
     .section-head .hint{color:var(--muted);font-size:13px;text-align:right}
     .section-body{padding:16px 18px}
 
-    .income-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-
+    .income-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
     .input-group{display:flex;flex-direction:column;gap:7px}
     .input-group label{font-size:13px;color:var(--muted)}
     .footer-note{color:var(--muted);font-size:12px;margin-top:8px}
-
     .table-wrap{overflow:auto}
 
     table{width:100%;border-collapse:collapse;min-width:980px}
@@ -224,8 +246,8 @@
       border-radius:16px;
       overflow:hidden;
       background:#fff;
+      margin-bottom:14px;
     }
-
     summary{
       list-style:none;
       cursor:pointer;
@@ -237,34 +259,42 @@
       align-items:center;
       gap:12px;
     }
-
     summary::-webkit-details-marker{display:none}
-
     .cat-total{font-size:14px;color:var(--muted);font-weight:600}
     .difference.positive{color:var(--bad);font-weight:700}
     .difference.negative{color:var(--good);font-weight:700}
     .difference.zero{color:#334155;font-weight:700}
     .total-row td{background:#f1f5f9;font-weight:700}
 
-    .fx-card{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:14px;
-    }
-
+    .fx-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
     .fx-topline{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:10px;
-      flex-wrap:wrap;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      margin-bottom:10px;flex-wrap:wrap
     }
-
     .fx-topline strong{font-size:16px;color:var(--head)}
     .mini{font-size:12px;color:var(--muted)}
     .fx-result{font-weight:700}
+
+    .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+    .chart-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+    .chart-box h3{margin:0 0 8px;color:var(--head);font-size:16px}
+    .chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .legend-item{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:6px 10px;font-size:12px;color:#334155}
+    .legend-dot{width:10px;height:10px;border-radius:50%}
+    canvas{width:100%;height:300px;display:block}
+
+    .notice-card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+      margin-bottom:14px;
+      box-shadow:var(--shadow);
+    }
+    .notice-title{font-size:16px;font-weight:700;color:var(--head);margin-bottom:4px}
+    .notice-date{font-size:12px;color:var(--muted);margin-bottom:10px}
+    .notice-card ul{margin:0;padding-left:18px}
+    .notice-card li{margin:4px 0}
 
     .theme-panel{
       display:none;
@@ -275,59 +305,161 @@
       border-radius:16px;
       padding:14px;
       box-shadow:0 16px 40px rgba(0,0,0,.25);
+      max-width:1600px;
+      margin-left:auto;
+      margin-right:auto;
     }
-
     .theme-panel.open{display:block}
-
-    .theme-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
+    .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .theme-box{
       background:#0f172a;
       border:1px solid rgba(255,255,255,.10);
       border-radius:14px;
       padding:14px;
     }
-
     .theme-box h3{margin:0 0 10px;font-size:15px;color:#fff}
     .theme-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     .hidden-input{display:none}
+
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .toolbar button,.theme-actions button,.sidebar-actions button,.page-actions button{border:none;border-radius:12px;cursor:pointer;font-weight:700;padding:11px 14px}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-secondary{background:#334155;color:#fff}
+    .btn-ghost{background:#e5e7eb;color:#111827}
+    .btn-dark-2{background:#111827;color:#fff}
+
+    .sidebar-note{margin-top:4px;font-size:12px;color:rgba(255,255,255,.72);line-height:1.4}
+
+    .footer{
+      width:100%;
+      padding:16px 18px 20px;
+      text-align:center;
+      background:#000;
+      border-top:1px solid rgba(255,255,255,.08);
+      margin-top:24px;
+      color:#9ca3af;
+    }
+    .footer-content{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      font-size:13px;
+    }
+    .footer-content a{color:#60a5fa;text-decoration:none}
+    .footer-content a:hover{text-decoration:underline}
+    .divider{color:#6b7280}
+
+    .version-box{display:flex;flex-direction:column;align-items:center}
+    .version-header{color:#60a5fa;font-weight:700;cursor:pointer}
+    .version-log{
+      display:none;
+      margin-top:8px;
+      font-size:12px;
+      color:#cbd5e1;
+      text-align:left;
+      background:#111827;
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.08);
+      min-width:320px;
+      max-width:500px;
+    }
+    .version-log ul{margin:0;padding-left:18px}
+    .version-log li{margin:4px 0}
+
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+    @media (max-width:1500px){
+      .summary-row.row-1{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .summary-row.row-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .income-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .chart-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:1100px){
+      body{overflow:auto}
+      .app{flex-direction:column;height:auto;min-height:100vh}
+      .sidebar{width:100%;flex:0 0 auto}
+      .main{overflow:visible}
+      .top-grid{grid-template-columns:1fr;justify-items:stretch}
+      .brand{justify-self:stretch}
+      .top-right{justify-content:flex-start}
+      .theme-grid{grid-template-columns:1fr}
+      .chart-grid{grid-template-columns:1fr}
+      .version-log{max-width:none}
+    }
   </style>
 </head>
 <body>
-  <div class="top-shell">
-    <div class="top-inner">
-      <div class="top-grid">
-        <div class="top-left">
-          <div class="input-group" style="min-width:180px;">
-            <strong>月份</strong>
-            <input id="monthLabel" type="text" value="1月2026" />
-          </div>
-          <div class="input-group" style="min-width:180px;">
-            <strong>币种</strong>
-            <select id="currency">
-              <option value="SGD">SGD</option>
-              <option value="MYR">MYR</option>
-              <option value="USD">USD</option>
-              <option value="CNY">CNY</option>
-            </select>
-          </div>
-        </div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <img id="sideAvatarImg" class="side-avatar" alt="头像" />
+        <div class="side-title">个人月度预算管理系统</div>
+        <div class="side-sub">分页面管理 · 月份独立数据 · 自动联动</div>
+      </div>
 
-        <div class="brand">
-          <img id="avatarImg" class="avatar" alt="头像" />
-          <div class="brand-title">个人月度预算管理系统1.0测试版</div>
-          <div class="brand-sub">预算 · 结余 · 汇率 · 主题自定义</div>
-        </div>
+      <div class="month-box">
+        <label for="monthPicker">月份</label>
+        <input id="monthPicker" type="month" />
+        <div class="sidebar-note">每个月份都会独立保存，不会互相覆盖。</div>
+      </div>
 
-        <div class="top-right">
-          <button id="saveBtn">保存到本机</button>
-          <button id="loadBtn" class="secondary">读取本机数据</button>
-          <button id="resetBtn" class="ghost">恢复示例值</button>
-          <button id="themeBtn" class="dark">修改背景/头像</button>
+      <div class="nav-section">
+        <label>导航</label>
+        <button class="nav-btn active" data-page="home">主页</button>
+        <button class="nav-btn" data-page="income">收入</button>
+        <button class="nav-btn" data-page="fx">币种兑换率</button>
+        <button class="nav-btn" data-page="expense">支出明细</button>
+        <button class="nav-btn" data-page="notice">通告</button>
+      </div>
+
+      <div class="month-history">
+        <label>月份记录列表</label>
+        <div id="monthList" class="month-list"></div>
+      </div>
+
+      <div class="sidebar-actions">
+        <button class="btn-blue" id="saveBtnSide">保存到本机</button>
+        <button class="btn-dark" id="loadBtnSide">读取本机数据</button>
+        <button class="btn-gray" id="resetBtnSide">恢复示例值</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="top-shell">
+        <div class="top-inner">
+          <div class="top-grid">
+            <div class="top-left">
+              <div class="input-group" style="min-width:180px;">
+                <label style="color:rgba(255,255,255,.78);font-size:12px;font-weight:700;">当前月份</label>
+                <input id="monthPickerTop" type="month" />
+              </div>
+              <div class="input-group" style="min-width:180px;">
+                <label style="color:rgba(255,255,255,.78);font-size:12px;font-weight:700;">币种</label>
+                <select id="currency">
+                  <option value="SGD">SGD</option>
+                  <option value="MYR">MYR</option>
+                  <option value="USD">USD</option>
+                  <option value="CNY">CNY</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="brand">
+              <img id="avatarImg" class="avatar" alt="头像" />
+              <div class="brand-title">个人月度预算管理系统2.0测试版</div>
+              <div class="brand-sub">预算 · 结余 · 汇率 · 主题自定义</div>
+            </div>
+
+            <div class="top-right">
+              <button id="themeBtn" class="btn-dark-2">修改背景/头像</button>
+              <button id="saveBtnTop" class="btn-primary">保存到本机</button>
+              <button id="loadBtnTop" class="btn-secondary">读取本机数据</button>
+              <button id="resetBtnTop" class="btn-ghost">恢复示例值</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -338,8 +470,8 @@
             <div class="mini" style="color:rgba(255,255,255,.78);margin-bottom:10px;">可自由上传背景图，系统会自动保存到本机浏览器。</div>
             <input id="bgInput" class="hidden-input" type="file" accept="image/*" />
             <div class="theme-actions">
-              <button id="pickBgBtn">选择背景图片</button>
-              <button id="clearBgBtn" class="ghost">清除背景</button>
+              <button id="pickBgBtn" class="btn-primary">选择背景图片</button>
+              <button id="clearBgBtn" class="btn-ghost">清除背景</button>
             </div>
           </div>
           <div class="theme-box">
@@ -347,193 +479,190 @@
             <div class="mini" style="color:rgba(255,255,255,.78);margin-bottom:10px;">可自由上传头像图，建议使用正方形图片以获得最佳圆形显示效果。</div>
             <input id="avatarInput" class="hidden-input" type="file" accept="image/*" />
             <div class="theme-actions">
-              <button id="pickAvatarBtn">选择头像图片</button>
-              <button id="clearAvatarBtn" class="ghost">恢复默认头像</button>
+              <button id="pickAvatarBtn" class="btn-primary">选择头像图片</button>
+              <button id="clearAvatarBtn" class="btn-ghost">恢复默认头像</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="wrap">
-    <div class="hero">
-      <h1>个人月度预算管理系统</h1>
-      <p>所有金额都用正数输入；系统自动计算计划、实际、差额与结余。差额采用“实际 − 计划”，正数代表超支，负数代表节省。</p>
-    </div>
-
-    <div class="summary-row row-1" id="summaryRow1">
-      <div class="card stat">
-        <div class="label">计划收入</div>
-        <div class="value" id="planIncomeView">0.00</div>
-        <div class="sub">预算收入合计</div>
-      </div>
-      <div class="card stat">
-        <div class="label">计划支出</div>
-        <div class="value" id="planExpenseView">0.00</div>
-        <div class="sub">预算支出合计</div>
-      </div>
-      <div class="card stat">
-        <div class="label">计划结余</div>
-        <div class="value" id="planBalanceView">0.00</div>
-        <div class="sub">计划收入 − 计划支出</div>
-      </div>
-      <div class="card stat">
-        <div class="label">实际收入</div>
-        <div class="value" id="actualIncomeView">0.00</div>
-        <div class="sub">到账收入合计</div>
-      </div>
-      <div class="card stat">
-        <div class="label">实际支出</div>
-        <div class="value" id="actualExpenseView">0.00</div>
-        <div class="sub">实际支出合计</div>
-      </div>
-    </div>
-
-    <div class="summary-row row-2" id="summaryRow2">
-      <div class="card stat">
-        <div class="label">结余（Balance）</div>
-        <div class="value" id="actualBalanceView">0.00</div>
-        <div class="sub">实际收入 − 实际支出</div>
-      </div>
-      <div class="card stat">
-        <div class="label">收入差额</div>
-        <div class="value" id="incomeDiffView">0.00</div>
-        <div class="sub">实际收入 − 计划收入</div>
-      </div>
-      <div class="card stat">
-        <div class="label">支出差额</div>
-        <div class="value" id="expenseDiffView">0.00</div>
-        <div class="sub">实际支出 − 计划支出</div>
-      </div>
-      <div class="card stat">
-        <div class="label">结余差额</div>
-        <div class="value" id="balanceDiffView">0.00</div>
-        <div class="sub">实际结余 − 计划结余</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">
-        <h2>收入</h2>
-        <div class="hint">建议把所有收入拆成固定收入、额外收入、其他收入</div>
-      </div>
-      <div class="section-body">
-        <div class="income-grid" id="incomeGrid"></div>
-        <div class="footer-note">提示：收入全部填正数；若某项没有收入，保持 0 即可。</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head">
-        <h2>币种兑换率</h2>
-        <div class="hint" id="fxSummary">基准币种为 MYR；修改汇率后会自动换算。</div>
-      </div>
-      <div class="section-body">
-        <div class="fx-card">
-          <div class="fx-topline">
-            <strong>汇率表</strong>
-            <span class="mini">1 单位币种 = 多少 MYR</span>
-          </div>
-          <div class="table-wrap">
-            <table style="min-width:920px;">
-              <thead>
-                <tr>
-                  <th style="min-width:120px;">币种</th>
-                  <th style="min-width:220px;">兑换率（1 单位 = 多少 MYR）</th>
-                  <th style="min-width:220px;">自动换算：100 单位</th>
-                  <th style="min-width:220px;">备注</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>MYR</td>
-                  <td><input id="rate_MYR" type="number" min="0" step="0.0001" value="1"></td>
-                  <td id="rate_auto_MYR" class="fx-result">MYR 100.00</td>
-                  <td>本币 / 基准币种</td>
-                </tr>
-                <tr>
-                  <td>SGD</td>
-                  <td><input id="rate_SGD" type="number" min="0" step="0.0001" value="3.45"></td>
-                  <td id="rate_auto_SGD" class="fx-result">MYR 345.00</td>
-                  <td>可自行修改</td>
-                </tr>
-                <tr>
-                  <td>USD</td>
-                  <td><input id="rate_USD" type="number" min="0" step="0.0001" value="4.70"></td>
-                  <td id="rate_auto_USD" class="fx-result">MYR 470.00</td>
-                  <td>可自行修改</td>
-                </tr>
-                <tr>
-                  <td>CNY</td>
-                  <td><input id="rate_CNY" type="number" min="0" step="0.0001" value="0.65"></td>
-                  <td id="rate_auto_CNY" class="fx-result">MYR 65.00</td>
-                  <td>可自行修改</td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="content">
+        <section class="page active" id="page-home">
+          <div class="hero">
+            <h1>个人月度预算管理系统</h1>
+            <p>所有金额都用正数输入；系统自动计算计划、实际、差额与结余。差额采用“实际 − 计划”，正数代表超支，负数代表节省。</p>
           </div>
 
-          <div class="fx-card" style="margin-top:14px;">
-            <div class="fx-topline" style="margin-bottom:12px;">
-              <strong>快速换算</strong>
-              <span class="mini">输入后会自动显示结果</span>
-            </div>
-            <div class="income-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
-              <div class="input-group">
-                <label>金额</label>
-                <input id="fxAmount" type="number" min="0" step="0.01" value="100" />
-              </div>
-              <div class="input-group">
-                <label>原币种</label>
-                <select id="fxFrom">
-                  <option value="SGD">SGD</option>
-                  <option value="MYR">MYR</option>
-                  <option value="USD">USD</option>
-                  <option value="CNY">CNY</option>
-                </select>
-              </div>
-              <div class="input-group">
-                <label>目标币种</label>
-                <select id="fxTo">
-                  <option value="MYR">MYR</option>
-                  <option value="SGD">SGD</option>
-                  <option value="USD">USD</option>
-                  <option value="CNY">CNY</option>
-                </select>
-              </div>
-              <div class="input-group">
-                <label>换算结果</label>
-                <input id="fxResult" type="text" value="MYR 0.00" disabled />
+          <div class="summary-row row-1">
+            <div class="card stat"><div class="label">计划收入</div><div class="value" id="planIncomeView">0.00</div><div class="sub">预算收入合计</div></div>
+            <div class="card stat"><div class="label">计划支出</div><div class="value" id="planExpenseView">0.00</div><div class="sub">预算支出合计</div></div>
+            <div class="card stat"><div class="label">计划结余</div><div class="value" id="planBalanceView">0.00</div><div class="sub">计划收入 − 计划支出</div></div>
+            <div class="card stat"><div class="label">实际收入</div><div class="value" id="actualIncomeView">0.00</div><div class="sub">到账收入合计</div></div>
+            <div class="card stat"><div class="label">实际支出</div><div class="value" id="actualExpenseView">0.00</div><div class="sub">实际支出合计</div></div>
+          </div>
+
+          <div class="summary-row row-2">
+            <div class="card stat"><div class="label">结余（Balance）</div><div class="value" id="actualBalanceView">0.00</div><div class="sub">实际收入 − 实际支出</div></div>
+            <div class="card stat"><div class="label">收入差额</div><div class="value" id="incomeDiffView">0.00</div><div class="sub">实际收入 − 计划收入</div></div>
+            <div class="card stat"><div class="label">支出差额</div><div class="value" id="expenseDiffView">0.00</div><div class="sub">实际支出 − 计划支出</div></div>
+            <div class="card stat"><div class="label">结余差额</div><div class="value" id="balanceDiffView">0.00</div><div class="sub">实际结余 − 计划结余</div></div>
+          </div>
+
+          <div class="section">
+            <div class="section-head"><h2>财务图表分析</h2><div class="hint">数据根据当前月份自动计算</div></div>
+            <div class="section-body">
+              <div class="chart-grid">
+                <div class="chart-box">
+                  <h3>支出分类图</h3>
+                  <canvas id="expenseChart"></canvas>
+                  <div id="expenseLegend" class="chart-legend"></div>
+                </div>
+                <div class="chart-box">
+                  <h3>收入 vs 支出</h3>
+                  <canvas id="incomeChart"></canvas>
+                  <div id="incomeLegend" class="chart-legend"></div>
+                </div>
               </div>
             </div>
-            <div class="footer-note">说明：换算公式为“原金额 × 原币汇率 ÷ 目标币汇率”。</div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="section">
-      <div class="section-head">
-        <h2>支出明细</h2>
-        <div class="hint">大项目与小项目均可自行修改金额</div>
+          <div class="section">
+            <div class="section-head"><h2>概览说明</h2><div class="hint">主页汇总会随收入、汇率与支出变动实时联动</div></div>
+            <div class="section-body">
+              <div class="card" style="padding:16px;">
+                <div class="mini">左侧可切换不同月份，并查看月份记录列表。新月份若尚未存在，会自动继承最近一个月份的计划值（actual 会重置为 0）。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-income">
+          <div class="section">
+            <div class="section-head"><h2>收入</h2><div class="hint">建议把所有收入拆成固定收入、额外收入、其他收入</div></div>
+            <div class="section-body">
+              <div class="income-grid" id="incomeGrid"></div>
+              <div class="footer-note">提示：收入全部填正数；若某项没有收入，保持 0 即可。</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-fx">
+          <div class="section">
+            <div class="section-head"><h2>币种兑换率</h2><div class="hint" id="fxSummary">基准币种为 MYR；修改汇率后会自动换算。</div></div>
+            <div class="section-body">
+              <div class="fx-card">
+                <div class="fx-topline"><strong>汇率表</strong><span class="mini">1 单位币种 = 多少 MYR</span></div>
+                <div class="table-wrap">
+                  <table style="min-width:920px;">
+                    <thead>
+                      <tr><th style="min-width:120px;">币种</th><th style="min-width:220px;">兑换率（1 单位 = 多少 MYR）</th><th style="min-width:220px;">自动换算：100 单位</th><th style="min-width:220px;">备注</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>MYR</td><td><input id="rate_MYR" type="number" min="0" step="0.0001" value="1"></td><td id="rate_auto_MYR" class="fx-result">MYR 100.00</td><td>本币 / 基准币种</td></tr>
+                      <tr><td>SGD</td><td><input id="rate_SGD" type="number" min="0" step="0.0001" value="3.45"></td><td id="rate_auto_SGD" class="fx-result">MYR 345.00</td><td>可自行修改</td></tr>
+                      <tr><td>USD</td><td><input id="rate_USD" type="number" min="0" step="0.0001" value="4.70"></td><td id="rate_auto_USD" class="fx-result">MYR 470.00</td><td>可自行修改</td></tr>
+                      <tr><td>CNY</td><td><input id="rate_CNY" type="number" min="0" step="0.0001" value="0.65"></td><td id="rate_auto_CNY" class="fx-result">MYR 65.00</td><td>可自行修改</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="fx-card" style="margin-top:14px;">
+                  <div class="fx-topline" style="margin-bottom:12px;"><strong>快速换算</strong><span class="mini">输入后会自动显示结果</span></div>
+                  <div class="income-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
+                    <div class="input-group"><label>金额</label><input id="fxAmount" type="number" min="0" step="0.01" value="100" /></div>
+                    <div class="input-group"><label>原币种</label>
+                      <select id="fxFrom">
+                        <option value="SGD">SGD</option><option value="MYR">MYR</option><option value="USD">USD</option><option value="CNY">CNY</option>
+                      </select>
+                    </div>
+                    <div class="input-group"><label>目标币种</label>
+                      <select id="fxTo">
+                        <option value="MYR">MYR</option><option value="SGD">SGD</option><option value="USD">USD</option><option value="CNY">CNY</option>
+                      </select>
+                    </div>
+                    <div class="input-group"><label>换算结果</label><input id="fxResult" type="text" value="MYR 0.00" disabled /></div>
+                  </div>
+                  <div class="footer-note">说明：换算公式为“原金额 × 原币汇率 ÷ 目标币汇率”。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-expense">
+          <div class="section">
+            <div class="section-head"><h2>支出明细</h2><div class="hint">大项目与小项目均可自行修改金额</div></div>
+            <div class="section-body">
+              <div id="categories"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-notice">
+          <div class="section">
+            <div class="section-head"><h2>通告</h2><div class="hint">这里记录系统更新与重要通知</div></div>
+            <div class="section-body">
+              <div class="notice-card">
+                <div class="notice-title">Version 2.0 发布</div>
+                <div class="notice-date">2026-03-29 18:00</div>
+                <ul>
+                  <li>新增：左侧导航系统</li>
+                  <li>新增：月份独立数据与月份记录列表</li>
+                  <li>新增：自动继承上个月计划预算</li>
+                  <li>新增：背景与头像自定义</li>
+                  <li>新增：图表系统（支出分类图 / 收入 vs 支出）</li>
+                  <li>优化：整体 UI 结构与联动逻辑</li>
+                </ul>
+              </div>
+
+              <div class="notice-card">
+                <div class="notice-title">Version 1.0 初始版本</div>
+                <div class="notice-date">2026-03-29 10:00</div>
+                <ul>
+                  <li>基础预算系统上线</li>
+                  <li>收入 / 支出记录功能</li>
+                  <li>本机浏览器存储</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <div class="footer-content">
+            <span>© 2026 个人月度预算管理系统</span>
+            <span class="divider">|</span>
+            <span>联系方式：</span>
+            <a href="mailto:your_email@gmail.com">your_email@gmail.com</a>
+            <span class="divider">|</span>
+            <div class="version-box">
+              <div class="version-header" onclick="toggleVersionLog()">Version 2.0 • Major Update ▼</div>
+              <div class="version-log" id="versionLog">
+                <ul>
+                  <li>新增：左侧导航系统</li>
+                  <li>新增：月份独立数据系统</li>
+                  <li>新增：月份记录列表</li>
+                  <li>新增：自动继承预算（plan 继承）</li>
+                  <li>新增：背景与头像自定义</li>
+                  <li>新增：图表系统与通告页面</li>
+                  <li>优化：UI 布局（专业财务结构）</li>
+                  <li>优化：数据联动计算逻辑</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
-      <div class="section-body">
-        <div id="categories" class="categories"></div>
-      </div>
-    </div>
+    </main>
   </div>
 
   <script>
-    const LS_KEY = 'budget_tracker_v6';
+    const MONTH_PREFIX = 'budget_tracker_month_v3_';
+    const UI_KEY = 'budget_tracker_ui_v3';
+    const THEME_KEY = 'budget_tracker_theme_v3';
+
     const DEFAULT_AVATAR = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-        <defs>
-          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stop-color="#111827"/>
-            <stop offset="100%" stop-color="#2563eb"/>
-          </linearGradient>
-        </defs>
+        <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#111827"/><stop offset="100%" stop-color="#2563eb"/></linearGradient></defs>
         <rect width="256" height="256" rx="128" fill="url(#g)"/>
         <circle cx="128" cy="128" r="84" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="8"/>
         <path d="M80 158h96" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
@@ -542,84 +671,167 @@
       </svg>
     `);
 
-    const monthLabel = document.getElementById('monthLabel');
+    const sidebarButtons = Array.from(document.querySelectorAll('.nav-btn'));
+    const pages = {
+      home: document.getElementById('page-home'),
+      income: document.getElementById('page-income'),
+      fx: document.getElementById('page-fx'),
+      expense: document.getElementById('page-expense'),
+      notice: document.getElementById('page-notice'),
+    };
+
+    const monthPicker = document.getElementById('monthPicker');
+    const monthPickerTop = document.getElementById('monthPickerTop');
+    const monthListEl = document.getElementById('monthList');
     const currencySelect = document.getElementById('currency');
     const incomeGrid = document.getElementById('incomeGrid');
     const categoriesEl = document.getElementById('categories');
     const avatarImg = document.getElementById('avatarImg');
+    const sideAvatarImg = document.getElementById('sideAvatarImg');
     const themePanel = document.getElementById('themePanel');
     const bgInput = document.getElementById('bgInput');
     const avatarInput = document.getElementById('avatarInput');
+    const expenseChart = document.getElementById('expenseChart');
+    const incomeChart = document.getElementById('incomeChart');
+    const expenseLegend = document.getElementById('expenseLegend');
+    const incomeLegend = document.getElementById('incomeLegend');
 
     const incomeDefs = [
-      { id: 'salary', label: '基本工资', plan: 6000, actual: 6000 },
-      { id: 'allowance', label: '住房补贴 / 津贴', plan: 200, actual: 200 },
-      { id: 'bonus', label: '奖金 / 13薪摊分', plan: 0, actual: 0 },
-      { id: 'otherIncome', label: '其他收入', plan: 0, actual: 0 }
+      { id:'salary', label:'基本工资' },
+      { id:'allowance', label:'住房补贴 / 津贴' },
+      { id:'bonus', label:'奖金 / 13薪摊分' },
+      { id:'otherIncome', label:'其他收入' }
     ];
 
     const categoryDefs = [
-      { id: 'housing', title: '住房', items: [['rentDeposit', '押金 / 租金'], ['utilitiesElectric', '电费'], ['utilitiesWater', '水费'], ['utilitiesGas', '瓦斯费 / 煤气'], ['utilitiesInternet', '网络 / 宽带'], ['utilitiesCable', '有线电视 / 订阅'], ['maintenance', '维修 / 维护'], ['other', '其他']] },
-      { id: 'transport', title: '交通费用', items: [['fuel', '燃料 / 汽油'], ['motoMaintenance', '摩托维修'], ['carMaintenance', '汽车维修'], ['parking', '停车费'], ['toll', '过路费 / ERP'], ['publicTransport', '公交 / 地铁 / 打车'], ['license', '驾驶执照 / 相关费用'], ['other', '其他']] },
-      { id: 'fun', title: '玩乐', items: [['movie', '电影 / 影票'], ['games', '游戏'], ['music', '音乐 / 演出'], ['sports', '运动 / 休闲'], ['vlog', 'Vlog / 内容创作'], ['digital', '视频 / DVD / 订阅'], ['other', '其他']] },
-      { id: 'loans', title: '贷款', items: [['carLoan', '车贷款'], ['personalLoan', '个人贷款'], ['purchaseLoan', '购买贷款'], ['creditCard', '信用卡'], ['other', '其他']] },
-      { id: 'taxes', title: '税务', items: [['incomeTax', '个人所得税'], ['vehicleTax', '车辆 / 船舶使用税'], ['other', '其他']] },
-      { id: 'savings', title: '储蓄或投资', items: [['retirement', '退休账户'], ['investment', '投资账户'], ['tngInvestment', 'TNG 投资'], ['fixedDeposit', '定存 / 储蓄'], ['other', '其他']] },
-      { id: 'insurance', title: '保险', items: [['homeInsurance', '房屋保险'], ['healthInsurance', '健康保险'], ['lifeInsurance', '人寿保险'], ['personalInsurance', '个人保险'], ['vehicleInsurance', '车辆保险'], ['other', '其他']] },
-      { id: 'daily', title: '日常费用', items: [['groceries', '杂货 / 日用品'], ['food', '餐饮 / 外食'], ['cash', '现金支出'], ['snacks', '零食 / 饮料'], ['household', '家用消耗品'], ['other', '其他']] },
-      { id: 'giftDonation', title: '礼物和捐赠', items: [['giftFamily', '送家人礼物'], ['giftFriend', '送朋友礼物'], ['charity1', '慈善机构 1'], ['charity2', '慈善机构 2'], ['charity3', '慈善机构 3'], ['other', '其他']] },
-      { id: 'pets', title: '宠物', items: [['food', '食物'], ['healthcare', '卫生保健'], ['grooming', '洗护 / 美容'], ['toys', '玩具'], ['supplies', '用品'], ['other', '其他']] },
-      { id: 'legal', title: '法律', items: [['lawyer', '律师费'], ['support', '赡养费'], ['judgment', '留置权支付 / 判决支付'], ['other', '其他']] },
-      { id: 'personalCare', title: '个人护理', items: [['medical', '医疗保健'], ['hairNails', '头发 / 指甲护理'], ['dryCleaning', '干洗'], ['gym', '健身俱乐部'], ['membership', '组织会员费'], ['toiletries', '个人护理用品'], ['other', '其他']] }
+      { id:'housing', title:'住房', items:[['rentDeposit','押金 / 租金'],['utilitiesElectric','电费'],['utilitiesWater','水费'],['utilitiesGas','瓦斯费 / 煤气'],['utilitiesInternet','网络 / 宽带'],['utilitiesCable','有线电视 / 订阅'],['maintenance','维修 / 维护'],['other','其他']] },
+      { id:'transport', title:'交通费用', items:[['fuel','燃料 / 汽油'],['motoMaintenance','摩托维修'],['carMaintenance','汽车维修'],['parking','停车费'],['toll','过路费 / ERP'],['publicTransport','公交 / 地铁 / 打车'],['license','驾驶执照 / 相关费用'],['other','其他']] },
+      { id:'fun', title:'玩乐', items:[['movie','电影 / 影票'],['games','游戏'],['music','音乐 / 演出'],['sports','运动 / 休闲'],['vlog','Vlog / 内容创作'],['digital','视频 / DVD / 订阅'],['other','其他']] },
+      { id:'loans', title:'贷款', items:[['carLoan','车贷款'],['personalLoan','个人贷款'],['purchaseLoan','购买贷款'],['creditCard','信用卡'],['other','其他']] },
+      { id:'taxes', title:'税务', items:[['incomeTax','个人所得税'],['vehicleTax','车辆 / 船舶使用税'],['other','其他']] },
+      { id:'savings', title:'储蓄或投资', items:[['retirement','退休账户'],['investment','投资账户'],['tngInvestment','TNG 投资'],['fixedDeposit','定存 / 储蓄'],['other','其他']] },
+      { id:'insurance', title:'保险', items:[['homeInsurance','房屋保险'],['healthInsurance','健康保险'],['lifeInsurance','人寿保险'],['personalInsurance','个人保险'],['vehicleInsurance','车辆保险'],['other','其他']] },
+      { id:'daily', title:'日常费用', items:[['groceries','杂货 / 日用品'],['food','餐饮 / 外食'],['cash','现金支出'],['snacks','零食 / 饮料'],['household','家用消耗品'],['other','其他']] },
+      { id:'giftDonation', title:'礼物和捐赠', items:[['giftFamily','送家人礼物'],['giftFriend','送朋友礼物'],['charity1','慈善机构 1'],['charity2','慈善机构 2'],['charity3','慈善机构 3'],['other','其他']] },
+      { id:'pets', title:'宠物', items:[['food','食物'],['healthcare','卫生保健'],['grooming','洗护 / 美容'],['toys','玩具'],['supplies','用品'],['other','其他']] },
+      { id:'legal', title:'法律', items:[['lawyer','律师费'],['support','赡养费'],['judgment','留置权支付 / 判决支付'],['other','其他']] },
+      { id:'personalCare', title:'个人护理', items:[['medical','医疗保健'],['hairNails','头发 / 指甲护理'],['dryCleaning','干洗'],['gym','健身俱乐部'],['membership','组织会员费'],['toiletries','个人护理用品'],['other','其他']] }
     ];
 
-    const defaultValues = {
-      income: {
-        salary: { plan: 6000, actual: 6000 },
-        allowance: { plan: 200, actual: 200 },
-        bonus: { plan: 0, actual: 0 },
-        otherIncome: { plan: 0, actual: 0 }
-      },
-      categories: {
-        housing: { rentDeposit:{plan:0,actual:0}, utilitiesElectric:{plan:0,actual:0}, utilitiesWater:{plan:0,actual:0}, utilitiesGas:{plan:0,actual:0}, utilitiesInternet:{plan:0,actual:0}, utilitiesCable:{plan:0,actual:0}, maintenance:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        transport: { fuel:{plan:80,actual:80}, motoMaintenance:{plan:0,actual:0}, carMaintenance:{plan:0,actual:0}, parking:{plan:0,actual:0}, toll:{plan:0,actual:0}, publicTransport:{plan:0,actual:0}, license:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        fun: { movie:{plan:0,actual:0}, games:{plan:0,actual:0}, music:{plan:0,actual:0}, sports:{plan:0,actual:0}, vlog:{plan:0,actual:0}, digital:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        loans: { carLoan:{plan:823,actual:823}, personalLoan:{plan:0,actual:0}, purchaseLoan:{plan:0,actual:0}, creditCard:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        taxes: { incomeTax:{plan:0,actual:0}, vehicleTax:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        savings: { retirement:{plan:0,actual:0}, investment:{plan:0,actual:0}, tngInvestment:{plan:0,actual:0}, fixedDeposit:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        insurance: { homeInsurance:{plan:0,actual:0}, healthInsurance:{plan:0,actual:0}, lifeInsurance:{plan:0,actual:0}, personalInsurance:{plan:0,actual:0}, vehicleInsurance:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        daily: { groceries:{plan:600,actual:600}, food:{plan:600,actual:600}, cash:{plan:0,actual:0}, snacks:{plan:0,actual:0}, household:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        giftDonation: { giftFamily:{plan:0,actual:0}, giftFriend:{plan:0,actual:0}, charity1:{plan:0,actual:0}, charity2:{plan:0,actual:0}, charity3:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        pets: { food:{plan:0,actual:0}, healthcare:{plan:0,actual:0}, grooming:{plan:0,actual:0}, toys:{plan:0,actual:0}, supplies:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        legal: { lawyer:{plan:0,actual:0}, support:{plan:0,actual:0}, judgment:{plan:0,actual:0}, other:{plan:0,actual:0} },
-        personalCare: { medical:{plan:0,actual:0}, hairNails:{plan:0,actual:0}, dryCleaning:{plan:0,actual:0}, gym:{plan:0,actual:0}, membership:{plan:0,actual:0}, toiletries:{plan:0,actual:0}, other:{plan:0,actual:0} }
+    function getCurrentMonth(){
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      return `${y}-${m}`;
+    }
+
+    function deepClone(obj){
+      return typeof structuredClone === 'function' ? structuredClone(obj) : JSON.parse(JSON.stringify(obj));
+    }
+
+    function createMonthTemplate(){
+      return {
+        currency:'SGD',
+        fx:{ MYR:1, SGD:3.45, USD:4.70, CNY:0.65 },
+        income:{
+          salary:{plan:6000,actual:6000},
+          allowance:{plan:200,actual:200},
+          bonus:{plan:0,actual:0},
+          otherIncome:{plan:0,actual:0}
+        },
+        categories:{
+          housing:{rentDeposit:{plan:0,actual:0},utilitiesElectric:{plan:0,actual:0},utilitiesWater:{plan:0,actual:0},utilitiesGas:{plan:0,actual:0},utilitiesInternet:{plan:0,actual:0},utilitiesCable:{plan:0,actual:0},maintenance:{plan:0,actual:0},other:{plan:0,actual:0}},
+          transport:{fuel:{plan:80,actual:80},motoMaintenance:{plan:0,actual:0},carMaintenance:{plan:0,actual:0},parking:{plan:0,actual:0},toll:{plan:0,actual:0},publicTransport:{plan:0,actual:0},license:{plan:0,actual:0},other:{plan:0,actual:0}},
+          fun:{movie:{plan:0,actual:0},games:{plan:0,actual:0},music:{plan:0,actual:0},sports:{plan:0,actual:0},vlog:{plan:0,actual:0},digital:{plan:0,actual:0},other:{plan:0,actual:0}},
+          loans:{carLoan:{plan:823,actual:823},personalLoan:{plan:0,actual:0},purchaseLoan:{plan:0,actual:0},creditCard:{plan:0,actual:0},other:{plan:0,actual:0}},
+          taxes:{incomeTax:{plan:0,actual:0},vehicleTax:{plan:0,actual:0},other:{plan:0,actual:0}},
+          savings:{retirement:{plan:0,actual:0},investment:{plan:0,actual:0},tngInvestment:{plan:0,actual:0},fixedDeposit:{plan:0,actual:0},other:{plan:0,actual:0}},
+          insurance:{homeInsurance:{plan:0,actual:0},healthInsurance:{plan:0,actual:0},lifeInsurance:{plan:0,actual:0},personalInsurance:{plan:0,actual:0},vehicleInsurance:{plan:0,actual:0},other:{plan:0,actual:0}},
+          daily:{groceries:{plan:600,actual:600},food:{plan:600,actual:600},cash:{plan:0,actual:0},snacks:{plan:0,actual:0},household:{plan:0,actual:0},other:{plan:0,actual:0}},
+          giftDonation:{giftFamily:{plan:0,actual:0},giftFriend:{plan:0,actual:0},charity1:{plan:0,actual:0},charity2:{plan:0,actual:0},charity3:{plan:0,actual:0},other:{plan:0,actual:0}},
+          pets:{food:{plan:0,actual:0},healthcare:{plan:0,actual:0},grooming:{plan:0,actual:0},toys:{plan:0,actual:0},supplies:{plan:0,actual:0},other:{plan:0,actual:0}},
+          legal:{lawyer:{plan:0,actual:0},support:{plan:0,actual:0},judgment:{plan:0,actual:0},other:{plan:0,actual:0}},
+          personalCare:{medical:{plan:0,actual:0},hairNails:{plan:0,actual:0},dryCleaning:{plan:0,actual:0},gym:{plan:0,actual:0},membership:{plan:0,actual:0},toiletries:{plan:0,actual:0},other:{plan:0,actual:0}}
+        }
+      };
+    }
+
+    function normalizeMonthData(data){
+      const normalized = createMonthTemplate();
+      if (data && typeof data === 'object') {
+        if (data.currency) normalized.currency = data.currency;
+        if (data.fx) {
+          normalized.fx.MYR = Number(data.fx.MYR ?? normalized.fx.MYR);
+          normalized.fx.SGD = Number(data.fx.SGD ?? normalized.fx.SGD);
+          normalized.fx.USD = Number(data.fx.USD ?? normalized.fx.USD);
+          normalized.fx.CNY = Number(data.fx.CNY ?? normalized.fx.CNY);
+        }
+        if (data.income) {
+          for (const [id, val] of Object.entries(data.income)) {
+            if (normalized.income[id]) normalized.income[id] = { plan:Number(val.plan||0), actual:Number(val.actual||0) };
+          }
+        }
+        if (data.categories) {
+          for (const [catId, items] of Object.entries(data.categories)) {
+            if (!normalized.categories[catId]) continue;
+            for (const [itemId, val] of Object.entries(items || {})) {
+              if (normalized.categories[catId][itemId]) normalized.categories[catId][itemId] = { plan:Number(val.plan||0), actual:Number(val.actual||0) };
+            }
+          }
+        }
       }
-    };
-
-    function fmtMoney(amount, currencyCode){
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currencyCode,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      }).format(Number(amount || 0));
+      return normalized;
     }
 
-    function money(v){
-      return fmtMoney(v, currencySelect.value);
+    function monthKey(month){ return `${MONTH_PREFIX}${month}`; }
+    function getAllSavedMonths(){
+      return Object.keys(localStorage).filter(k => k.startsWith(MONTH_PREFIX)).map(k => k.slice(MONTH_PREFIX.length)).sort();
     }
-
-    function getFxRate(code){
-      if (code === 'MYR') return 1;
-      const el = document.getElementById(`rate_${code}`);
-      return Number(el?.value || 0);
+    function getPreviousSavedMonth(month){
+      const list = getAllSavedMonths().filter(m => m < month);
+      return list.length ? list[list.length - 1] : null;
     }
+    function loadStoredMonth(month){
+      const raw = localStorage.getItem(monthKey(month));
+      if (!raw) return null;
+      try { return normalizeMonthData(JSON.parse(raw)); } catch { return null; }
+    }
+    function loadOrCreateMonth(month){
+      const existing = loadStoredMonth(month);
+      if (existing) return existing;
+      const base = createMonthTemplate();
+      const prevMonth = getPreviousSavedMonth(month);
+      if (prevMonth) {
+        const prev = loadStoredMonth(prevMonth);
+        if (prev) {
+          base.currency = prev.currency || base.currency;
+          base.fx = deepClone(prev.fx || base.fx);
+          for (const item of incomeDefs) {
+            base.income[item.id].plan = Number(prev.income[item.id]?.plan || 0);
+            base.income[item.id].actual = 0;
+          }
+          for (const cat of categoryDefs) {
+            for (const [itemId] of cat.items) {
+              base.categories[cat.id][itemId].plan = Number(prev.categories[cat.id]?.[itemId]?.plan || 0);
+              base.categories[cat.id][itemId].actual = 0;
+            }
+          }
+        }
+      }
+      return base;
+    }
+    function saveMonth(month, data){ localStorage.setItem(monthKey(month), JSON.stringify(data)); }
 
-    function convertCurrency(amount, from, to){
-      const fromRate = getFxRate(from);
-      const toRate = getFxRate(to);
-      if (!fromRate || !toRate) return 0;
-      return Number(amount || 0) * fromRate / toRate;
+    function loadUIState(){ try { return JSON.parse(localStorage.getItem(UI_KEY) || '{}'); } catch { return {}; } }
+    function saveUIState(ui){ localStorage.setItem(UI_KEY, JSON.stringify(ui)); }
+    function loadThemeState(){ try { return JSON.parse(localStorage.getItem(THEME_KEY) || '{}'); } catch { return {}; } }
+    function saveThemeState(theme){ localStorage.setItem(THEME_KEY, JSON.stringify(theme)); }
+
+    function applyTheme(theme){
+      document.body.style.backgroundImage = theme?.backgroundImage || 'none';
+      const avatar = theme?.avatarImage || DEFAULT_AVATAR;
+      avatarImg.src = avatar;
+      sideAvatarImg.src = avatar;
     }
 
     function fileToDataUrl(file){
@@ -631,12 +843,21 @@
       });
     }
 
-    function applyBackgroundImage(src){
-      document.body.style.backgroundImage = src ? `url("${src}")` : 'none';
-    }
+    let currentMonth = '';
+    let state = createMonthTemplate();
 
-    function applyAvatarImage(src){
-      avatarImg.src = src || DEFAULT_AVATAR;
+    function money(amount){
+      return new Intl.NumberFormat('en-US', { style:'currency', currency:currencySelect.value, minimumFractionDigits:2, maximumFractionDigits:2 }).format(Number(amount || 0));
+    }
+    function fmtMoney(amount, currencyCode){
+      return new Intl.NumberFormat('en-US', { style:'currency', currency:currencyCode, minimumFractionDigits:2, maximumFractionDigits:2 }).format(Number(amount || 0));
+    }
+    function getFxRate(code){ if (code === 'MYR') return 1; return Number(document.getElementById(`rate_${code}`)?.value || 0); }
+    function convertCurrency(amount, from, to){ const fromRate=getFxRate(from); const toRate=getFxRate(to); if(!fromRate||!toRate) return 0; return Number(amount||0) * fromRate / toRate; }
+
+    function setActivePage(pageId){
+      Object.entries(pages).forEach(([key, el]) => el.classList.toggle('active', key === pageId));
+      sidebarButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageId));
     }
 
     function buildIncome(){
@@ -652,11 +873,11 @@
           </div>
           <div class="input-group" style="margin-bottom:10px;">
             <label>计划</label>
-            <input id="income_${item.id}_plan" type="number" min="0" step="0.01" value="${item.plan}" />
+            <input id="income_${item.id}_plan" type="number" min="0" step="0.01" value="0" />
           </div>
           <div class="input-group">
             <label>实际</label>
-            <input id="income_${item.id}_actual" type="number" min="0" step="0.01" value="${item.actual}" />
+            <input id="income_${item.id}_actual" type="number" min="0" step="0.01" value="0" />
           </div>
         `;
         incomeGrid.appendChild(box);
@@ -688,20 +909,17 @@
           </div>
         `;
         categoriesEl.appendChild(details);
-
         const tbody = details.querySelector(`#tbody_${cat.id}`);
-        cat.items.forEach(([id, label]) => {
-          const defaults = defaultValues.categories[cat.id][id] || { plan: 0, actual: 0 };
+        cat.items.forEach(([itemId, label]) => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td>${label}</td>
-            <td><input id="${cat.id}_${id}_plan" type="number" min="0" step="0.01" value="${defaults.plan}" /></td>
-            <td><input id="${cat.id}_${id}_actual" type="number" min="0" step="0.01" value="${defaults.actual}" /></td>
-            <td class="difference zero" id="${cat.id}_${id}_diff">${money(0)}</td>
+            <td><input id="${cat.id}_${itemId}_plan" type="number" min="0" step="0.01" value="0" /></td>
+            <td><input id="${cat.id}_${itemId}_actual" type="number" min="0" step="0.01" value="0" /></td>
+            <td class="difference zero" id="${cat.id}_${itemId}_diff">${money(0)}</td>
           `;
           tbody.appendChild(tr);
         });
-
         const totalTr = document.createElement('tr');
         totalTr.className = 'total-row';
         totalTr.innerHTML = `
@@ -714,17 +932,33 @@
       });
     }
 
-    function updateFxRates(){
-      ['MYR', 'SGD', 'USD', 'CNY'].forEach(code => {
-        const rate = getFxRate(code);
-        const el = document.getElementById(`rate_auto_${code}`);
-        if (el) el.textContent = fmtMoney(rate * 100, 'MYR');
+    function fillFormFromState(){
+      monthPicker.value = currentMonth;
+      monthPickerTop.value = currentMonth;
+      currencySelect.value = state.currency || 'SGD';
+      incomeDefs.forEach(item => {
+        document.getElementById(`income_${item.id}_plan`).value = state.income[item.id].plan;
+        document.getElementById(`income_${item.id}_actual`).value = state.income[item.id].actual;
       });
+      document.getElementById('rate_MYR').value = state.fx.MYR;
+      document.getElementById('rate_SGD').value = state.fx.SGD;
+      document.getElementById('rate_USD').value = state.fx.USD;
+      document.getElementById('rate_CNY').value = state.fx.CNY;
+      categoryDefs.forEach(cat => {
+        cat.items.forEach(([itemId]) => {
+          document.getElementById(`${cat.id}_${itemId}_plan`).value = state.categories[cat.id][itemId].plan;
+          document.getElementById(`${cat.id}_${itemId}_actual`).value = state.categories[cat.id][itemId].actual;
+        });
+      });
+    }
 
+    function updateFxRates(){
+      ['MYR','SGD','USD','CNY'].forEach(code => {
+        const el = document.getElementById(`rate_auto_${code}`);
+        if (el) el.textContent = fmtMoney(getFxRate(code) * 100, 'MYR');
+      });
       const summary = document.getElementById('fxSummary');
-      if (summary) {
-        summary.textContent = `基准币种为 MYR；当前汇率：SGD ${getFxRate('SGD').toFixed(4)}｜USD ${getFxRate('USD').toFixed(4)}｜CNY ${getFxRate('CNY').toFixed(4)}`;
-      }
+      if (summary) summary.textContent = `基准币种为 MYR；当前汇率：SGD ${getFxRate('SGD').toFixed(4)}｜USD ${getFxRate('USD').toFixed(4)}｜CNY ${getFxRate('CNY').toFixed(4)}`;
     }
 
     function updateFx(){
@@ -736,89 +970,227 @@
       if (out) out.value = fmtMoney(result, to);
     }
 
-    function readCurrent(){
-      const bg = document.body.style.backgroundImage;
-      const backgroundImage = bg && bg !== 'none' ? bg.slice(4, -1).replace(/^['"]|['"]$/g, '') : '';
-      return {
-        income: {},
-        categories: {},
-        monthLabel: monthLabel.value,
-        currency: currencySelect.value,
-        rates: {
-          MYR: getFxRate('MYR'),
-          SGD: getFxRate('SGD'),
-          USD: getFxRate('USD'),
-          CNY: getFxRate('CNY')
-        },
-        theme: {
-          backgroundImage,
-          avatarImage: avatarImg.src || ''
-        }
-      };
-    }
-
-    function setValue(id, val){
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    }
-
-    function getValue(id){
-      const el = document.getElementById(id);
-      return el ? Number(el.value || 0) : 0;
-    }
-
-    function applySavedState(saved){
-      monthLabel.value = saved.monthLabel || monthLabel.value;
-      currencySelect.value = saved.currency || currencySelect.value;
-
-      if (saved.rates) {
-        setValue('rate_MYR', saved.rates.MYR ?? 1);
-        setValue('rate_SGD', saved.rates.SGD ?? 3.45);
-        setValue('rate_USD', saved.rates.USD ?? 4.70);
-        setValue('rate_CNY', saved.rates.CNY ?? 0.65);
+    function renderMonthList(){
+      const months = getAllSavedMonths();
+      monthListEl.innerHTML = '';
+      if (!months.length) {
+        monthListEl.innerHTML = '<div class="sidebar-note">暂无月份记录</div>';
+        return;
       }
-
-      if (saved.theme) {
-        applyBackgroundImage(saved.theme.backgroundImage || '');
-        applyAvatarImage(saved.theme.avatarImage || DEFAULT_AVATAR);
-      }
-
-      Object.entries(saved.income || {}).forEach(([id, obj]) => {
-        setValue(`income_${id}_plan`, obj.plan ?? 0);
-        setValue(`income_${id}_actual`, obj.actual ?? 0);
+      months.forEach(m => {
+        const btn = document.createElement('button');
+        btn.className = 'month-chip' + (m === currentMonth ? ' active' : '');
+        btn.textContent = m;
+        btn.dataset.month = m;
+        btn.addEventListener('click', () => handleMonthSelection(m));
+        monthListEl.appendChild(btn);
       });
+    }
 
-      Object.entries(saved.categories || {}).forEach(([catId, items]) => {
-        Object.entries(items || {}).forEach(([itemId, obj]) => {
-          setValue(`${catId}_${itemId}_plan`, obj.plan ?? 0);
-          setValue(`${catId}_${itemId}_actual`, obj.actual ?? 0);
+    function readFormIntoState(){
+      state.currency = currencySelect.value;
+      state.fx = {
+        MYR:Number(document.getElementById('rate_MYR').value || 1),
+        SGD:Number(document.getElementById('rate_SGD').value || 0),
+        USD:Number(document.getElementById('rate_USD').value || 0),
+        CNY:Number(document.getElementById('rate_CNY').value || 0)
+      };
+      incomeDefs.forEach(item => {
+        state.income[item.id] = {
+          plan:Number(document.getElementById(`income_${item.id}_plan`).value || 0),
+          actual:Number(document.getElementById(`income_${item.id}_actual`).value || 0)
+        };
+      });
+      categoryDefs.forEach(cat => {
+        state.categories[cat.id] = state.categories[cat.id] || {};
+        cat.items.forEach(([itemId]) => {
+          state.categories[cat.id][itemId] = {
+            plan:Number(document.getElementById(`${cat.id}_${itemId}_plan`).value || 0),
+            actual:Number(document.getElementById(`${cat.id}_${itemId}_actual`).value || 0)
+          };
         });
       });
     }
 
-    function calc(){
-      let planIncome = 0;
-      let actualIncome = 0;
-      let planExpense = 0;
-      let actualExpense = 0;
+    function drawExpenseChart(){
+      if (!expenseChart) return;
+      const ctx = expenseChart.getContext('2d');
+      const width = expenseChart.clientWidth || expenseChart.parentElement.clientWidth || 600;
+      const height = 300;
+      const dpr = window.devicePixelRatio || 1;
+      expenseChart.width = width * dpr;
+      expenseChart.height = height * dpr;
+      expenseChart.style.height = height + 'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.clearRect(0,0,width,height);
+
+      const totals = [];
+      categoryDefs.forEach(cat => {
+        let sum = 0;
+        cat.items.forEach(([itemId]) => { sum += Number(state.categories[cat.id]?.[itemId]?.actual || 0); });
+        if (sum > 0) totals.push({ label: cat.title, value: sum });
+      });
+
+      const legendWrap = expenseLegend;
+      legendWrap.innerHTML = '';
+      if (!totals.length) {
+        ctx.fillStyle = '#64748b';
+        ctx.font = '14px Arial';
+        ctx.fillText('暂无支出数据', 20, 24);
+        return;
+      }
+
+      const total = totals.reduce((s, i) => s + i.value, 0);
+      const colors = ['#3b82f6','#22c55e','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#14b8a6','#64748b','#a855f7'];
+      const cx = 150;
+      const cy = 150;
+      const radius = 105;
+      const inner = 58;
+      let start = -Math.PI / 2;
+
+      totals.forEach((item, idx) => {
+        const angle = (item.value / total) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, radius, start, start + angle);
+        ctx.closePath();
+        ctx.fillStyle = colors[idx % colors.length];
+        ctx.fill();
+        start += angle;
+      });
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, inner, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.textAlign = 'center';
+      ctx.font = '700 18px Arial';
+      ctx.fillText(fmtMoney(total, currencySelect.value), cx, cy - 4);
+      ctx.font = '12px Arial';
+      ctx.fillStyle = '#64748b';
+      ctx.fillText('总支出', cx, cy + 16);
+      ctx.textAlign = 'left';
+
+      totals.forEach((item, idx) => {
+        const chip = document.createElement('div');
+        chip.className = 'legend-item';
+        chip.innerHTML = `<span class="legend-dot" style="background:${colors[idx % colors.length]}"></span><span>${item.label}</span><strong>${fmtMoney(item.value, currencySelect.value)}</strong>`;
+        legendWrap.appendChild(chip);
+      });
+    }
+
+    function drawIncomeChart(){
+      if (!incomeChart) return;
+      const ctx = incomeChart.getContext('2d');
+      const width = incomeChart.clientWidth || incomeChart.parentElement.clientWidth || 600;
+      const height = 300;
+      const dpr = window.devicePixelRatio || 1;
+      incomeChart.width = width * dpr;
+      incomeChart.height = height * dpr;
+      incomeChart.style.height = height + 'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.clearRect(0,0,width,height);
+
+      let planIncome = 0, actualIncome = 0, planExpense = 0, actualExpense = 0;
+      incomeDefs.forEach(item => {
+        planIncome += Number(state.income[item.id]?.plan || 0);
+        actualIncome += Number(state.income[item.id]?.actual || 0);
+      });
+      categoryDefs.forEach(cat => {
+        cat.items.forEach(([itemId]) => {
+          planExpense += Number(state.categories[cat.id]?.[itemId]?.plan || 0);
+          actualExpense += Number(state.categories[cat.id]?.[itemId]?.actual || 0);
+        });
+      });
+
+      const values = [
+        { label:'计划收入', value:planIncome, color:'#3b82f6' },
+        { label:'实际收入', value:actualIncome, color:'#22c55e' },
+        { label:'计划支出', value:planExpense, color:'#f59e0b' },
+        { label:'实际支出', value:actualExpense, color:'#ef4444' }
+      ];
+      const legendWrap = incomeLegend;
+      legendWrap.innerHTML = '';
+      values.forEach(v => {
+        const chip = document.createElement('div');
+        chip.className = 'legend-item';
+        chip.innerHTML = `<span class="legend-dot" style="background:${v.color}"></span><span>${v.label}</span><strong>${fmtMoney(v.value, currencySelect.value)}</strong>`;
+        legendWrap.appendChild(chip);
+      });
+
+      const max = Math.max(...values.map(v => v.value), 1);
+      const chartLeft = 35;
+      const chartTop = 20;
+      const chartBottom = 235;
+      const chartHeight = chartBottom - chartTop;
+      const barAreaWidth = width - 70;
+      const groupWidth = barAreaWidth / values.length;
+      const barWidth = Math.min(52, groupWidth * 0.4);
+
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(chartLeft, chartBottom);
+      ctx.lineTo(width - 20, chartBottom);
+      ctx.stroke();
+
+      values.forEach((v, i) => {
+        const barHeight = (v.value / max) * chartHeight;
+        const x = chartLeft + i * groupWidth + (groupWidth - barWidth) / 2;
+        const y = chartBottom - barHeight;
+        ctx.fillStyle = v.color;
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        const labelLines = wrapText(v.label, 10);
+        labelLines.forEach((line, idx) => ctx.fillText(line, x + barWidth / 2, chartBottom + 18 + idx * 14));
+        ctx.fillStyle = '#64748b';
+        ctx.fillText(fmtMoney(v.value, currencySelect.value), x + barWidth / 2, y - 6);
+      });
+      ctx.textAlign = 'left';
+    }
+
+    function wrapText(text, maxLen){
+      const out = [];
+      let cur = '';
+      for (const ch of text) {
+        if ((cur + ch).length > maxLen) {
+          out.push(cur);
+          cur = ch;
+        } else cur += ch;
+      }
+      if (cur) out.push(cur);
+      return out;
+    }
+
+    function renderCharts(){
+      drawExpenseChart();
+      drawIncomeChart();
+    }
+
+    function calculateAndRender(){
+      readFormIntoState();
+      let planIncome = 0, actualIncome = 0, planExpense = 0, actualExpense = 0;
 
       incomeDefs.forEach(item => {
-        planIncome += getValue(`income_${item.id}_plan`);
-        actualIncome += getValue(`income_${item.id}_actual`);
+        planIncome += state.income[item.id].plan;
+        actualIncome += state.income[item.id].actual;
       });
 
       categoryDefs.forEach(cat => {
         let catPlan = 0;
         let catActual = 0;
-
-        cat.items.forEach(([id]) => {
-          const p = getValue(`${cat.id}_${id}_plan`);
-          const a = getValue(`${cat.id}_${id}_actual`);
+        cat.items.forEach(([itemId]) => {
+          const p = state.categories[cat.id][itemId].plan;
+          const a = state.categories[cat.id][itemId].actual;
           const diff = a - p;
           catPlan += p;
           catActual += a;
-
-          const diffEl = document.getElementById(`${cat.id}_${id}_diff`);
+          const diffEl = document.getElementById(`${cat.id}_${itemId}_diff`);
           if (diffEl) {
             diffEl.textContent = money(diff);
             diffEl.className = 'difference ' + (diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'zero');
@@ -828,20 +1200,17 @@
         const catDiff = catActual - catPlan;
         planExpense += catPlan;
         actualExpense += catActual;
-
-        const planTotalEl = document.getElementById(`${cat.id}_plan_total`);
-        const actualTotalEl = document.getElementById(`${cat.id}_actual_total`);
-        const diffTotalEl = document.getElementById(`${cat.id}_diff_total`);
-
-        if (planTotalEl) planTotalEl.textContent = money(catPlan);
-        if (actualTotalEl) actualTotalEl.textContent = money(catActual);
-        if (diffTotalEl) {
-          diffTotalEl.textContent = money(catDiff);
-          diffTotalEl.className = 'difference ' + (catDiff > 0 ? 'positive' : catDiff < 0 ? 'negative' : 'zero');
+        const pEl = document.getElementById(`${cat.id}_plan_total`);
+        const aEl = document.getElementById(`${cat.id}_actual_total`);
+        const dEl = document.getElementById(`${cat.id}_diff_total`);
+        if (pEl) pEl.textContent = money(catPlan);
+        if (aEl) aEl.textContent = money(catActual);
+        if (dEl) {
+          dEl.textContent = money(catDiff);
+          dEl.className = 'difference ' + (catDiff > 0 ? 'positive' : catDiff < 0 ? 'negative' : 'zero');
         }
-
-        const catTotalEl = document.getElementById(`cat_total_${cat.id}`);
-        if (catTotalEl) catTotalEl.textContent = `计划：${money(catPlan)}｜实际：${money(catActual)}｜差额：${money(catDiff)}`;
+        const totalEl = document.getElementById(`cat_total_${cat.id}`);
+        if (totalEl) totalEl.textContent = `计划：${money(catPlan)}｜实际：${money(catActual)}｜差额：${money(catDiff)}`;
       });
 
       const planBalance = planIncome - planExpense;
@@ -866,124 +1235,149 @@
       document.getElementById('expenseDiffView').className = 'value ' + (expenseDiff > 0 ? 'bad' : expenseDiff < 0 ? 'good' : 'warn');
       document.getElementById('balanceDiffView').className = 'value ' + (balanceDiff > 0 ? 'bad' : balanceDiff < 0 ? 'good' : 'warn');
 
-      try {
-        localStorage.setItem(LS_KEY, JSON.stringify(readCurrent()));
-      } catch (err) {
-        console.warn('自动保存失败：', err);
+      saveMonth(currentMonth, state);
+      saveUIState({ lastMonth: currentMonth });
+      updateFxRates();
+      updateFx();
+      renderMonthList();
+      renderCharts();
+    }
+
+    function handleMonthSelection(month){
+      if (!month || month === currentMonth) return;
+      saveMonth(currentMonth, state);
+      currentMonth = month;
+      state = loadOrCreateMonth(month);
+      fillFormFromState();
+      calculateAndRender();
+      saveUIState({ lastMonth: currentMonth });
+      renderMonthList();
+    }
+
+    function handleAnyDataInput(){ calculateAndRender(); }
+    function applySavedTheme(){
+      const theme = loadThemeState();
+      applyTheme(theme);
+      if (!theme.avatarImage) {
+        const next = { ...theme, avatarImage: DEFAULT_AVATAR };
+        saveThemeState(next);
+        applyTheme(next);
       }
     }
 
-    function bind(){
+    function toggleVersionLog(){
+      const log = document.getElementById('versionLog');
+      if (!log) return;
+      log.style.display = log.style.display === 'block' ? 'none' : 'block';
+    }
+    window.toggleVersionLog = toggleVersionLog;
+
+    function init(){
+      buildIncome();
+      buildCategories();
+
+      const ui = loadUIState();
+      currentMonth = ui.lastMonth || getCurrentMonth();
+      monthPicker.value = currentMonth;
+      monthPickerTop.value = currentMonth;
+
+      applySavedTheme();
+      state = loadOrCreateMonth(currentMonth);
+      fillFormFromState();
+      calculateAndRender();
+      renderMonthList();
+      setActivePage('home');
+
+      sidebarButtons.forEach(btn => btn.addEventListener('click', () => setActivePage(btn.dataset.page)));
+
+      monthPicker.addEventListener('input', () => handleMonthSelection(monthPicker.value));
+      monthPicker.addEventListener('change', () => handleMonthSelection(monthPicker.value));
+      monthPickerTop.addEventListener('input', () => handleMonthSelection(monthPickerTop.value));
+      monthPickerTop.addEventListener('change', () => handleMonthSelection(monthPickerTop.value));
+
       document.addEventListener('input', (e) => {
-        if (e.target.matches('input, select')) {
-          calc();
-          updateFxRates();
-          updateFx();
-        }
+        if (!e.target.matches('input, select')) return;
+        if (e.target.id === 'monthPicker' || e.target.id === 'monthPickerTop') return;
+        handleAnyDataInput();
       });
+      currencySelect.addEventListener('change', handleAnyDataInput);
+      window.addEventListener('resize', () => renderCharts());
 
-      document.getElementById('saveBtn').addEventListener('click', () => {
-        try {
-          localStorage.setItem(LS_KEY, JSON.stringify(readCurrent()));
-          alert('已保存到本机浏览器。');
-        } catch (err) {
-          alert('保存失败，可能是背景图太大导致本机存储空间不足。');
-        }
-      });
+      const saveCurrent = () => {
+        saveMonth(currentMonth, state);
+        renderMonthList();
+        alert('已保存到本机浏览器。');
+      };
+      const loadCurrent = () => {
+        state = loadOrCreateMonth(currentMonth);
+        fillFormFromState();
+        calculateAndRender();
+        renderMonthList();
+        alert('已读取当前月份的数据。');
+      };
+      const resetCurrent = () => {
+        state = createMonthTemplate();
+        fillFormFromState();
+        calculateAndRender();
+        renderMonthList();
+      };
 
-      document.getElementById('loadBtn').addEventListener('click', () => {
-        const raw = localStorage.getItem(LS_KEY);
-        if (!raw) return alert('本机没有找到已保存的数据。');
-        try {
-          applySavedState(JSON.parse(raw));
-          calc();
-          updateFxRates();
-          updateFx();
-        } catch (err) {
-          alert('读取失败：保存的数据格式异常。');
-        }
-      });
+      document.getElementById('saveBtnTop').addEventListener('click', saveCurrent);
+      document.getElementById('saveBtnSide').addEventListener('click', saveCurrent);
+      document.getElementById('loadBtnTop').addEventListener('click', loadCurrent);
+      document.getElementById('loadBtnSide').addEventListener('click', loadCurrent);
+      document.getElementById('resetBtnTop').addEventListener('click', resetCurrent);
+      document.getElementById('resetBtnSide').addEventListener('click', resetCurrent);
 
-      document.getElementById('resetBtn').addEventListener('click', () => {
-        monthLabel.value = '1月2026';
-        currencySelect.value = 'SGD';
-        setValue('rate_MYR', 1);
-        setValue('rate_SGD', 3.45);
-        setValue('rate_USD', 4.70);
-        setValue('rate_CNY', 0.65);
-        applyBackgroundImage('');
-        applyAvatarImage(DEFAULT_AVATAR);
-
-        Object.entries(defaultValues.income).forEach(([id, obj]) => {
-          setValue(`income_${id}_plan`, obj.plan);
-          setValue(`income_${id}_actual`, obj.actual);
-        });
-
-        Object.entries(defaultValues.categories).forEach(([catId, items]) => {
-          Object.entries(items).forEach(([itemId, obj]) => {
-            setValue(`${catId}_${itemId}_plan`, obj.plan);
-            setValue(`${catId}_${itemId}_actual`, obj.actual);
-          });
-        });
-
-        calc();
-        updateFxRates();
-        updateFx();
-      });
-
-      document.getElementById('themeBtn').addEventListener('click', () => {
-        themePanel.classList.toggle('open');
-      });
-
+      document.getElementById('themeBtn').addEventListener('click', () => themePanel.classList.toggle('open'));
       document.getElementById('pickBgBtn').addEventListener('click', () => bgInput.click());
       document.getElementById('pickAvatarBtn').addEventListener('click', () => avatarInput.click());
-
       document.getElementById('clearBgBtn').addEventListener('click', () => {
-        applyBackgroundImage('');
-        calc();
+        const theme = loadThemeState();
+        delete theme.backgroundImage;
+        saveThemeState(theme);
+        applyTheme(theme);
+        calculateAndRender();
       });
-
       document.getElementById('clearAvatarBtn').addEventListener('click', () => {
-        applyAvatarImage(DEFAULT_AVATAR);
-        calc();
+        const theme = loadThemeState();
+        theme.avatarImage = DEFAULT_AVATAR;
+        saveThemeState(theme);
+        applyTheme(theme);
+        calculateAndRender();
       });
 
       bgInput.addEventListener('change', async () => {
         const file = bgInput.files && bgInput.files[0];
         if (!file) return;
         const dataUrl = await fileToDataUrl(file);
-        applyBackgroundImage(dataUrl);
-        calc();
+        const theme = loadThemeState();
+        theme.backgroundImage = dataUrl;
+        saveThemeState(theme);
+        applyTheme(theme);
+        calculateAndRender();
       });
-
       avatarInput.addEventListener('change', async () => {
         const file = avatarInput.files && avatarInput.files[0];
         if (!file) return;
         const dataUrl = await fileToDataUrl(file);
-        applyAvatarImage(dataUrl);
-        calc();
+        const theme = loadThemeState();
+        theme.avatarImage = dataUrl;
+        saveThemeState(theme);
+        applyTheme(theme);
+        calculateAndRender();
       });
-    }
 
-    function init(){
-      buildIncome();
-      buildCategories();
-      bind();
-      applyAvatarImage(DEFAULT_AVATAR);
-      applyBackgroundImage('');
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-month]');
+        if (!btn) return;
+        handleMonthSelection(btn.dataset.month);
+      });
 
-      const raw = localStorage.getItem(LS_KEY);
-      if (raw) {
-        try {
-          applySavedState(JSON.parse(raw));
-        } catch (err) {
-          console.warn('读取本机数据失败，已使用默认值。', err);
-        }
-      }
-
-      calc();
-      updateFxRates();
-      updateFx();
+      // initial month record ensures it appears in list
+      saveMonth(currentMonth, state);
+      renderMonthList();
+      renderCharts();
     }
 
     init();

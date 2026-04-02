@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>个人月度预算管理系统 2.1 测试版</title>
+  <title>个人月度预算管理系统 2.1 正式版</title>
   <style>
     :root{
       --bg:#000;
@@ -137,6 +137,8 @@
     .input-group{display:flex;flex-direction:column;gap:7px}
     .input-group label{font-size:13px;color:var(--muted)}
     .footer-note{color:var(--muted);font-size:12px;margin-top:8px}
+    .item-name-input{font-weight:700}
+    .item-name-input::placeholder{color:#94a3b8;opacity:1}
     .table-wrap{overflow:auto}
     table{width:100%;border-collapse:collapse;min-width:980px}
     th,td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:center;vertical-align:middle}
@@ -313,7 +315,7 @@
 
             <div class="brand">
               <img id="avatarImg" class="avatar" alt="头像" />
-              <div class="brand-title">个人月度预算管理系统2.1测试版</div>
+              <div class="brand-title">个人月度预算管理系统2.1正式版</div>
               <div class="brand-sub">预算 · 结余 · 汇率 · JSON备份 · 新系统联动</div>
             </div>
 
@@ -546,14 +548,17 @@
             <div class="section-head"><h2>通告</h2><div class="hint">这里记录系统更新与重要通知</div></div>
             <div class="section-body">
               <div class="notice-card">
-                <div class="notice-title">Version 2.1 发布</div>
-                <div class="notice-date">2026-04-01 23:00</div>
+                <div class="notice-title">Version 2.1正式版 发布</div>
+                <div class="notice-date">2026-04-02 23:00</div>
                 <ul>
+                  <li>通知：本版本为正式版</li>
                   <li>新增：分类图表系统（饼图 / 柱状图）</li>
                   <li>新增：年度统计系统</li>
                   <li>新增：资产与负债系统</li>
                   <li>新增：预算上限系统</li>
                   <li>新增：JSON 自动保存到用户自选文件夹（可选）</li>
+                  <li>新增：支出小项目名称可自定义（方案二）</li>
+                  <li>新增：自动保存文件夹教程说明</li>
                   <li>新增：教程系统与首页首次弹窗</li>
                   <li>优化：系统导航、版本通告、预算提醒联动</li>
                 </ul>
@@ -601,10 +606,13 @@
                 <ol>
                   <li>点击顶部或左侧的「导出JSON」下载备份文件。</li>
                   <li>下载后请把 JSON 文件保存在安全位置，避免误删。</li>
-                  <li>点击「导入JSON」选择之前保存的备份文件即可恢复数据。</li>
-                  <li>导入后建议立刻再导出一次，保留最新备份。</li>
+                  <li>点击「导入JSON」时，系统会打开文件选择器；请选择你保存的备份文件或自动保存的 JSON 文件。</li>
+                  <li>如果你使用自动保存，先打开你当初选择的文件夹，找到文件名为 <b>budget-backup.json</b> 的文件。</li>
+                  <li>如果是手动导出的备份，一般会以 <b>budget-backup-年月</b> 命名，优先找最近的月份文件。</li>
+                   <li>不知道文件在哪里时，可先检查「下载」文件夹、桌面，或你自己指定的自动保存文件夹。</li>
+                   <li>导入后建议立刻再导出一次，保留最新备份。</li>
                 </ol>
-                <div class="tutorial-highlight">提醒：导入会覆盖当前本机资料，执行前请先确认备份文件正确。</div>
+                <div class="tutorial-highlight">提醒：导入会覆盖当前本机资料，执行前请先确认备份文件正确。自动保存文件通常固定在你选定的文件夹里，文件名为 budget-backup.json。</div>
               </div>
               <div class="tutorial-box">
                 <h3>预算提醒与新系统</h3>
@@ -612,6 +620,10 @@
                   <li>支出达到预算 80% 会显示黄色警告。</li>
                   <li>支出超过预算会显示红色超支提醒。</li>
                   <li>你现在还能使用分类图表、年度统计、资产负债、预算上限功能。</li>
+                  <li>旧版本数据导入后会自动迁移到当前版本。</li>
+                  <li>建议尽量开启自动保存，以减少误删或设备问题导致的数据丢失。</li>
+                  <li>支出明细的小项目名称也可以直接修改并保存。</li>
+                  <li>为了数据更安全，建议尽量启用自动保存功能，并保留手动 JSON 备份。</li>
                 </ol>
               </div>
               <div class="page-actions"><button class="btn-primary" id="openTutorialModalBtn">重新打开首页教程弹窗</button></div>
@@ -630,9 +642,17 @@
               <div class="version-header" onclick="toggleVersionLog()">Version 2.1 • Major Update ▼</div>
               <div class="version-log" id="versionLog">
                 <ul>
-                  <li>Version 2.1 发布：2026-04-01 23:00</li>
+                  <li>Version 2.1 发布：2026-04-02 23:00</li>
+                  <li>通知：本版本为正式版</li>
+                  <li>新增：版本号字段自动迁移系统</li>
                   <li>新增：分类图表、年度统计、资产负债、预算上限</li>
+                  <li>新增：版本号字段自动迁移系统</li>
+                  <li>新增：自动保存教程与安全建议</li>
                   <li>新增：JSON 导出 / 导入与自动保存文件夹</li>
+                  <li>新增：版本号字段自动迁移系统</li>
+                  <li>新增：自动保存教程与安全建议</li>
+                  <li>新增：支出小项目名称可自定义</li>
+                  <li>新增：自动保存教程与安全建议</li>
                   <li>新增：教程导航与首次进入弹窗</li>
                   <li>优化：通知系统、版本系统、预算提醒流程</li>
                 </ul>
@@ -647,7 +667,7 @@
   <div id="tutorialModal" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tutorialModalTitle">
       <div class="modal-head">
-        <h3 id="tutorialModalTitle">欢迎使用个人月度预算管理系统 2.1</h3>
+        <h3 id="tutorialModalTitle">欢迎使用个人月度预算管理系统 2.1正式版</h3>
         <button class="btn-ghost" id="closeTutorialModalBtn">关闭</button>
       </div>
       <div class="modal-body">
@@ -665,6 +685,16 @@
             <li>点击「导出JSON」保存完整数据备份。</li>
             <li>点击「导入JSON」恢复备份资料。</li>
             <li>也可以选择一个文件夹启用自动保存，系统会自动写入 JSON 备份。</li>
+            <li>旧版本数据会依据版本号字段自动迁移到当前版本。</li>
+            <li>为了数据安全和使用方便，建议尽量启用自动保存功能，并定期保留一份手动导出的 JSON 备份。</li>
+            <li>如果更换浏览器、清除缓存或重装系统，自动保存文件会更稳妥。</li>
+            <li>支出明细的小项目名称可以直接修改，并会随 JSON 一起保存。</li>
+            <li>导入自动保存文件时，请先打开你当初选择的固定文件夹，再选中 <b>budget-backup.json</b>。</li>
+            <li>如果找不到文件，可以先检查「下载」文件夹、桌面，或者你自己设置过的自动保存文件夹。</li>
+            <li>旧版本 JSON 导入后会先读取版本号字段，再自动迁移到当前结构。</li>
+            <li>自动保存开启后，系统会把最新资料写入你选择的文件夹。</li>
+            <li>为了数据安全和方便使用，建议尽量开启自动保存功能。</li>
+            <li>如果你选择了自动保存文件夹，系统会自动把最新数据写入该文件夹，建议长期启用。</li>
           </ol>
           <div class="tutorial-highlight">这份系统会把每个月的数据分开保存，切换月份不会互相覆盖。</div>
         </div>
@@ -777,42 +807,80 @@
 
     function createMonthTemplate(){
       return {
+        version: APP_VERSION,
         currency:'SGD',
         fx:{ MYR:1, SGD:3.45, USD:4.70, CNY:0.65 },
         income:{ salary:{plan:6000,actual:6000}, allowance:{plan:200,actual:200}, bonus:{plan:0,actual:0}, otherIncome:{plan:0,actual:0} },
-        categories:Object.fromEntries(categoryDefs.map(cat => [cat.id, Object.fromEntries(cat.items.map(([id]) => [id, { plan:0, actual:0 }]))])),
+        categories:Object.fromEntries(categoryDefs.map(cat => [cat.id, Object.fromEntries(cat.items.map(([id, label]) => [id, { name: label, plan:0, actual:0 }]))])),
         caps:Object.fromEntries(categoryDefs.map(cat => [cat.id, 0])),
         assets:{ cash:0, bank:0, investment:0, vehicle:0, home:0, other:0 },
         liabilities:{ carLoan:0, personalLoan:0, creditCard:0, other:0 }
       };
     }
 
-    function normalizeMonthData(data){
-      const normalized = createMonthTemplate();
-      if (data && typeof data === 'object') {
-        if (data.currency) normalized.currency = data.currency;
-        if (data.fx) {
-          normalized.fx.MYR = Number(data.fx.MYR ?? normalized.fx.MYR);
-          normalized.fx.SGD = Number(data.fx.SGD ?? normalized.fx.SGD);
-          normalized.fx.USD = Number(data.fx.USD ?? normalized.fx.USD);
-          normalized.fx.CNY = Number(data.fx.CNY ?? normalized.fx.CNY);
+    function compareVersionParts(a, b){
+      const pa = String(a || '').split('.').map(n => Number(n || 0));
+      const pb = String(b || '').split('.').map(n => Number(n || 0));
+      const len = Math.max(pa.length, pb.length);
+      for (let i = 0; i < len; i++) {
+        const da = pa[i] || 0;
+        const db = pb[i] || 0;
+        if (da > db) return 1;
+        if (da < db) return -1;
+      }
+      return 0;
+    }
+
+    function migrateMonthData(data){
+      const source = data && typeof data === 'object' ? data : {};
+      const sourceVersion = source.version || '2.0';
+      const migrated = createMonthTemplate();
+
+      if (source.currency) migrated.currency = source.currency;
+      if (source.fx) {
+        migrated.fx.MYR = Number(source.fx.MYR ?? migrated.fx.MYR);
+        migrated.fx.SGD = Number(source.fx.SGD ?? migrated.fx.SGD);
+        migrated.fx.USD = Number(source.fx.USD ?? migrated.fx.USD);
+        migrated.fx.CNY = Number(source.fx.CNY ?? migrated.fx.CNY);
+      }
+      if (source.income) {
+        for (const [id, val] of Object.entries(source.income)) {
+          if (migrated.income[id]) migrated.income[id] = { plan:Number(val?.plan || 0), actual:Number(val?.actual || 0) };
         }
-        if (data.income) {
-          for (const [id, val] of Object.entries(data.income)) if (normalized.income[id]) normalized.income[id] = { plan:Number(val.plan||0), actual:Number(val.actual||0) };
-        }
-        if (data.categories) {
-          for (const [catId, items] of Object.entries(data.categories)) {
-            if (!normalized.categories[catId]) continue;
-            for (const [itemId, val] of Object.entries(items || {})) if (normalized.categories[catId][itemId]) normalized.categories[catId][itemId] = { plan:Number(val.plan||0), actual:Number(val.actual||0) };
+      }
+      if (source.categories) {
+        for (const [catId, items] of Object.entries(source.categories)) {
+          if (!migrated.categories[catId]) continue;
+          for (const [itemId, val] of Object.entries(items || {})) {
+            if (!migrated.categories[catId][itemId]) continue;
+            migrated.categories[catId][itemId] = {
+              name: typeof val?.name === 'string' && val.name.trim() ? val.name : migrated.categories[catId][itemId].name,
+              plan: Number(val?.plan || 0),
+              actual: Number(val?.actual || 0)
+            };
           }
         }
-        if (data.caps) {
-          for (const [catId, val] of Object.entries(data.caps)) if (catId in normalized.caps) normalized.caps[catId] = Number(val || 0);
-        }
-        if (data.assets) for (const [k,v] of Object.entries(data.assets)) if (k in normalized.assets) normalized.assets[k] = Number(v || 0);
-        if (data.liabilities) for (const [k,v] of Object.entries(data.liabilities)) if (k in normalized.liabilities) normalized.liabilities[k] = Number(v || 0);
       }
-      return normalized;
+      if (source.caps) {
+        for (const [catId, val] of Object.entries(source.caps)) {
+          if (catId in migrated.caps) migrated.caps[catId] = Number(val || 0);
+        }
+      }
+      if (source.assets) {
+        for (const [k, v] of Object.entries(source.assets)) if (k in migrated.assets) migrated.assets[k] = Number(v || 0);
+      }
+      if (source.liabilities) {
+        for (const [k, v] of Object.entries(source.liabilities)) if (k in migrated.liabilities) migrated.liabilities[k] = Number(v || 0);
+      }
+
+      migrated.version = compareVersionParts(sourceVersion, APP_VERSION) < 0 ? APP_VERSION : String(sourceVersion);
+      migrated.migratedFrom = compareVersionParts(sourceVersion, APP_VERSION) < 0 ? String(sourceVersion) : undefined;
+      if (migrated.migratedFrom === undefined) delete migrated.migratedFrom;
+      return migrated;
+    }
+
+    function normalizeMonthData(data){
+      return migrateMonthData(data);
     }
 
     function monthKey(month){ return `${MONTH_PREFIX}${month}`; }
@@ -829,7 +897,7 @@
           base.currency = prev.currency || base.currency;
           base.fx = deepClone(prev.fx || base.fx);
           for (const item of incomeDefs){ base.income[item.id].plan = Number(prev.income[item.id]?.plan || 0); base.income[item.id].actual = 0; }
-          for (const cat of categoryDefs){ for (const [itemId] of cat.items){ base.categories[cat.id][itemId].plan = Number(prev.categories[cat.id]?.[itemId]?.plan || 0); base.categories[cat.id][itemId].actual = 0; } }
+          for (const cat of categoryDefs){ for (const [itemId] of cat.items){ base.categories[cat.id][itemId].name = prev.categories[cat.id]?.[itemId]?.name || base.categories[cat.id][itemId].name; base.categories[cat.id][itemId].plan = Number(prev.categories[cat.id]?.[itemId]?.plan || 0); base.categories[cat.id][itemId].actual = 0; } }
           for (const c of capsDefs){ base.caps[c.id] = Number(prev.caps?.[c.id] || 0); }
           base.assets = deepClone(prev.assets || base.assets);
           base.liabilities = deepClone(prev.liabilities || base.liabilities);
@@ -884,12 +952,35 @@
       categoriesEl.innerHTML = '';
       categoryDefs.forEach((cat, idx) => {
         const details = document.createElement('details'); if (idx < 3) details.open = true;
-        details.innerHTML = `<summary><span>${cat.title}</span><span class="cat-total" id="cat_total_${cat.id}">计划：${money(0)}｜实际：${money(0)}｜差额：${money(0)}</span></summary><div class="table-wrap"><table><thead><tr><th style="min-width:220px;">小项目</th><th style="min-width:140px;">计划支出</th><th style="min-width:140px;">实际支出</th><th style="min-width:160px;">差额（实际 − 计划）</th></tr></thead><tbody id="tbody_${cat.id}"></tbody></table></div>`;
+        details.innerHTML = `
+          <summary>
+            <span>${cat.title}</span>
+            <span class="cat-total" id="cat_total_${cat.id}">计划：${money(0)}｜实际：${money(0)}｜差额：${money(0)}</span>
+          </summary>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="min-width:220px;">名称</th>
+                  <th style="min-width:140px;">计划支出</th>
+                  <th style="min-width:140px;">实际支出</th>
+                  <th style="min-width:160px;">差额（实际 − 计划）</th>
+                </tr>
+              </thead>
+              <tbody id="tbody_${cat.id}"></tbody>
+            </table>
+          </div>
+        `;
         categoriesEl.appendChild(details);
         const tbody = details.querySelector(`#tbody_${cat.id}`);
         cat.items.forEach(([itemId, label]) => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${label}</td><td><input id="${cat.id}_${itemId}_plan" type="number" min="0" step="0.01" value="0" /></td><td><input id="${cat.id}_${itemId}_actual" type="number" min="0" step="0.01" value="0" /></td><td class="difference zero" id="${cat.id}_${itemId}_diff">${money(0)}</td>`;
+          tr.innerHTML = `
+            <td><input class="item-name-input" id="${cat.id}_${itemId}_name" type="text" value="${label}" placeholder="${label}" /></td>
+            <td><input id="${cat.id}_${itemId}_plan" type="number" min="0" step="0.01" value="0" /></td>
+            <td><input id="${cat.id}_${itemId}_actual" type="number" min="0" step="0.01" value="0" /></td>
+            <td class="difference zero" id="${cat.id}_${itemId}_diff">${money(0)}</td>
+          `;
           tbody.appendChild(tr);
         });
         const totalTr = document.createElement('tr'); totalTr.className = 'total-row'; totalTr.innerHTML = `<td>总额</td><td id="${cat.id}_plan_total">${money(0)}</td><td id="${cat.id}_actual_total">${money(0)}</td><td class="difference zero" id="${cat.id}_diff_total">${money(0)}</td>`; tbody.appendChild(totalTr);
@@ -933,9 +1024,13 @@
       document.getElementById('rate_USD').value = state.fx.USD;
       document.getElementById('rate_CNY').value = state.fx.CNY;
       categoryDefs.forEach(cat => {
-        cat.items.forEach(([itemId]) => {
-          document.getElementById(`${cat.id}_${itemId}_plan`).value = state.categories[cat.id][itemId].plan;
-          document.getElementById(`${cat.id}_${itemId}_actual`).value = state.categories[cat.id][itemId].actual;
+        cat.items.forEach(([itemId, label]) => {
+          const nameEl = document.getElementById(`${cat.id}_${itemId}_name`);
+          const planEl = document.getElementById(`${cat.id}_${itemId}_plan`);
+          const actualEl = document.getElementById(`${cat.id}_${itemId}_actual`);
+          if (nameEl) nameEl.value = state.categories[cat.id][itemId].name || label;
+          if (planEl) planEl.value = state.categories[cat.id][itemId].plan;
+          if (actualEl) actualEl.value = state.categories[cat.id][itemId].actual;
         });
       });
       capsDefs.forEach(cat => { const el = document.getElementById(`cap_${cat.id}`); if (el) el.value = state.caps[cat.id] || 0; });
@@ -963,10 +1058,20 @@
     }
 
     function readFormIntoState(){
+      state.version = APP_VERSION;
       state.currency = currencySelect.value;
       state.fx = { MYR:Number(document.getElementById('rate_MYR').value || 1), SGD:Number(document.getElementById('rate_SGD').value || 0), USD:Number(document.getElementById('rate_USD').value || 0), CNY:Number(document.getElementById('rate_CNY').value || 0) };
       incomeDefs.forEach(item => { state.income[item.id] = { plan:Number(document.getElementById(`income_${item.id}_plan`).value || 0), actual:Number(document.getElementById(`income_${item.id}_actual`).value || 0) }; });
-      categoryDefs.forEach(cat => { state.categories[cat.id] = state.categories[cat.id] || {}; cat.items.forEach(([itemId]) => { state.categories[cat.id][itemId] = { plan:Number(document.getElementById(`${cat.id}_${itemId}_plan`).value || 0), actual:Number(document.getElementById(`${cat.id}_${itemId}_actual`).value || 0) }; }); });
+      categoryDefs.forEach(cat => {
+        state.categories[cat.id] = state.categories[cat.id] || {};
+        cat.items.forEach(([itemId, label]) => {
+          state.categories[cat.id][itemId] = {
+            name: String(document.getElementById(`${cat.id}_${itemId}_name`)?.value || label).trim() || label,
+            plan:Number(document.getElementById(`${cat.id}_${itemId}_plan`).value || 0),
+            actual:Number(document.getElementById(`${cat.id}_${itemId}_actual`).value || 0)
+          };
+        });
+      });
       capsDefs.forEach(cat => { state.caps[cat.id] = Number(document.getElementById(`cap_${cat.id}`)?.value || 0); });
       assetDefs.assets.forEach(([id]) => { state.assets[id] = Number(document.getElementById(`asset_${id}`)?.value || 0); });
       assetDefs.liabilities.forEach(([id]) => { state.liabilities[id] = Number(document.getElementById(`liability_${id}`)?.value || 0); });
@@ -1267,7 +1372,7 @@
     function getBackupData(){
       const months = {};
       getAllSavedMonths().forEach(m => { const raw = localStorage.getItem(monthKey(m)); if (raw) { try { months[m] = JSON.parse(raw); } catch {} } });
-      return { appVersion: APP_VERSION, exportedAt: new Date().toISOString(), currentMonth, months, ui: loadUIState(), theme: loadThemeState(), tutorialSeen: localStorage.getItem(TUTORIAL_KEY) || '' };
+      return { version: APP_VERSION, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), currentMonth, months, ui: loadUIState(), theme: loadThemeState(), tutorialSeen: localStorage.getItem(TUTORIAL_KEY) || '' };
     }
 
     function downloadText(filename, text){ const blob = new Blob([text], { type:'application/json;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }

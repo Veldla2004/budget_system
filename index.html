@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>个人月度预算管理系统 2.1 正式版</title>
+  <title>个人月度预算管理系统 3.0 正式版</title>
   <style>
     :root{
       --bg:#000;
@@ -22,7 +22,6 @@
       --shadow:0 10px 30px rgba(15,23,42,.12);
       --radius:18px;
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -37,21 +36,12 @@
       color:var(--text);
       overflow:hidden;
     }
-
     .app{display:flex;min-height:100vh;height:100vh;width:100vw}
-
     .sidebar{
-      width:270px;
-      flex:0 0 270px;
+      width:270px;flex:0 0 270px;
       background:linear-gradient(180deg,var(--sidebar2) 0%, var(--sidebar) 100%);
-      color:#fff;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      border-right:1px solid rgba(255,255,255,.08);
-      box-shadow:6px 0 24px rgba(0,0,0,.24);
-      overflow:auto;
+      color:#fff;padding:18px;display:flex;flex-direction:column;gap:16px;
+      border-right:1px solid rgba(255,255,255,.08);box-shadow:6px 0 24px rgba(0,0,0,.24);overflow:auto;
     }
     .side-brand{display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.08)}
     .side-avatar{width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.92);box-shadow:0 10px 30px rgba(0,0,0,.45);background:#111}
@@ -59,31 +49,22 @@
     .side-sub{font-size:12px;color:rgba(255,255,255,.72);line-height:1.3}
     .month-box{display:flex;flex-direction:column;gap:8px}
     .sidebar label,.month-box label,.month-history label{font-size:12px;color:rgba(255,255,255,.75);font-weight:700;letter-spacing:.2px}
-
     input[type="month"], input[type="number"], input[type="text"], select, textarea{
-      width:100%;
-      padding:11px 12px;
-      border:1px solid var(--line);
-      border-radius:12px;
-      outline:none;
-      font-size:14px;
-      background:#fff;
-      color:var(--text);
+      width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;outline:none;font-size:14px;background:#fff;color:var(--text);
     }
     textarea{resize:vertical;min-height:90px}
     input[type="month"]:focus, input[type="number"]:focus, input[type="text"]:focus, select:focus, textarea:focus{border-color:#86b7fe;box-shadow:0 0 0 4px rgba(37,99,235,.08)}
-
     .nav-section{display:flex;flex-direction:column;gap:10px}
     .nav-btn{width:100%;border:none;border-radius:12px;padding:11px 12px;background:#1f2937;color:#fff;cursor:pointer;font-weight:700;text-align:left}
     .nav-btn:hover{background:#273244}
-    .nav-btn.active{background:#2563eb}
-
+    .nav-btn.active{background:var(--accent)}
+    .nav-btn.alert{background:#b91c1c !important;color:#fff}
+    .nav-btn.alert:hover{background:#991b1b !important}
     .month-history{display:flex;flex-direction:column;gap:8px}
     .month-list{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto;padding-right:2px}
     .month-chip{border:none;border-radius:12px;padding:10px 12px;background:#1f2937;color:#fff;cursor:pointer;text-align:left;font-weight:700}
     .month-chip:hover{background:#273244}
     .month-chip.active{background:#16a34a}
-
     .sidebar-actions{display:flex;flex-direction:column;gap:10px;margin-top:auto}
     .sidebar-actions button{width:100%;border:none;padding:11px 12px;border-radius:12px;cursor:pointer;font-weight:700}
     .btn-blue{background:var(--accent);color:#fff}
@@ -93,7 +74,6 @@
     .btn-yellow{background:#f59e0b;color:#111827}
 
     .main{flex:1;min-width:0;overflow:auto}
-
     .top-shell{background:#000;color:#fff;border-bottom:1px solid rgba(255,255,255,.08);box-shadow:0 6px 24px rgba(0,0,0,.35);position:sticky;top:0;z-index:80}
     .top-inner{padding:14px 18px 18px}
     .top-grid{max-width:1600px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center}
@@ -104,20 +84,17 @@
     .brand-title{font-size:20px;font-weight:800;color:#fff;line-height:1.2}
     .brand-sub{font-size:13px;color:rgba(255,255,255,.82);line-height:1.3}
     .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .top-actions button{min-width:110px}
 
     .content{max-width:1600px;margin:0 auto;padding:18px}
     .hero{background:linear-gradient(135deg,#000 0%, #111827 100%);color:#fff;border-radius:24px;padding:22px 24px;box-shadow:var(--shadow);margin-bottom:18px;border:1px solid rgba(255,255,255,.08)}
     .hero h1{margin:0 0 8px;font-size:28px;letter-spacing:.5px}
     .hero p{margin:0;color:rgba(255,255,255,.82)}
-
     .page{display:none}
     .page.active{display:block}
-
     .summary-row{display:grid;gap:14px;margin:18px 0 14px}
     .summary-row.row-1{grid-template-columns:repeat(5,minmax(0,1fr))}
-    .summary-row.row-2{grid-template-columns:repeat(4,minmax(0,1fr))}
-    .summary-row.row-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-
+    .summary-row.row-2,.summary-row.row-4{grid-template-columns:repeat(4,minmax(0,1fr))}
     .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
     .stat{padding:16px 18px}
     .stat .label{color:var(--muted);font-size:13px;margin-bottom:10px}
@@ -126,26 +103,21 @@
     .good{color:var(--good)}
     .bad{color:var(--bad)}
     .warn{color:var(--warn)}
-
     .section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
     .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:var(--head2);border-bottom:1px solid var(--line)}
     .section-head h2{margin:0;font-size:18px;color:var(--head)}
     .section-head .hint{color:var(--muted);font-size:13px;text-align:right}
     .section-body{padding:16px 18px}
-
     .income-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
     .input-group{display:flex;flex-direction:column;gap:7px}
     .input-group label{font-size:13px;color:var(--muted)}
     .footer-note{color:var(--muted);font-size:12px;margin-top:8px}
-    .item-name-input{font-weight:700}
-    .item-name-input::placeholder{color:#94a3b8;opacity:1}
     .table-wrap{overflow:auto}
     table{width:100%;border-collapse:collapse;min-width:980px}
     th,td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:center;vertical-align:middle}
     th{background:#eff4f9;color:#243b53;font-size:14px}
     td:first-child, th:first-child{text-align:left}
     tbody tr:hover{background:#fafcff}
-
     details{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;margin-bottom:14px}
     summary{list-style:none;cursor:pointer;padding:14px 16px;background:linear-gradient(180deg,#f8fbff 0%, #edf4fb 100%);font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:12px}
     summary::-webkit-details-marker{display:none}
@@ -160,13 +132,22 @@
     .value-danger{color:#b91c1c !important}
     .cell-warning{background:#fffbeb !important;color:#b45309 !important}
     .cell-danger{background:#fef2f2 !important;color:#b91c1c !important}
-
+    .item-name-input{font-weight:700}
+    .txn-item{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+    .txn-item-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+    .txn-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
+    .txn-badge.income{background:#dcfce7;color:#166534}
+    .txn-badge.expense{background:#fee2e2;color:#991b1b}
+    .txn-badge.transfer{background:#dbeafe;color:#1d4ed8}
+    .txn-meta{font-size:12px;color:var(--muted);margin-top:4px}
+    .txn-note{margin-top:10px;font-size:13px;color:#334155;line-height:1.45}
+    .txn-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .txn-empty{padding:18px;border:1px dashed var(--line);border-radius:16px;color:var(--muted);text-align:center;background:#fafcff}
     .fx-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
     .fx-topline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
     .fx-topline strong{font-size:16px;color:var(--head)}
     .mini{font-size:12px;color:var(--muted)}
     .fx-result{font-weight:700}
-
     .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
     .chart-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
     .chart-box h3{margin:0 0 8px;color:var(--head);font-size:16px}
@@ -174,7 +155,6 @@
     .legend-item{display:flex;align-items:center;gap:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:6px 10px;font-size:12px;color:#334155}
     .legend-dot{width:10px;height:10px;border-radius:50%}
     canvas{width:100%;height:300px;display:block}
-
     .notice-card,.tutorial-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
     .notice-title{font-size:16px;font-weight:700;color:var(--head);margin-bottom:4px}
     .notice-date{font-size:12px;color:var(--muted);margin-bottom:10px}
@@ -182,7 +162,6 @@
     .notice-card li,.tutorial-box li{margin:4px 0}
     .tutorial-box h3{margin:0 0 10px;color:var(--head)}
     .tutorial-highlight{background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:12px 14px;margin-top:12px;color:#1d4ed8}
-
     .theme-panel{display:none;margin-top:14px;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,.25);max-width:1600px;margin-left:auto;margin-right:auto}
     .theme-panel.open{display:block}
     .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -190,17 +169,6 @@
     .theme-box h3{margin:0 0 10px;font-size:15px;color:#fff}
     .theme-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     .hidden-input{display:none}
-
-    .toolbar button,.theme-actions button,.sidebar-actions button,.page-actions button{border:none;border-radius:12px;cursor:pointer;font-weight:700;padding:11px 14px}
-    .btn-primary{background:var(--accent);color:#fff}
-    .btn-secondary{background:#334155;color:#fff}
-    .btn-ghost{background:#e5e7eb;color:#111827}
-    .btn-dark-2{background:#111827;color:#fff}
-    .btn-green{background:#16a34a;color:#fff}
-    .btn-yellow{background:#f59e0b;color:#111827}
-
-    .sidebar-note{margin-top:4px;font-size:12px;color:rgba(255,255,255,.72);line-height:1.4}
-
     .footer{width:100%;padding:16px 18px 20px;text-align:center;background:#000;border-top:1px solid rgba(255,255,255,.08);margin-top:24px;color:#9ca3af}
     .footer-content{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
     .footer-content a{color:#60a5fa;text-decoration:none}
@@ -211,12 +179,10 @@
     .version-log{display:none;margin-top:8px;font-size:12px;color:#cbd5e1;text-align:left;background:#111827;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);min-width:320px;max-width:500px}
     .version-log ul{margin:0;padding-left:18px}
     .version-log li{margin:4px 0}
-
     .autosave-status{font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}
     .autosave-status.good{color:#86efac}
     .autosave-status.warn{color:#fde68a}
     .autosave-status.bad{color:#fca5a5}
-
     .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:9999;padding:18px}
     .modal-backdrop.show{display:flex}
     .modal{width:min(760px,100%);background:#fff;border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.45);overflow:hidden;border:1px solid #e5e7eb}
@@ -224,9 +190,11 @@
     .modal-head h3{margin:0;font-size:18px}
     .modal-body{padding:18px 20px}
     .modal-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;padding:0 20px 20px}
-
-    .top-actions button{min-width:110px}
-
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-secondary{background:#334155;color:#fff}
+    .btn-ghost{background:#e5e7eb;color:#111827}
+    .btn-dark-2{background:#111827;color:#fff}
+    .page-actions{display:flex;gap:10px;flex-wrap:wrap}
     @media (max-width:1500px){
       .summary-row.row-1{grid-template-columns:repeat(3,minmax(0,1fr))}
       .summary-row.row-2,.summary-row.row-4{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -255,19 +223,19 @@
         <div class="side-title">个人月度预算管理系统</div>
         <div class="side-sub">分页面管理 · 月份独立数据 · 自动联动</div>
       </div>
-
       <div class="month-box">
         <label for="monthPicker">月份</label>
         <input id="monthPicker" type="month" />
         <div class="sidebar-note">每个月份都会独立保存，不会互相覆盖。</div>
       </div>
-
       <div class="nav-section">
         <label>导航</label>
         <button class="nav-btn active" data-page="home">主页</button>
         <button class="nav-btn" data-page="income">收入</button>
         <button class="nav-btn" data-page="fx">币种兑换率</button>
         <button class="nav-btn" data-page="expense">支出明细</button>
+        <button class="nav-btn" data-page="transactions">流水</button>
+        <button class="nav-btn" data-page="reminders">固定开支提醒</button>
         <button class="nav-btn" data-page="charts">分类图表</button>
         <button class="nav-btn" data-page="annual">年度统计</button>
         <button class="nav-btn" data-page="assets">资产与负债</button>
@@ -275,12 +243,10 @@
         <button class="nav-btn" data-page="notice">通告</button>
         <button class="nav-btn" data-page="tutorial">教程</button>
       </div>
-
       <div class="month-history">
         <label>月份记录列表</label>
         <div id="monthList" class="month-list"></div>
       </div>
-
       <div class="sidebar-actions">
         <button class="btn-blue" data-action="save">保存到本机</button>
         <button class="btn-dark" data-action="load">读取本机数据</button>
@@ -312,13 +278,11 @@
                 </select>
               </div>
             </div>
-
             <div class="brand">
               <img id="avatarImg" class="avatar" alt="头像" />
-              <div class="brand-title">个人月度预算管理系统2.1正式版</div>
-              <div class="brand-sub">预算 · 结余 · 汇率 · JSON备份 · 新系统联动</div>
+              <div class="brand-title">个人月度预算管理系统3.0 正式版</div>
+              <div class="brand-sub">预算 · 结余 · 汇率 · JSON备份 · 流水与提醒联动</div>
             </div>
-
             <div class="top-right top-actions">
               <button id="themeBtn" class="btn-dark-2">修改背景/头像</button>
               <button class="btn-primary" data-action="save">保存到本机</button>
@@ -339,30 +303,20 @@
             <h3>背景图片</h3>
             <div class="mini" style="color:rgba(255,255,255,.78);margin-bottom:10px;">可自由上传背景图，系统会自动保存到本机浏览器。</div>
             <input id="bgInput" class="hidden-input" type="file" accept="image/*" />
-            <div class="theme-actions">
-              <button id="pickBgBtn" class="btn-primary">选择背景图片</button>
-              <button id="clearBgBtn" class="btn-ghost">清除背景</button>
-            </div>
+            <div class="theme-actions"><button id="pickBgBtn" class="btn-primary">选择背景图片</button><button id="clearBgBtn" class="btn-ghost">清除背景</button></div>
           </div>
           <div class="theme-box">
             <h3>头像图片</h3>
             <div class="mini" style="color:rgba(255,255,255,.78);margin-bottom:10px;">可自由上传头像图，建议使用正方形图片以获得最佳圆形显示效果。</div>
             <input id="avatarInput" class="hidden-input" type="file" accept="image/*" />
-            <div class="theme-actions">
-              <button id="pickAvatarBtn" class="btn-primary">选择头像图片</button>
-              <button id="clearAvatarBtn" class="btn-ghost">恢复默认头像</button>
-            </div>
+            <div class="theme-actions"><button id="pickAvatarBtn" class="btn-primary">选择头像图片</button><button id="clearAvatarBtn" class="btn-ghost">恢复默认头像</button></div>
           </div>
         </div>
       </div>
 
       <div class="content">
         <section class="page active" id="page-home">
-          <div class="hero">
-            <h1>个人月度预算管理系统</h1>
-            <p>系统会自动联动计划、实际、差额、预算提醒、图表、年度统计、资产负债、JSON备份与自动保存。</p>
-          </div>
-
+          <div class="hero"><h1>个人月度预算管理系统</h1><p>系统会自动联动计划、实际、差额、预算提醒、图表、年度统计、资产负债、流水、JSON备份与自动保存。</p></div>
           <div class="summary-row row-1">
             <div class="card stat"><div class="label">计划收入</div><div class="value" id="planIncomeView">0.00</div><div class="sub">预算收入合计</div></div>
             <div class="card stat"><div class="label">计划支出</div><div class="value" id="planExpenseView">0.00</div><div class="sub">预算支出合计</div></div>
@@ -370,14 +324,12 @@
             <div class="card stat"><div class="label">实际收入</div><div class="value" id="actualIncomeView">0.00</div><div class="sub">到账收入合计</div></div>
             <div class="card stat"><div class="label">实际支出</div><div class="value" id="actualExpenseView">0.00</div><div class="sub">实际支出合计</div></div>
           </div>
-
           <div class="summary-row row-2">
             <div class="card stat"><div class="label">结余（Balance）</div><div class="value" id="actualBalanceView">0.00</div><div class="sub">实际收入 − 实际支出</div></div>
             <div class="card stat"><div class="label">收入差额</div><div class="value" id="incomeDiffView">0.00</div><div class="sub">实际收入 − 计划收入</div></div>
             <div class="card stat"><div class="label">支出差额</div><div class="value" id="expenseDiffView">0.00</div><div class="sub">实际支出 − 计划支出</div></div>
             <div class="card stat"><div class="label">结余差额</div><div class="value" id="balanceDiffView">0.00</div><div class="sub">实际结余 − 计划结余</div></div>
           </div>
-
           <div class="section">
             <div class="section-head"><h2>系统状态</h2><div class="hint">预算提醒、自动保存与分析系统已联动</div></div>
             <div class="section-body">
@@ -392,13 +344,7 @@
         </section>
 
         <section class="page" id="page-income">
-          <div class="section">
-            <div class="section-head"><h2>收入</h2><div class="hint">建议把所有收入拆成固定收入、额外收入、其他收入</div></div>
-            <div class="section-body">
-              <div class="income-grid" id="incomeGrid"></div>
-              <div class="footer-note">提示：收入全部填正数；若某项没有收入，保持 0 即可。</div>
-            </div>
-          </div>
+          <div class="section"><div class="section-head"><h2>收入</h2><div class="hint">建议把所有收入拆成固定收入、额外收入、其他收入</div></div><div class="section-body"><div class="income-grid" id="incomeGrid"></div><div class="footer-note">提示：收入全部填正数；若某项没有收入，保持 0 即可。</div></div></div>
         </section>
 
         <section class="page" id="page-fx">
@@ -407,29 +353,13 @@
             <div class="section-body">
               <div class="fx-card">
                 <div class="fx-topline"><strong>汇率表</strong><span class="mini">1 单位币种 = 多少 MYR</span></div>
-                <div class="table-wrap">
-                  <table style="min-width:920px;">
-                    <thead>
-                      <tr><th style="min-width:120px;">币种</th><th style="min-width:220px;">兑换率（1 单位 = 多少 MYR）</th><th style="min-width:220px;">自动换算：100 单位</th><th style="min-width:220px;">备注</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>MYR</td><td><input id="rate_MYR" type="number" min="0" step="0.0001" value="1"></td><td id="rate_auto_MYR" class="fx-result">MYR 100.00</td><td>本币 / 基准币种</td></tr>
-                      <tr><td>SGD</td><td><input id="rate_SGD" type="number" min="0" step="0.0001" value="3.45"></td><td id="rate_auto_SGD" class="fx-result">MYR 345.00</td><td>可自行修改</td></tr>
-                      <tr><td>USD</td><td><input id="rate_USD" type="number" min="0" step="0.0001" value="4.70"></td><td id="rate_auto_USD" class="fx-result">MYR 470.00</td><td>可自行修改</td></tr>
-                      <tr><td>CNY</td><td><input id="rate_CNY" type="number" min="0" step="0.0001" value="0.65"></td><td id="rate_auto_CNY" class="fx-result">MYR 65.00</td><td>可自行修改</td></tr>
-                    </tbody>
-                  </table>
-                </div>
+                <div class="table-wrap"><table style="min-width:920px;"><thead><tr><th style="min-width:120px;">币种</th><th style="min-width:220px;">兑换率（1 单位 = 多少 MYR）</th><th style="min-width:220px;">自动换算：100 单位</th><th style="min-width:220px;">备注</th></tr></thead><tbody><tr><td>MYR</td><td><input id="rate_MYR" type="number" min="0" step="0.0001" value="1"></td><td id="rate_auto_MYR" class="fx-result">MYR 100.00</td><td>本币 / 基准币种</td></tr><tr><td>SGD</td><td><input id="rate_SGD" type="number" min="0" step="0.0001" value="3.45"></td><td id="rate_auto_SGD" class="fx-result">MYR 345.00</td><td>可自行修改</td></tr><tr><td>USD</td><td><input id="rate_USD" type="number" min="0" step="0.0001" value="4.70"></td><td id="rate_auto_USD" class="fx-result">MYR 470.00</td><td>可自行修改</td></tr><tr><td>CNY</td><td><input id="rate_CNY" type="number" min="0" step="0.0001" value="0.65"></td><td id="rate_auto_CNY" class="fx-result">MYR 65.00</td><td>可自行修改</td></tr></tbody></table></div>
                 <div class="fx-card" style="margin-top:14px;">
                   <div class="fx-topline" style="margin-bottom:12px;"><strong>快速换算</strong><span class="mini">输入后会自动显示结果</span></div>
                   <div class="income-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;">
                     <div class="input-group"><label>金额</label><input id="fxAmount" type="number" min="0" step="0.01" value="100" /></div>
-                    <div class="input-group"><label>原币种</label>
-                      <select id="fxFrom"><option value="SGD">SGD</option><option value="MYR">MYR</option><option value="USD">USD</option><option value="CNY">CNY</option></select>
-                    </div>
-                    <div class="input-group"><label>目标币种</label>
-                      <select id="fxTo"><option value="MYR">MYR</option><option value="SGD">SGD</option><option value="USD">USD</option><option value="CNY">CNY</option></select>
-                    </div>
+                    <div class="input-group"><label>原币种</label><select id="fxFrom"><option value="SGD">SGD</option><option value="MYR">MYR</option><option value="USD">USD</option><option value="CNY">CNY</option></select></div>
+                    <div class="input-group"><label>目标币种</label><select id="fxTo"><option value="MYR">MYR</option><option value="SGD">SGD</option><option value="USD">USD</option><option value="CNY">CNY</option></select></div>
                     <div class="input-group"><label>换算结果</label><input id="fxResult" type="text" value="MYR 0.00" disabled /></div>
                   </div>
                   <div class="footer-note">说明：换算公式为“原金额 × 原币汇率 ÷ 目标币汇率”。</div>
@@ -440,30 +370,76 @@
         </section>
 
         <section class="page" id="page-expense">
+          <div class="section"><div class="section-head"><h2>支出明细</h2><div class="hint">大项目与小项目均可自行修改金额与名称</div></div><div class="section-body"><div id="categories"></div></div></div>
+        </section>
+
+        <section class="page" id="page-transactions">
           <div class="section">
-            <div class="section-head"><h2>支出明细</h2><div class="hint">大项目与小项目均可自行修改金额</div></div>
-            <div class="section-body"><div id="categories"></div></div>
+            <div class="section-head"><h2>流水系统</h2><div class="hint">记录每一笔收入、开支或资产转移，并自动联动对应账户</div></div>
+            <div class="section-body">
+              <div class="summary-row row-4" style="margin-top:0;">
+                <div class="card stat"><div class="label">流水收入</div><div class="value" id="txIncomeTotal">0.00</div><div class="sub">本月流水收入合计</div></div>
+                <div class="card stat"><div class="label">流水支出</div><div class="value" id="txExpenseTotal">0.00</div><div class="sub">本月流水支出合计</div></div>
+                <div class="card stat"><div class="label">流水净额</div><div class="value" id="txNetTotal">0.00</div><div class="sub">收入 − 支出</div></div>
+                <div class="card stat"><div class="label">流水笔数</div><div class="value" id="txCountTotal">0</div><div class="sub">当前月份记录数</div></div>
+              </div>
+              <div class="card" style="padding:16px;margin-top:14px;">
+                <div class="section-head" style="padding:0 0 12px 0;background:transparent;border-bottom:none;">
+                  <h2 style="font-size:16px;">新增流水</h2>
+                  <div class="hint">备注会存入 state，系统自动记录日期与时间</div>
+                </div>
+                <div class="income-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+                  <div class="input-group"><label>类型</label><select id="txType"><option value="expense">开支</option><option value="income">收入</option><option value="transfer">资产转移</option></select></div>
+                  <div class="input-group" id="txTargetGroup"><label>所属项目</label><select id="txTarget"></select></div>
+                  <div class="input-group" id="txAssetGroup"><label>资产账户</label><select id="txAsset"></select></div>
+                  <div class="input-group" id="txTransferGroup" style="display:none;"><label>转出账户</label><select id="txFromAsset"></select></div>
+                  <div class="input-group" id="txTransferGroupTo" style="display:none;"><label>转入账户</label><select id="txToAsset"></select></div>
+                  <div class="input-group"><label>金额</label><input id="txAmount" type="number" min="0" step="0.01" placeholder="0.00" /></div>
+                  <div class="input-group"><label>备注</label><input id="txNote" type="text" placeholder="可选备注" /></div>
+                </div>
+                <div class="page-actions" style="margin-top:12px;"><button class="btn-primary" id="txAddBtn">加入流水</button></div>
+              </div>
+              <div class="section" style="margin-top:16px;">
+                <div class="section-head"><h2>流水记录</h2><div class="hint">自动记录日期 DD-MM-YYYY 与 24 小时时间</div></div>
+                <div class="section-body"><div id="txList"></div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-reminders">
+          <div class="section">
+            <div class="section-head"><h2>固定开支提醒</h2><div class="hint">未找到对应实际支出时，左侧导航会变红提醒</div></div>
+            <div class="section-body">
+              <div class="summary-row row-4" style="margin-top:0;">
+                <div class="card stat"><div class="label">提醒总数</div><div class="value" id="reminderTotalCount">0</div><div class="sub">所有固定提醒</div></div>
+                <div class="card stat"><div class="label">已覆盖</div><div class="value" id="reminderCoveredCount">0</div><div class="sub">实际支出达到要求</div></div>
+                <div class="card stat"><div class="label">未覆盖</div><div class="value" id="reminderUncoveredCount">0</div><div class="sub">需要补上的项目</div></div>
+                <div class="card stat"><div class="label">导航提醒</div><div class="value" id="reminderNavState">正常</div><div class="sub">未覆盖时变红</div></div>
+              </div>
+              <div class="card" style="padding:16px;margin-top:14px;">
+                <div class="section-head" style="padding:0 0 12px 0;background:transparent;border-bottom:none;">
+                  <h2 style="font-size:16px;">新增固定提醒</h2>
+                  <div class="hint">会自动带入下个月份</div>
+                </div>
+                <div class="income-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+                  <div class="input-group"><label>提醒名称</label><input id="reminderNewName" type="text" placeholder="例如：房租" /></div>
+                  <div class="input-group"><label>目标项目</label><select id="reminderNewTarget"></select></div>
+                  <div class="input-group"><label>必须金额</label><input id="reminderNewAmount" type="number" min="0" step="0.01" placeholder="0.00" /></div>
+                  <div class="input-group"><label>启用</label><select id="reminderNewActive"><option value="1">启用</option><option value="0">停用</option></select></div>
+                </div>
+                <div class="page-actions" style="margin-top:12px;"><button class="btn-primary" id="reminderAddBtn">加入提醒</button></div>
+              </div>
+              <div class="section" style="margin-top:16px;">
+                <div class="section-head"><h2>提醒列表</h2><div class="hint">若目标项目实际支出不足，状态会标红</div></div>
+                <div class="section-body"><div id="reminderList"></div></div>
+              </div>
+            </div>
           </div>
         </section>
 
         <section class="page" id="page-charts">
-          <div class="section">
-            <div class="section-head"><h2>分类图表</h2><div class="hint">用饼图、柱状图看钱主要花在哪些项目</div></div>
-            <div class="section-body">
-              <div class="chart-grid">
-                <div class="chart-box">
-                  <h3>支出分类饼图</h3>
-                  <canvas id="expenseChart"></canvas>
-                  <div id="expenseLegend" class="chart-legend"></div>
-                </div>
-                <div class="chart-box">
-                  <h3>收入 vs 支出柱状图</h3>
-                  <canvas id="incomeChart"></canvas>
-                  <div id="incomeLegend" class="chart-legend"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="section"><div class="section-head"><h2>分类图表</h2><div class="hint">用饼图、柱状图看钱主要花在哪些项目</div></div><div class="section-body"><div class="chart-grid"><div class="chart-box"><h3>支出分类饼图</h3><canvas id="expenseChart"></canvas><div id="expenseLegend" class="chart-legend"></div></div><div class="chart-box"><h3>收入 vs 支出柱状图</h3><canvas id="incomeChart"></canvas><div id="incomeLegend" class="chart-legend"></div></div><div class="chart-box"><h3>资产占比饼图</h3><canvas id="assetChart"></canvas><div id="assetLegend" class="chart-legend"></div></div><div class="chart-box"><h3>负债占比饼图</h3><canvas id="liabilityChart"></canvas><div id="liabilityLegend" class="chart-legend"></div></div></div></div></div>
         </section>
 
         <section class="page" id="page-annual">
@@ -484,16 +460,7 @@
               </div>
               <div class="section" style="margin-top:16px;">
                 <div class="section-head"><h2>年度月份明细</h2><div class="hint">按月份看全年走势</div></div>
-                <div class="section-body">
-                  <div class="table-wrap">
-                    <table>
-                      <thead>
-                        <tr><th>月份</th><th>收入</th><th>支出</th><th>结余</th><th>超支类别数</th></tr>
-                      </thead>
-                      <tbody id="annualTable"></tbody>
-                    </table>
-                  </div>
-                </div>
+                <div class="section-body"><div class="table-wrap"><table><thead><tr><th>月份</th><th>收入</th><th>支出</th><th>结余</th><th>超支类别数</th></tr></thead><tbody id="annualTable"></tbody></table></div></div>
               </div>
             </div>
           </div>
@@ -509,14 +476,8 @@
                 <div class="input-group"><label>净资产</label><input id="netAssetsView" type="text" disabled /></div>
                 <div class="input-group"><label>负债率</label><input id="debtRatioView" type="text" disabled /></div>
               </div>
-              <div class="section" style="margin-top:16px;">
-                <div class="section-head"><h2>资产</h2><div class="hint">可按当前月份记录</div></div>
-                <div class="section-body"><div id="assetsGrid" class="income-grid"></div></div>
-              </div>
-              <div class="section" style="margin-top:16px;">
-                <div class="section-head"><h2>负债</h2><div class="hint">债务与贷款统计</div></div>
-                <div class="section-body"><div id="liabilitiesGrid" class="income-grid"></div></div>
-              </div>
+              <div class="section" style="margin-top:16px;"><div class="section-head"><h2>资产</h2><div class="hint">可按当前月份记录</div></div><div class="section-body"><div id="assetsGrid" class="income-grid"></div></div></div>
+              <div class="section" style="margin-top:16px;"><div class="section-head"><h2>负债</h2><div class="hint">债务与贷款统计</div></div><div class="section-body"><div id="liabilitiesGrid" class="income-grid"></div></div></div>
             </div>
           </div>
         </section>
@@ -531,14 +492,7 @@
                 <div class="card stat"><div class="label">超限项目</div><div class="value" id="capsOverCountView">0</div><div class="sub">已超过预算上限的大项目</div></div>
                 <div class="card stat"><div class="label">80%警告项目</div><div class="value" id="capsWarnCountView">0</div><div class="sub">接近预算上限的大项目</div></div>
               </div>
-              <div class="table-wrap" style="margin-top:16px;">
-                <table>
-                  <thead>
-                    <tr><th>大项目</th><th>预算上限</th><th>当前实际支出</th><th>使用率</th><th>状态</th></tr>
-                  </thead>
-                  <tbody id="capsTable"></tbody>
-                </table>
-              </div>
+              <div class="table-wrap" style="margin-top:16px;"><table><thead><tr><th>大项目</th><th>预算上限</th><th>当前实际支出</th><th>使用率</th><th>状态</th></tr></thead><tbody id="capsTable"></tbody></table></div>
             </div>
           </div>
         </section>
@@ -548,17 +502,20 @@
             <div class="section-head"><h2>通告</h2><div class="hint">这里记录系统更新与重要通知</div></div>
             <div class="section-body">
               <div class="notice-card">
-                <div class="notice-title">Version 2.1正式版 发布</div>
-                <div class="notice-date">2026-04-02 23:00</div>
+                <div class="notice-title">Version 3.0 正式版 发布</div>
+                <div class="notice-date">2026-04-03 08:00</div>
                 <ul>
-                  <li>通知：本版本为正式版</li>
+                  <li>新增：流水系统（收入 / 开支记录、备注、日期与时间）</li>
+                  <li>新增：固定开支提醒系统</li>
+                  <li>新增：资产与负债占比图表</li>
+                  <li>新增：固定开支提醒系统</li>
                   <li>新增：分类图表系统（饼图 / 柱状图）</li>
                   <li>新增：年度统计系统</li>
                   <li>新增：资产与负债系统</li>
                   <li>新增：预算上限系统</li>
                   <li>新增：JSON 自动保存到用户自选文件夹（可选）</li>
-                  <li>新增：支出小项目名称可自定义（方案二）</li>
-                  <li>新增：自动保存文件夹教程说明</li>
+                  <li>新增：支出小项目名称可自定义</li>
+                  <li>新增：导入自动保存 JSON 文件教程</li>
                   <li>新增：教程系统与首页首次弹窗</li>
                   <li>优化：系统导航、版本通告、预算提醒联动</li>
                 </ul>
@@ -592,40 +549,9 @@
           <div class="section">
             <div class="section-head"><h2>教程</h2><div class="hint">第一次使用建议先看这里</div></div>
             <div class="section-body">
-              <div class="tutorial-box">
-                <h3>基础使用流程</h3>
-                <ol>
-                  <li>先在左侧选择月份。</li>
-                  <li>进入「收入」「币种兑换率」「支出明细」分别填写数据。</li>
-                  <li>主页会自动同步显示结余、差额、预算提醒与系统状态。</li>
-                  <li>新月份会自动继承上个月的 plan，actual 会重置为 0。</li>
-                </ol>
-              </div>
-              <div class="tutorial-box">
-                <h3>JSON 导出 / 导入</h3>
-                <ol>
-                  <li>点击顶部或左侧的「导出JSON」下载备份文件。</li>
-                  <li>下载后请把 JSON 文件保存在安全位置，避免误删。</li>
-                  <li>点击「导入JSON」时，系统会打开文件选择器；请选择你保存的备份文件或自动保存的 JSON 文件。</li>
-                  <li>如果你使用自动保存，先打开你当初选择的文件夹，找到文件名为 <b>budget-backup.json</b> 的文件。</li>
-                  <li>如果是手动导出的备份，一般会以 <b>budget-backup-年月</b> 命名，优先找最近的月份文件。</li>
-                   <li>不知道文件在哪里时，可先检查「下载」文件夹、桌面，或你自己指定的自动保存文件夹。</li>
-                   <li>导入后建议立刻再导出一次，保留最新备份。</li>
-                </ol>
-                <div class="tutorial-highlight">提醒：导入会覆盖当前本机资料，执行前请先确认备份文件正确。自动保存文件通常固定在你选定的文件夹里，文件名为 budget-backup.json。</div>
-              </div>
-              <div class="tutorial-box">
-                <h3>预算提醒与新系统</h3>
-                <ol>
-                  <li>支出达到预算 80% 会显示黄色警告。</li>
-                  <li>支出超过预算会显示红色超支提醒。</li>
-                  <li>你现在还能使用分类图表、年度统计、资产负债、预算上限功能。</li>
-                  <li>旧版本数据导入后会自动迁移到当前版本。</li>
-                  <li>建议尽量开启自动保存，以减少误删或设备问题导致的数据丢失。</li>
-                  <li>支出明细的小项目名称也可以直接修改并保存。</li>
-                  <li>为了数据更安全，建议尽量启用自动保存功能，并保留手动 JSON 备份。</li>
-                </ol>
-              </div>
+              <div class="tutorial-box"><h3>基础使用流程</h3><ol><li>先在左侧选择月份。</li><li>进入「收入」「币种兑换率」「支出明细」分别填写数据。</li><li>主页会自动同步显示结余、差额、预算提醒与系统状态。</li><li>新月份会自动继承上个月的 plan，actual 会重置为 0。</li></ol></div>
+              <div class="tutorial-box"><h3>JSON 导出 / 导入</h3><ol><li>点击顶部或左侧的「导出JSON」下载备份文件。</li><li>下载后请把 JSON 文件保存在安全位置，避免误删。</li><li>点击「导入JSON」时，系统会打开文件选择器；请选择你保存的备份文件或自动保存的 JSON 文件。</li><li>如果你使用自动保存，先打开你当初选择的文件夹，找到文件名为 <b>budget-backup.json</b> 的文件。</li><li>如果是手动导出的备份，一般会以 <b>budget-backup-年月</b> 命名，优先找最近的月份文件。</li><li>不知道文件在哪里时，可先检查「下载」文件夹、桌面、或你自己指定的自动保存文件夹。</li><li>导入后建议立刻再导出一次，保留最新备份。</li></ol><div class="tutorial-highlight">提醒：导入会覆盖当前本机资料，执行前请先确认备份文件正确。自动保存文件通常固定在你选定的文件夹里，文件名为 budget-backup.json。</div></div>
+              <div class="tutorial-box"><h3>预算提醒与新系统</h3><ol><li>支出达到预算 80% 会显示黄色警告。</li><li>支出超过预算会显示红色超支提醒。</li><li>你现在还能使用分类图表、年度统计、资产负债、预算上限功能。</li><li>你现在也可以使用流水系统，记录收入、开支与资产转移，并自动计入对应项目。</li><li>导入自动保存文件时，先去你选定的固定文件夹里找 <b>budget-backup.json</b>。</li><li>找不到文件时，优先检查「下载」文件夹、桌面和你自己设置过的自动保存文件夹。</li><li>为了数据安全和方便使用，建议尽量启用自动保存功能。</li></ol></div>
               <div class="page-actions"><button class="btn-primary" id="openTutorialModalBtn">重新打开首页教程弹窗</button></div>
             </div>
           </div>
@@ -633,102 +559,41 @@
 
         <footer class="footer">
           <div class="footer-content">
-            <span>© 2026 个人月度预算管理系统</span>
-            <span class="divider">|</span>
-            <span>联系方式：</span>
-            <a href="mailto:your_email@gmail.com">your_email@gmail.com</a>
-            <span class="divider">|</span>
-            <div class="version-box">
-              <div class="version-header" onclick="toggleVersionLog()">Version 2.1 • Major Update ▼</div>
-              <div class="version-log" id="versionLog">
-                <ul>
-                  <li>Version 2.1 发布：2026-04-02 23:00</li>
-                  <li>通知：本版本为正式版</li>
-                  <li>新增：版本号字段自动迁移系统</li>
-                  <li>新增：分类图表、年度统计、资产负债、预算上限</li>
-                  <li>新增：版本号字段自动迁移系统</li>
-                  <li>新增：自动保存教程与安全建议</li>
-                  <li>新增：JSON 导出 / 导入与自动保存文件夹</li>
-                  <li>新增：版本号字段自动迁移系统</li>
-                  <li>新增：自动保存教程与安全建议</li>
-                  <li>新增：支出小项目名称可自定义</li>
-                  <li>新增：自动保存教程与安全建议</li>
-                  <li>新增：教程导航与首次进入弹窗</li>
-                  <li>优化：通知系统、版本系统、预算提醒流程</li>
-                </ul>
-              </div>
-            </div>
+            <span>© 2026 个人月度预算管理系统</span><span class="divider">|</span><span>联系方式：</span><a href="mailto:your_email@gmail.com">your_email@gmail.com</a><span class="divider">|</span>
+            <div class="version-box"><div class="version-header" onclick="toggleVersionLog()">Version 3.0 • Major Update ▼</div><div class="version-log" id="versionLog"><ul><li>Version 3.0 正式版 发布：2026-04-03 8:00</li>
+                  <li>新增：固定开支提醒系统</li>
+                  <li>新增：资产与负债占比图表</li><li>新增：流水系统（收入 / 开支记录、备注、日期与时间）</li><li>新增：分类图表、年度统计、资产负债、预算上限</li><li>新增：JSON 导出 / 导入与自动保存文件夹</li><li>新增：支出小项目名称可自定义</li><li>新增：导入自动保存 JSON 文件教程</li><li>新增：教程导航与首次进入弹窗</li></ul></div></div>
           </div>
         </footer>
       </div>
     </main>
   </div>
 
+  
   <div id="tutorialModal" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tutorialModalTitle">
-      <div class="modal-head">
-        <h3 id="tutorialModalTitle">欢迎使用个人月度预算管理系统 2.1正式版</h3>
-        <button class="btn-ghost" id="closeTutorialModalBtn">关闭</button>
-      </div>
+      <div class="modal-head"><h3 id="tutorialModalTitle">欢迎使用个人月度预算管理系统 3.0 正式版</h3><button class="btn-ghost" id="closeTutorialModalBtn">关闭</button></div>
       <div class="modal-body">
-        <div class="tutorial-box" style="margin:0;box-shadow:none;">
-          <h3>快速上手</h3>
-          <ol>
-            <li>选择月份后开始输入收入、汇率和支出。</li>
-            <li>主页会自动显示结余、差额、图表、预算提醒。</li>
-            <li>支出达到 80% 会黄色提醒，超过预算会红色提醒。</li>
-          </ol>
-        </div>
-        <div class="tutorial-box" style="margin:14px 0 0;box-shadow:none;">
-          <h3>JSON 备份</h3>
-          <ol>
-            <li>点击「导出JSON」保存完整数据备份。</li>
-            <li>点击「导入JSON」恢复备份资料。</li>
-            <li>也可以选择一个文件夹启用自动保存，系统会自动写入 JSON 备份。</li>
-            <li>旧版本数据会依据版本号字段自动迁移到当前版本。</li>
-            <li>为了数据安全和使用方便，建议尽量启用自动保存功能，并定期保留一份手动导出的 JSON 备份。</li>
-            <li>如果更换浏览器、清除缓存或重装系统，自动保存文件会更稳妥。</li>
-            <li>支出明细的小项目名称可以直接修改，并会随 JSON 一起保存。</li>
-            <li>导入自动保存文件时，请先打开你当初选择的固定文件夹，再选中 <b>budget-backup.json</b>。</li>
-            <li>如果找不到文件，可以先检查「下载」文件夹、桌面，或者你自己设置过的自动保存文件夹。</li>
-            <li>旧版本 JSON 导入后会先读取版本号字段，再自动迁移到当前结构。</li>
-            <li>自动保存开启后，系统会把最新资料写入你选择的文件夹。</li>
-            <li>为了数据安全和方便使用，建议尽量开启自动保存功能。</li>
-            <li>如果你选择了自动保存文件夹，系统会自动把最新数据写入该文件夹，建议长期启用。</li>
-          </ol>
-          <div class="tutorial-highlight">这份系统会把每个月的数据分开保存，切换月份不会互相覆盖。</div>
-        </div>
+        <div class="tutorial-box" style="margin:0;box-shadow:none;"><h3>快速上手</h3><ol><li>选择月份后开始输入收入、汇率和支出。</li><li>主页会自动显示结余、差额、图表、预算提醒。</li><li>支出达到 80% 会黄色提醒，超过预算会红色提醒。</li><li>流水系统可把每一笔收入、开支或资产转移直接记到账目。</li></ol></div>
+        <div class="tutorial-box" style="margin:14px 0 0;box-shadow:none;"><h3>JSON 备份</h3><ol><li>点击「导出JSON」保存完整数据备份。</li><li>点击「导入JSON」恢复备份资料。</li><li>也可以选择一个文件夹启用自动保存，系统会自动写入 JSON 备份。</li><li>旧版本数据会依据版本号字段自动迁移到当前版本。</li><li>为了数据安全和使用方便，建议尽量启用自动保存功能，并定期保留一份手动导出的 JSON 备份。</li><li>如果更换浏览器、清除缓存或重装系统，自动保存文件会更稳妥。</li><li>支出明细的小项目名称可以直接修改，并会随 JSON 一起保存。</li><li>流水系统可记录每一笔收入、开支或资产转移的金额、备注、日期和时间。</li><li>导入自动保存文件时，请先打开你当初选择的固定文件夹，再选中 <b>budget-backup.json</b>。</li><li>如果找不到文件，可以先检查「下载」文件夹、桌面，或者你自己设置过的自动保存文件夹。</li></ol><div class="tutorial-highlight">这份系统会把每个月的数据分开保存，切换月份不会互相覆盖。</div></div>
       </div>
-      <div class="modal-actions">
-        <button class="btn-ghost" id="dontShowTutorialBtn">以后不再显示</button>
-        <button class="btn-primary" id="gotItTutorialBtn">我知道了</button>
-      </div>
+      <div class="modal-actions"><button class="btn-ghost" id="dontShowTutorialBtn">以后不再显示</button><button class="btn-primary" id="gotItTutorialBtn">我知道了</button></div>
     </div>
   </div>
-
   <input id="importJsonInput" class="hidden-input" type="file" accept="application/json,.json" />
 
   <script>
-    const APP_VERSION = '2.1';
-    const MONTH_PREFIX = 'budget_tracker_month_v6_';
-    const UI_KEY = 'budget_tracker_ui_v6';
-    const THEME_KEY = 'budget_tracker_theme_v6';
-    const TUTORIAL_KEY = 'budget_tracker_tutorial_seen_v6';
-    const AUTO_SAVE_ENABLED_KEY = 'budget_tracker_autosave_enabled_v6';
+    const APP_VERSION = '3.0';
+    const MONTH_PREFIX = 'budget_tracker_month_v7_';
+    const UI_KEY = 'budget_tracker_ui_v7';
+    const THEME_KEY = 'budget_tracker_theme_v7';
+    const TUTORIAL_KEY = 'budget_tracker_tutorial_seen_v7';
+    const AUTO_SAVE_ENABLED_KEY = 'budget_tracker_autosave_enabled_v7';
     const IDB_NAME = 'budget_tracker_fs_v1';
     const IDB_STORE = 'kv';
     const IDB_KEY = 'autosaveFolderHandle';
 
-    const DEFAULT_AVATAR = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-        <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#111827"/><stop offset="100%" stop-color="#2563eb"/></linearGradient></defs>
-        <rect width="256" height="256" rx="128" fill="url(#g)"/>
-        <circle cx="128" cy="128" r="84" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="8"/>
-        <path d="M80 158h96" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
-        <path d="M96 126h64" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
-        <path d="M112 94h32" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
-      </svg>
-    `);
+    const DEFAULT_AVATAR = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#111827"/><stop offset="100%" stop-color="#2563eb"/></linearGradient></defs><rect width="256" height="256" rx="128" fill="url(#g)"/><circle cx="128" cy="128" r="84" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="8"/><path d="M80 158h96" stroke="#fff" stroke-width="14" stroke-linecap="round"/><path d="M96 126h64" stroke="#fff" stroke-width="14" stroke-linecap="round"/><path d="M112 94h32" stroke="#fff" stroke-width="14" stroke-linecap="round"/></svg>`);
 
     const categoryDefs = [
       { id:'housing', title:'住房', items:[['rentDeposit','押金 / 租金'],['utilitiesElectric','电费'],['utilitiesWater','水费'],['utilitiesGas','瓦斯费 / 煤气'],['utilitiesInternet','网络 / 宽带'],['utilitiesCable','有线电视 / 订阅'],['maintenance','维修 / 维护'],['other','其他']] },
@@ -738,35 +603,35 @@
       { id:'taxes', title:'税务', items:[['incomeTax','个人所得税'],['vehicleTax','车辆 / 船舶使用税'],['other','其他']] },
       { id:'savings', title:'储蓄或投资', items:[['retirement','退休账户'],['investment','投资账户'],['tngInvestment','TNG 投资'],['fixedDeposit','定存 / 储蓄'],['other','其他']] },
       { id:'insurance', title:'保险', items:[['homeInsurance','房屋保险'],['healthInsurance','健康保险'],['lifeInsurance','人寿保险'],['personalInsurance','个人保险'],['vehicleInsurance','车辆保险'],['other','其他']] },
-      { id:'daily', title:'日常费用', items:[['groceries','杂货 / 日用品'],['food','餐饮 / 外食'],['cash','现金支出'],['snacks','零食 / 饮料'],['household','家用消耗品'],['other','其他']] },
+      { id:'daily', title:'日常费用', items:[['groceries','杂货 / 日用品'],['food','餐饮 / 外食'],['topup','充值 / 储值'],['snacks','零食 / 饮料'],['household','家用消耗品'],['other','其他']] },
       { id:'giftDonation', title:'礼物和捐赠', items:[['giftFamily','送家人礼物'],['giftFriend','送朋友礼物'],['charity1','慈善机构 1'],['charity2','慈善机构 2'],['charity3','慈善机构 3'],['other','其他']] },
       { id:'pets', title:'宠物', items:[['food','食物'],['healthcare','卫生保健'],['grooming','洗护 / 美容'],['toys','玩具'],['supplies','用品'],['other','其他']] },
       { id:'legal', title:'法律', items:[['lawyer','律师费'],['support','赡养费'],['judgment','留置权支付 / 判决支付'],['other','其他']] },
       { id:'personalCare', title:'个人护理', items:[['medical','医疗保健'],['hairNails','头发 / 指甲护理'],['dryCleaning','干洗'],['gym','健身俱乐部'],['membership','组织会员费'],['toiletries','个人护理用品'],['other','其他']] }
     ];
-    const assetDefs = {
-      assets: [
-        ['cash','现金'],['bank','银行存款'],['investment','投资资产'],['vehicle','车辆'],['home','房产'],['other','其他资产']
-      ],
-      liabilities: [
-        ['carLoan','车贷'],['personalLoan','个人贷款'],['creditCard','信用卡'],['other','其他负债']
-      ]
-    };
-
-    const sidebarButtons = Array.from(document.querySelectorAll('.nav-btn'));
+    const incomeDefs = [
+      { id:'salary', label:'基本工资' },
+      { id:'allowance', label:'住房补贴 / 津贴' },
+      { id:'bonus', label:'奖金 / 13薪摊分' },
+      { id:'otherIncome', label:'其他收入' }
+    ];
+    const assetDefs = { assets:[['bankBalance','银行余额'],['cashBalance','现金余额'],['ewalletBalance','电子钱包余额'],['investment','投资资产'],['vehicle','车辆'],['home','房产'],['other','其他资产']], liabilities:[['carLoan','车贷'],['personalLoan','个人贷款'],['creditCard','信用卡'],['other','其他负债']] };
+    const capsDefs = categoryDefs.map(c => ({ id:c.id, title:c.title }));
     const pages = {
       home: document.getElementById('page-home'),
       income: document.getElementById('page-income'),
       fx: document.getElementById('page-fx'),
       expense: document.getElementById('page-expense'),
+      transactions: document.getElementById('page-transactions'),
+      reminders: document.getElementById('page-reminders'),
       charts: document.getElementById('page-charts'),
       annual: document.getElementById('page-annual'),
       assets: document.getElementById('page-assets'),
       caps: document.getElementById('page-caps'),
       notice: document.getElementById('page-notice'),
-      tutorial: document.getElementById('page-tutorial'),
+      tutorial: document.getElementById('page-tutorial')
     };
-
+    const sidebarButtons = Array.from(document.querySelectorAll('.nav-btn'));
     const monthPicker = document.getElementById('monthPicker');
     const monthPickerTop = document.getElementById('monthPickerTop');
     const monthListEl = document.getElementById('monthList');
@@ -788,22 +653,35 @@
     const expenseLegend = document.getElementById('expenseLegend');
     const incomeLegend = document.getElementById('incomeLegend');
     const annualYear = document.getElementById('annualYear');
+    const assetChart = document.getElementById('assetChart');
+    const liabilityChart = document.getElementById('liabilityChart');
+    const assetLegend = document.getElementById('assetLegend');
+    const liabilityLegend = document.getElementById('liabilityLegend');
+    const reminderNewTarget = document.getElementById('reminderNewTarget');
+    const reminderList = document.getElementById('reminderList');
+    const reminderAddBtn = document.getElementById('reminderAddBtn');
+    const reminderTotalCount = document.getElementById('reminderTotalCount');
+    const reminderCoveredCount = document.getElementById('reminderCoveredCount');
+    const reminderUncoveredCount = document.getElementById('reminderUncoveredCount');
+    const reminderNavState = document.getElementById('reminderNavState');
+    let currentMonth = '';
+    let state = null;
+    let tutorialShown = false;
+    let autoSaveEnabled = localStorage.getItem(AUTO_SAVE_ENABLED_KEY) === '1';
+    let autoSaveFolderHandle = null;
+    let autoSaveTimer = null;
+    let dbPromise = null;
 
-    const incomeDefs = [
-      { id:'salary', label:'基本工资' },
-      { id:'allowance', label:'住房补贴 / 津贴' },
-      { id:'bonus', label:'奖金 / 13薪摊分' },
-      { id:'otherIncome', label:'其他收入' }
-    ];
-
-    const capsDefs = categoryDefs.map(c => ({ id:c.id, title:c.title }));
-
-    function getCurrentMonth(){
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    }
-    function getCurrentYear(){ return Number(getCurrentMonth().slice(0,4)); }
+    function getCurrentMonth(){ const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
+    function getCurrentYear(){ return new Date().getFullYear(); }
     function deepClone(obj){ return typeof structuredClone === 'function' ? structuredClone(obj) : JSON.parse(JSON.stringify(obj)); }
+    function money(amount){ return new Intl.NumberFormat('en-US',{style:'currency',currency:currencySelect.value,minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(amount||0)); }
+    function fmtMoney(amount,currencyCode){ return new Intl.NumberFormat('en-US',{style:'currency',currency:currencyCode,minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(amount||0)); }
+    function getFxRate(code){ if(code==='MYR') return 1; return Number(document.getElementById(`rate_${code}`)?.value || 0); }
+    function convertCurrency(amount,from,to){ const fr=getFxRate(from); const tr=getFxRate(to); if(!fr||!tr) return 0; return Number(amount||0)*fr/tr; }
+    function budgetLevel(actual,plan){ if(!plan||plan<=0) return 'none'; if(actual>plan) return 'danger'; if(actual>=plan*0.8) return 'warning'; return 'ok'; }
+    function formatDateDDMMYYYY(d=new Date()){ return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`; }
+    function formatTime24(d=new Date()){ return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
 
     function createMonthTemplate(){
       return {
@@ -811,752 +689,642 @@
         currency:'SGD',
         fx:{ MYR:1, SGD:3.45, USD:4.70, CNY:0.65 },
         income:{ salary:{plan:6000,actual:6000}, allowance:{plan:200,actual:200}, bonus:{plan:0,actual:0}, otherIncome:{plan:0,actual:0} },
-        categories:Object.fromEntries(categoryDefs.map(cat => [cat.id, Object.fromEntries(cat.items.map(([id, label]) => [id, { name: label, plan:0, actual:0 }]))])),
+        categories:Object.fromEntries(categoryDefs.map(cat => [cat.id, Object.fromEntries(cat.items.map(([id,label]) => [id, { name: label, plan:0, actual:0 }]))])),
         caps:Object.fromEntries(categoryDefs.map(cat => [cat.id, 0])),
-        assets:{ cash:0, bank:0, investment:0, vehicle:0, home:0, other:0 },
-        liabilities:{ carLoan:0, personalLoan:0, creditCard:0, other:0 }
+        assets:{ bankBalance:0, cashBalance:0, ewalletBalance:0, investment:0, vehicle:0, home:0, other:0 },
+        liabilities:{ carLoan:0, personalLoan:0, creditCard:0, other:0 },
+        transactions:[],
+        reminders:[]
       };
     }
-
-    function compareVersionParts(a, b){
-      const pa = String(a || '').split('.').map(n => Number(n || 0));
-      const pb = String(b || '').split('.').map(n => Number(n || 0));
-      const len = Math.max(pa.length, pb.length);
-      for (let i = 0; i < len; i++) {
-        const da = pa[i] || 0;
-        const db = pb[i] || 0;
-        if (da > db) return 1;
-        if (da < db) return -1;
-      }
-      return 0;
-    }
-
-    function migrateMonthData(data){
-      const source = data && typeof data === 'object' ? data : {};
-      const sourceVersion = source.version || '2.0';
-      const migrated = createMonthTemplate();
-
-      if (source.currency) migrated.currency = source.currency;
-      if (source.fx) {
-        migrated.fx.MYR = Number(source.fx.MYR ?? migrated.fx.MYR);
-        migrated.fx.SGD = Number(source.fx.SGD ?? migrated.fx.SGD);
-        migrated.fx.USD = Number(source.fx.USD ?? migrated.fx.USD);
-        migrated.fx.CNY = Number(source.fx.CNY ?? migrated.fx.CNY);
-      }
-      if (source.income) {
-        for (const [id, val] of Object.entries(source.income)) {
-          if (migrated.income[id]) migrated.income[id] = { plan:Number(val?.plan || 0), actual:Number(val?.actual || 0) };
-        }
-      }
-      if (source.categories) {
-        for (const [catId, items] of Object.entries(source.categories)) {
-          if (!migrated.categories[catId]) continue;
-          for (const [itemId, val] of Object.entries(items || {})) {
-            if (!migrated.categories[catId][itemId]) continue;
-            migrated.categories[catId][itemId] = {
-              name: typeof val?.name === 'string' && val.name.trim() ? val.name : migrated.categories[catId][itemId].name,
-              plan: Number(val?.plan || 0),
-              actual: Number(val?.actual || 0)
-            };
+    function normalizeMonthData(data){
+      const n = createMonthTemplate();
+      if(data && typeof data === 'object'){
+        if(data.version) n.version = String(data.version);
+        if(data.currency) n.currency = data.currency;
+        if(data.fx){ n.fx.MYR=Number(data.fx.MYR ?? n.fx.MYR); n.fx.SGD=Number(data.fx.SGD ?? n.fx.SGD); n.fx.USD=Number(data.fx.USD ?? n.fx.USD); n.fx.CNY=Number(data.fx.CNY ?? n.fx.CNY); }
+        if(data.income){ for(const [id,val] of Object.entries(data.income)){ if(n.income[id]) n.income[id]={ plan:Number(val?.plan||0), actual:Number(val?.actual||0) }; } }
+        if(data.categories){
+          for(const [catId,items] of Object.entries(data.categories)){
+            if(!n.categories[catId]) continue;
+            for(const [itemId,val] of Object.entries(items || {})){
+              const mappedItemId = catId === 'daily' && itemId === 'cash' ? 'topup' : itemId;
+              if(!n.categories[catId][mappedItemId]) continue;
+              n.categories[catId][mappedItemId] = {
+                name: typeof val?.name === 'string' && val.name.trim() ? val.name : n.categories[catId][mappedItemId].name,
+                plan: Number(val?.plan || 0),
+                actual: Number(val?.actual || 0)
+              };
+            }
           }
         }
-      }
-      if (source.caps) {
-        for (const [catId, val] of Object.entries(source.caps)) {
-          if (catId in migrated.caps) migrated.caps[catId] = Number(val || 0);
+        if(data.caps){ for(const [id,val] of Object.entries(data.caps)) if(id in n.caps) n.caps[id]=Number(val||0); }
+        if(data.assets){
+          const legacyToModern = { cash:'cashBalance', bank:'bankBalance' };
+          for(const [id,val] of Object.entries(data.assets)){
+            const mapped = legacyToModern[id] || id;
+            if(mapped in n.assets) n.assets[mapped] = Number(val || 0);
+          }
+        }
+        if(Array.isArray(data.reminders)){
+          n.reminders = data.reminders.map(r => ({
+            id:String(r?.id || `${Date.now()}_${Math.random().toString(36).slice(2,8)}`),
+            name:String(r?.name || ''),
+            catId:String(r?.catId || 'housing'),
+            itemId:String(r?.itemId || 'rentDeposit'),
+            amount:Number(r?.amount || 0),
+            active:r?.active !== false
+          }));
+        }
+        if(Array.isArray(data.transactions)){
+          n.transactions = data.transactions.map(tx => ({
+            id:String(tx?.id || `${Date.now()}_${Math.random().toString(36).slice(2,8)}`),
+            kind: tx?.kind === 'income' ? 'income' : tx?.kind === 'transfer' ? 'transfer' : 'expense',
+            itemId:String(tx?.itemId || ''),
+            catId:String(tx?.catId || ''),
+            amount:Number(tx?.amount || 0),
+            note:String(tx?.note || ''),
+            date:String(tx?.date || ''),
+            time:String(tx?.time || ''),
+            projectLabel:String(tx?.projectLabel || ''),
+            createdAt:String(tx?.createdAt || '')
+          }));
         }
       }
-      if (source.assets) {
-        for (const [k, v] of Object.entries(source.assets)) if (k in migrated.assets) migrated.assets[k] = Number(v || 0);
-      }
-      if (source.liabilities) {
-        for (const [k, v] of Object.entries(source.liabilities)) if (k in migrated.liabilities) migrated.liabilities[k] = Number(v || 0);
-      }
-
-      migrated.version = compareVersionParts(sourceVersion, APP_VERSION) < 0 ? APP_VERSION : String(sourceVersion);
-      migrated.migratedFrom = compareVersionParts(sourceVersion, APP_VERSION) < 0 ? String(sourceVersion) : undefined;
-      if (migrated.migratedFrom === undefined) delete migrated.migratedFrom;
-      return migrated;
+      return n;
     }
-
-    function normalizeMonthData(data){
-      return migrateMonthData(data);
-    }
-
     function monthKey(month){ return `${MONTH_PREFIX}${month}`; }
-    function getAllSavedMonths(){ return Object.keys(localStorage).filter(k => k.startsWith(MONTH_PREFIX)).map(k => k.slice(MONTH_PREFIX.length)).sort(); }
-    function getPreviousSavedMonth(month){ const list = getAllSavedMonths().filter(m => m < month); return list.length ? list[list.length-1] : null; }
-    function loadStoredMonth(month){ const raw = localStorage.getItem(monthKey(month)); if(!raw) return null; try { return normalizeMonthData(JSON.parse(raw)); } catch { return null; } }
+    function getAllSavedMonths(){ return Object.keys(localStorage).filter(k=>k.startsWith(MONTH_PREFIX)).map(k=>k.slice(MONTH_PREFIX.length)).sort(); }
+    function getPreviousSavedMonth(month){ const list=getAllSavedMonths().filter(m=>m<month); return list.length ? list[list.length-1] : null; }
+    function loadStoredMonth(month){ const raw=localStorage.getItem(monthKey(month)); if(!raw) return null; try{return normalizeMonthData(JSON.parse(raw));}catch{return null;} }
     function loadOrCreateMonth(month){
-      const existing = loadStoredMonth(month); if (existing) return existing;
-      const base = createMonthTemplate();
-      const prevMonth = getPreviousSavedMonth(month);
-      if (prevMonth){
-        const prev = loadStoredMonth(prevMonth);
-        if (prev){
-          base.currency = prev.currency || base.currency;
-          base.fx = deepClone(prev.fx || base.fx);
-          for (const item of incomeDefs){ base.income[item.id].plan = Number(prev.income[item.id]?.plan || 0); base.income[item.id].actual = 0; }
-          for (const cat of categoryDefs){ for (const [itemId] of cat.items){ base.categories[cat.id][itemId].name = prev.categories[cat.id]?.[itemId]?.name || base.categories[cat.id][itemId].name; base.categories[cat.id][itemId].plan = Number(prev.categories[cat.id]?.[itemId]?.plan || 0); base.categories[cat.id][itemId].actual = 0; } }
-          for (const c of capsDefs){ base.caps[c.id] = Number(prev.caps?.[c.id] || 0); }
-          base.assets = deepClone(prev.assets || base.assets);
-          base.liabilities = deepClone(prev.liabilities || base.liabilities);
+      const existing=loadStoredMonth(month); if(existing) return existing;
+      const base=createMonthTemplate();
+      const prevMonth=getPreviousSavedMonth(month);
+      if(prevMonth){
+        const prev=loadStoredMonth(prevMonth);
+        if(prev){
+          base.currency=prev.currency || base.currency;
+          base.fx=deepClone(prev.fx || base.fx);
+          for(const item of incomeDefs){ base.income[item.id].plan=Number(prev.income[item.id]?.plan||0); base.income[item.id].actual=0; }
+          for(const cat of categoryDefs){ for(const [itemId] of cat.items){ base.categories[cat.id][itemId].name = prev.categories[cat.id]?.[itemId]?.name || base.categories[cat.id][itemId].name; base.categories[cat.id][itemId].plan=Number(prev.categories[cat.id]?.[itemId]?.plan||0); base.categories[cat.id][itemId].actual=0; } }
+          for(const c of capsDefs){ base.caps[c.id]=Number(prev.caps?.[c.id]||0); }
+          base.assets=deepClone(prev.assets || base.assets);
+          base.liabilities=deepClone(prev.liabilities || base.liabilities);
+          base.reminders=deepClone(prev.reminders || []);
         }
       }
       return base;
     }
-    function saveMonth(month, data){ localStorage.setItem(monthKey(month), JSON.stringify(data)); }
-    function clearAllMonthData(){ Object.keys(localStorage).filter(k => k.startsWith(MONTH_PREFIX)).forEach(k => localStorage.removeItem(k)); }
-    function loadUIState(){ try { return JSON.parse(localStorage.getItem(UI_KEY) || '{}'); } catch { return {}; } }
+    function saveMonth(month,data){ localStorage.setItem(monthKey(month), JSON.stringify(data)); }
+    function clearAllMonthData(){ Object.keys(localStorage).filter(k=>k.startsWith(MONTH_PREFIX)).forEach(k=>localStorage.removeItem(k)); }
+    function loadUIState(){ try{return JSON.parse(localStorage.getItem(UI_KEY) || '{}');}catch{return {};} }
     function saveUIState(ui){ localStorage.setItem(UI_KEY, JSON.stringify(ui)); }
-    function loadThemeState(){ try { return JSON.parse(localStorage.getItem(THEME_KEY) || '{}'); } catch { return {}; } }
+    function loadThemeState(){ try{return JSON.parse(localStorage.getItem(THEME_KEY) || '{}');}catch{return {};} }
     function saveThemeState(theme){ localStorage.setItem(THEME_KEY, JSON.stringify(theme)); }
-
-    function applyTheme(theme){ document.body.style.backgroundImage = theme?.backgroundImage || 'none'; const avatar = theme?.avatarImage || DEFAULT_AVATAR; avatarImg.src = avatar; sideAvatarImg.src = avatar; }
-    function fileToDataUrl(file){ return new Promise((resolve,reject)=>{ const reader = new FileReader(); reader.onload = () => resolve(String(reader.result || '')); reader.onerror = () => reject(new Error('FileReader failed')); reader.readAsDataURL(file); }); }
-
-    let currentMonth = '';
-    let state = createMonthTemplate();
-    let tutorialShown = false;
-    let autoSaveEnabled = localStorage.getItem(AUTO_SAVE_ENABLED_KEY) === '1';
-    let autoSaveFolderHandle = null;
-    let autoSaveTimer = null;
-    let dbPromise = null;
-
-    function money(amount){ return new Intl.NumberFormat('en-US',{ style:'currency', currency:currencySelect.value, minimumFractionDigits:2, maximumFractionDigits:2 }).format(Number(amount || 0)); }
-    function fmtMoney(amount, currencyCode){ return new Intl.NumberFormat('en-US',{ style:'currency', currency:currencyCode, minimumFractionDigits:2, maximumFractionDigits:2 }).format(Number(amount || 0)); }
-    function getFxRate(code){ if (code === 'MYR') return 1; return Number(document.getElementById(`rate_${code}`)?.value || 0); }
-    function convertCurrency(amount, from, to){ const fromRate=getFxRate(from); const toRate=getFxRate(to); if(!fromRate || !toRate) return 0; return Number(amount||0) * fromRate / toRate; }
-    function budgetLevel(actual, plan){ if (!plan || plan <= 0) return 'none'; if (actual > plan) return 'danger'; if (actual >= plan * 0.8) return 'warning'; return 'ok'; }
+    function applyTheme(theme){ document.body.style.backgroundImage = theme?.backgroundImage || 'none'; const avatar=theme?.avatarImage || DEFAULT_AVATAR; avatarImg.src=avatar; sideAvatarImg.src=avatar; }
+    function fileToDataUrl(file){ return new Promise((resolve,reject)=>{ const reader=new FileReader(); reader.onload=()=>resolve(String(reader.result||'')); reader.onerror=()=>reject(new Error('FileReader failed')); reader.readAsDataURL(file); }); }
 
     function setActivePage(pageId){
-      Object.entries(pages).forEach(([key, el]) => el.classList.toggle('active', key === pageId));
-      sidebarButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageId));
-      if (pageId === 'charts') renderCharts();
-      if (pageId === 'annual') renderAnnualStats();
-      if (pageId === 'assets') renderAssetsLiabilities();
-      if (pageId === 'caps') renderCaps();
-      if (pageId === 'home' && !tutorialShown && !localStorage.getItem(TUTORIAL_KEY)) showTutorialModal();
+      Object.entries(pages).forEach(([key,el])=>el.classList.toggle('active', key===pageId));
+      sidebarButtons.forEach(btn=>btn.classList.toggle('active', btn.dataset.page===pageId));
+      if(pageId==='charts') renderCharts();
+      if(pageId==='annual') renderAnnualStats();
+      if(pageId==='assets') renderAssetsLiabilities();
+      if(pageId==='caps') renderCaps();
+      if(pageId==='transactions') renderTransactionPage();
+      if(pageId==='reminders') renderReminders();
+      if(pageId==='home' && !tutorialShown && !localStorage.getItem(TUTORIAL_KEY)) showTutorialModal();
     }
 
     function buildIncome(){
-      incomeGrid.innerHTML = '';
-      incomeDefs.forEach(item => {
-        const box = document.createElement('div'); box.className = 'card'; box.style.padding = '14px';
-        box.innerHTML = `<div class="input-group" style="margin-bottom:10px;"><label>${item.label}</label><input id="income_${item.id}_label" type="text" value="${item.label}" disabled /></div><div class="input-group" style="margin-bottom:10px;"><label>计划</label><input id="income_${item.id}_plan" type="number" min="0" step="0.01" value="0" /></div><div class="input-group"><label>实际</label><input id="income_${item.id}_actual" type="number" min="0" step="0.01" value="0" /></div>`;
+      incomeGrid.innerHTML='';
+      incomeDefs.forEach(item=>{
+        const box=document.createElement('div'); box.className='card'; box.style.padding='14px';
+        box.innerHTML=`<div class="input-group" style="margin-bottom:10px;"><label>${item.label}</label><input id="income_${item.id}_label" type="text" value="${item.label}" disabled /></div><div class="input-group" style="margin-bottom:10px;"><label>计划</label><input id="income_${item.id}_plan" type="number" min="0" step="0.01" value="0" /></div><div class="input-group"><label>实际</label><input id="income_${item.id}_actual" type="number" min="0" step="0.01" value="0" /></div>`;
         incomeGrid.appendChild(box);
       });
     }
-
     function buildCategories(){
-      categoriesEl.innerHTML = '';
-      categoryDefs.forEach((cat, idx) => {
-        const details = document.createElement('details'); if (idx < 3) details.open = true;
-        details.innerHTML = `
-          <summary>
-            <span>${cat.title}</span>
-            <span class="cat-total" id="cat_total_${cat.id}">计划：${money(0)}｜实际：${money(0)}｜差额：${money(0)}</span>
-          </summary>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th style="min-width:220px;">名称</th>
-                  <th style="min-width:140px;">计划支出</th>
-                  <th style="min-width:140px;">实际支出</th>
-                  <th style="min-width:160px;">差额（实际 − 计划）</th>
-                </tr>
-              </thead>
-              <tbody id="tbody_${cat.id}"></tbody>
-            </table>
-          </div>
-        `;
+      categoriesEl.innerHTML='';
+      categoryDefs.forEach((cat,idx)=>{
+        const details=document.createElement('details'); if(idx<3) details.open=true;
+        details.innerHTML=`<summary><span>${cat.title}</span><span class="cat-total" id="cat_total_${cat.id}">计划：${money(0)}｜实际：${money(0)}｜差额：${money(0)}</span></summary><div class="table-wrap"><table><thead><tr><th style="min-width:220px;">名称</th><th style="min-width:140px;">计划支出</th><th style="min-width:140px;">实际支出</th><th style="min-width:160px;">差额（实际 − 计划）</th></tr></thead><tbody id="tbody_${cat.id}"></tbody></table></div>`;
         categoriesEl.appendChild(details);
-        const tbody = details.querySelector(`#tbody_${cat.id}`);
-        cat.items.forEach(([itemId, label]) => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td><input class="item-name-input" id="${cat.id}_${itemId}_name" type="text" value="${label}" placeholder="${label}" /></td>
-            <td><input id="${cat.id}_${itemId}_plan" type="number" min="0" step="0.01" value="0" /></td>
-            <td><input id="${cat.id}_${itemId}_actual" type="number" min="0" step="0.01" value="0" /></td>
-            <td class="difference zero" id="${cat.id}_${itemId}_diff">${money(0)}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-        const totalTr = document.createElement('tr'); totalTr.className = 'total-row'; totalTr.innerHTML = `<td>总额</td><td id="${cat.id}_plan_total">${money(0)}</td><td id="${cat.id}_actual_total">${money(0)}</td><td class="difference zero" id="${cat.id}_diff_total">${money(0)}</td>`; tbody.appendChild(totalTr);
+        const tbody=details.querySelector(`#tbody_${cat.id}`);
+        cat.items.forEach(([itemId,label])=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td><input class="item-name-input" id="${cat.id}_${itemId}_name" type="text" value="${label}" placeholder="${label}" /></td><td><input id="${cat.id}_${itemId}_plan" type="number" min="0" step="0.01" value="0" /></td><td><input id="${cat.id}_${itemId}_actual" type="number" min="0" step="0.01" value="0" /></td><td class="difference zero" id="${cat.id}_${itemId}_diff">${money(0)}</td>`; tbody.appendChild(tr); });
+        const totalTr=document.createElement('tr'); totalTr.className='total-row'; totalTr.innerHTML=`<td>总额</td><td id="${cat.id}_plan_total">${money(0)}</td><td id="${cat.id}_actual_total">${money(0)}</td><td class="difference zero" id="${cat.id}_diff_total">${money(0)}</td>`; tbody.appendChild(totalTr);
       });
     }
-
     function buildAssetsLiabilities(){
-      assetsGrid.innerHTML = '';
-      liabilitiesGrid.innerHTML = '';
-      assetDefs.assets.forEach(([id, label]) => {
-        const box = document.createElement('div'); box.className = 'card'; box.style.padding = '14px';
-        box.innerHTML = `<div class="input-group"><label>${label}</label><input id="asset_${id}" type="number" min="0" step="0.01" value="0" /></div>`;
-        assetsGrid.appendChild(box);
-      });
-      assetDefs.liabilities.forEach(([id, label]) => {
-        const box = document.createElement('div'); box.className = 'card'; box.style.padding = '14px';
-        box.innerHTML = `<div class="input-group"><label>${label}</label><input id="liability_${id}" type="number" min="0" step="0.01" value="0" /></div>`;
-        liabilitiesGrid.appendChild(box);
-      });
+      assetsGrid.innerHTML=''; liabilitiesGrid.innerHTML='';
+      assetDefs.assets.forEach(([id,label])=>{ const box=document.createElement('div'); box.className='card'; box.style.padding='14px'; box.innerHTML=`<div class="input-group"><label>${label}</label><input id="asset_${id}" type="number" min="0" step="0.01" value="0" /></div>`; assetsGrid.appendChild(box); });
+      assetDefs.liabilities.forEach(([id,label])=>{ const box=document.createElement('div'); box.className='card'; box.style.padding='14px'; box.innerHTML=`<div class="input-group"><label>${label}</label><input id="liability_${id}" type="number" min="0" step="0.01" value="0" /></div>`; liabilitiesGrid.appendChild(box); });
     }
-
     function buildCaps(){
-      capsTable.innerHTML = '';
-      capsDefs.forEach(cat => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${cat.title}</td><td><input id="cap_${cat.id}" type="number" min="0" step="0.01" value="0" /></td><td id="capSpent_${cat.id}">${money(0)}</td><td id="capRate_${cat.id}">0%</td><td id="capStatus_${cat.id}">正常</td>`;
-        capsTable.appendChild(tr);
-      });
+      capsTable.innerHTML='';
+      capsDefs.forEach(cat=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td>${cat.title}</td><td><input id="cap_${cat.id}" type="number" min="0" step="0.01" value="0" /></td><td id="capSpent_${cat.id}">${money(0)}</td><td id="capRate_${cat.id}">0%</td><td id="capStatus_${cat.id}">正常</td>`; capsTable.appendChild(tr); });
     }
 
     function fillFormFromState(){
-      monthPicker.value = currentMonth;
-      monthPickerTop.value = currentMonth;
-      currencySelect.value = state.currency || 'SGD';
+      monthPicker.value=currentMonth; monthPickerTop.value=currentMonth; currencySelect.value=state.currency || 'SGD';
+      incomeDefs.forEach(item=>{ document.getElementById(`income_${item.id}_plan`).value=state.income[item.id].plan; document.getElementById(`income_${item.id}_actual`).value=state.income[item.id].actual; });
+      document.getElementById('rate_MYR').value=state.fx.MYR; document.getElementById('rate_SGD').value=state.fx.SGD; document.getElementById('rate_USD').value=state.fx.USD; document.getElementById('rate_CNY').value=state.fx.CNY;
+      categoryDefs.forEach(cat=>{ cat.items.forEach(([itemId,label])=>{ const n=document.getElementById(`${cat.id}_${itemId}_name`); const p=document.getElementById(`${cat.id}_${itemId}_plan`); const a=document.getElementById(`${cat.id}_${itemId}_actual`); if(n) n.value=state.categories[cat.id][itemId].name || label; if(p) p.value=state.categories[cat.id][itemId].plan; if(a) a.value=state.categories[cat.id][itemId].actual; }); });
+      capsDefs.forEach(cat=>{ const el=document.getElementById(`cap_${cat.id}`); if(el) el.value=state.caps[cat.id] || 0; });
+      Object.entries(state.assets).forEach(([k,v])=>{ const el=document.getElementById(`asset_${k}`); if(el) el.value=v; });
+      Object.entries(state.liabilities).forEach(([k,v])=>{ const el=document.getElementById(`liability_${k}`); if(el) el.value=v; });
+      annualYear.value=String(getCurrentYear());
+    }
+
+    function updateFxRates(){ ['MYR','SGD','USD','CNY'].forEach(code=>{ const el=document.getElementById(`rate_auto_${code}`); if(el) el.textContent=fmtMoney(getFxRate(code)*100,'MYR'); }); const summary=document.getElementById('fxSummary'); if(summary) summary.textContent=`基准币种为 MYR；当前汇率：SGD ${getFxRate('SGD').toFixed(4)}｜USD ${getFxRate('USD').toFixed(4)}｜CNY ${getFxRate('CNY').toFixed(4)}`; }
+    function updateFx(){ const amount=Number(document.getElementById('fxAmount')?.value||0); const from=document.getElementById('fxFrom')?.value || 'SGD'; const to=document.getElementById('fxTo')?.value || 'MYR'; const result=convertCurrency(amount,from,to); const out=document.getElementById('fxResult'); if(out) out.value=fmtMoney(result,to); }
+    function renderMonthList(){ const months=getAllSavedMonths(); monthListEl.innerHTML=''; if(!months.length){ monthListEl.innerHTML='<div class="sidebar-note">暂无月份记录</div>'; return; } months.forEach(m=>{ const btn=document.createElement('button'); btn.className='month-chip'+(m===currentMonth?' active':''); btn.textContent=m; btn.dataset.month=m; btn.addEventListener('click',()=>handleMonthSelection(m)); monthListEl.appendChild(btn); }); }
+
+    function getAssetLabel(assetId){
+      return assetDefs.assets.find(([id]) => id === assetId)?.[1] || assetId;
+    }
+
+    function renderTransactionTargets(){
+      const txTypeEl = document.getElementById('txType');
+      const txTargetEl = document.getElementById('txTarget');
+      const txAssetEl = document.getElementById('txAsset');
+      const txFromAssetEl = document.getElementById('txFromAsset');
+      const txToAssetEl = document.getElementById('txToAsset');
+      const txTargetGroup = document.getElementById('txTargetGroup');
+      const txAssetGroup = document.getElementById('txAssetGroup');
+      const txTransferGroup = document.getElementById('txTransferGroup');
+      const txTransferGroupTo = document.getElementById('txTransferGroupTo');
+      if (!txTypeEl || !txTargetEl || !txAssetEl || !txFromAssetEl || !txToAssetEl) return;
+
+      const type = txTypeEl.value || 'expense';
+      const prevTarget = txTargetEl.value;
+      const prevAsset = txAssetEl.value;
+      const prevFrom = txFromAssetEl.value;
+      const prevTo = txToAssetEl.value;
+
+      txTargetEl.innerHTML = '';
       incomeDefs.forEach(item => {
-        document.getElementById(`income_${item.id}_plan`).value = state.income[item.id].plan;
-        document.getElementById(`income_${item.id}_actual`).value = state.income[item.id].actual;
+        const opt = document.createElement('option');
+        opt.value = `income|${item.id}`;
+        opt.textContent = item.label;
+        txTargetEl.appendChild(opt);
       });
-      document.getElementById('rate_MYR').value = state.fx.MYR;
-      document.getElementById('rate_SGD').value = state.fx.SGD;
-      document.getElementById('rate_USD').value = state.fx.USD;
-      document.getElementById('rate_CNY').value = state.fx.CNY;
       categoryDefs.forEach(cat => {
-        cat.items.forEach(([itemId, label]) => {
-          const nameEl = document.getElementById(`${cat.id}_${itemId}_name`);
-          const planEl = document.getElementById(`${cat.id}_${itemId}_plan`);
-          const actualEl = document.getElementById(`${cat.id}_${itemId}_actual`);
-          if (nameEl) nameEl.value = state.categories[cat.id][itemId].name || label;
-          if (planEl) planEl.value = state.categories[cat.id][itemId].plan;
-          if (actualEl) actualEl.value = state.categories[cat.id][itemId].actual;
+        const head = document.createElement('option');
+        head.disabled = true;
+        head.textContent = `— ${cat.title} —`;
+        txTargetEl.appendChild(head);
+        cat.items.forEach(([itemId, fallbackLabel]) => {
+          const currentName = state.categories[cat.id]?.[itemId]?.name || fallbackLabel;
+          const opt = document.createElement('option');
+          opt.value = `expense|${cat.id}|${itemId}`;
+          opt.textContent = `${cat.title} / ${currentName}`;
+          txTargetEl.appendChild(opt);
         });
       });
-      capsDefs.forEach(cat => { const el = document.getElementById(`cap_${cat.id}`); if (el) el.value = state.caps[cat.id] || 0; });
-      Object.entries(state.assets).forEach(([k,v]) => { const el = document.getElementById(`asset_${k}`); if (el) el.value = v; });
-      Object.entries(state.liabilities).forEach(([k,v]) => { const el = document.getElementById(`liability_${k}`); if (el) el.value = v; });
-      annualYear.value = getCurrentYear();
+
+      txAssetEl.innerHTML = '';
+      txFromAssetEl.innerHTML = '';
+      txToAssetEl.innerHTML = '';
+      assetDefs.assets.forEach(([id, label]) => {
+        const a1 = document.createElement('option'); a1.value = id; a1.textContent = label; txAssetEl.appendChild(a1);
+        const a2 = document.createElement('option'); a2.value = id; a2.textContent = label; txFromAssetEl.appendChild(a2);
+        const a3 = document.createElement('option'); a3.value = id; a3.textContent = label; txToAssetEl.appendChild(a3);
+      });
+
+      const defaultTarget = type === 'income' ? `income|${incomeDefs[0].id}` : `expense|${categoryDefs[0].id}|${categoryDefs[0].items[0][0]}`;
+      txTargetEl.value = prevTarget && prevTarget.startsWith(type) ? prevTarget : defaultTarget;
+      if (prevAsset && [...txAssetEl.options].some(o => o.value === prevAsset)) txAssetEl.value = prevAsset;
+      if (prevFrom && [...txFromAssetEl.options].some(o => o.value === prevFrom)) txFromAssetEl.value = prevFrom;
+      if (prevTo && [...txToAssetEl.options].some(o => o.value === prevTo)) txToAssetEl.value = prevTo;
+
+      const isTransfer = type === 'transfer';
+      if (txTargetGroup) txTargetGroup.style.display = isTransfer ? 'none' : 'flex';
+      if (txAssetGroup) txAssetGroup.style.display = isTransfer ? 'none' : 'flex';
+      if (txTransferGroup) txTransferGroup.style.display = isTransfer ? 'flex' : 'none';
+      if (txTransferGroupTo) txTransferGroupTo.style.display = isTransfer ? 'flex' : 'none';
     }
 
-    function updateFxRates(){
-      ['MYR','SGD','USD','CNY'].forEach(code => { const el = document.getElementById(`rate_auto_${code}`); if (el) el.textContent = fmtMoney(getFxRate(code) * 100, 'MYR'); });
-      const summary = document.getElementById('fxSummary'); if (summary) summary.textContent = `基准币种为 MYR；当前汇率：SGD ${getFxRate('SGD').toFixed(4)}｜USD ${getFxRate('USD').toFixed(4)}｜CNY ${getFxRate('CNY').toFixed(4)}`;
-    }
-    function updateFx(){
-      const amount = Number(document.getElementById('fxAmount')?.value || 0);
-      const from = document.getElementById('fxFrom')?.value || 'SGD';
-      const to = document.getElementById('fxTo')?.value || 'MYR';
-      const result = convertCurrency(amount, from, to);
-      const out = document.getElementById('fxResult'); if (out) out.value = fmtMoney(result, to);
+    function applyTransactionDelta(tx, sign){
+      const amount = Number(tx.amount || 0);
+      if (tx.kind === 'income') {
+        if (tx.itemId && state.income[tx.itemId]) state.income[tx.itemId].actual = Math.max(0, Number(state.income[tx.itemId].actual || 0) + sign * amount);
+        if (tx.assetId && state.assets[tx.assetId] != null) state.assets[tx.assetId] = Math.max(0, Number(state.assets[tx.assetId] || 0) + sign * amount);
+      }
+      if (tx.kind === 'expense') {
+        if (tx.catId && tx.itemId && state.categories[tx.catId]?.[tx.itemId]) state.categories[tx.catId][tx.itemId].actual = Math.max(0, Number(state.categories[tx.catId][tx.itemId].actual || 0) + sign * amount);
+        if (tx.assetId && state.assets[tx.assetId] != null) state.assets[tx.assetId] = Math.max(0, Number(state.assets[tx.assetId] || 0) - sign * amount);
+      }
+      if (tx.kind === 'transfer') {
+        if (tx.fromAssetId && state.assets[tx.fromAssetId] != null) state.assets[tx.fromAssetId] = Math.max(0, Number(state.assets[tx.fromAssetId] || 0) - sign * amount);
+        if (tx.toAssetId && state.assets[tx.toAssetId] != null) state.assets[tx.toAssetId] = Math.max(0, Number(state.assets[tx.toAssetId] || 0) + sign * amount);
+      }
     }
 
-    function renderMonthList(){
-      const months = getAllSavedMonths(); monthListEl.innerHTML = '';
-      if (!months.length){ monthListEl.innerHTML = '<div class="sidebar-note">暂无月份记录</div>'; return; }
-      months.forEach(m => { const btn=document.createElement('button'); btn.className='month-chip'+(m===currentMonth?' active':''); btn.textContent=m; btn.dataset.month=m; btn.addEventListener('click',()=>handleMonthSelection(m)); monthListEl.appendChild(btn); });
+    function syncTransactionToInputs(tx, sign){
+      const amount = Number(tx.amount || 0);
+      if (tx.kind === 'income') {
+        const incomeEl = document.getElementById(`income_${tx.itemId}_actual`);
+        if (incomeEl) incomeEl.value = Math.max(0, Number(incomeEl.value || 0) + sign * amount);
+        const assetEl = document.getElementById(`asset_${tx.assetId}`);
+        if (assetEl) assetEl.value = Math.max(0, Number(assetEl.value || 0) + sign * amount);
+      }
+      if (tx.kind === 'expense') {
+        const expenseEl = document.getElementById(`${tx.catId}_${tx.itemId}_actual`);
+        if (expenseEl) expenseEl.value = Math.max(0, Number(expenseEl.value || 0) + sign * amount);
+        const assetEl = document.getElementById(`asset_${tx.assetId}`);
+        if (assetEl) assetEl.value = Math.max(0, Number(assetEl.value || 0) - sign * amount);
+      }
+      if (tx.kind === 'transfer') {
+        const fromEl = document.getElementById(`asset_${tx.fromAssetId}`);
+        const toEl = document.getElementById(`asset_${tx.toAssetId}`);
+        if (fromEl) fromEl.value = Math.max(0, Number(fromEl.value || 0) - sign * amount);
+        if (toEl) toEl.value = Math.max(0, Number(toEl.value || 0) + sign * amount);
+      }
+    }
+
+    function renderTransactionSummary(){
+      const list = Array.isArray(state.transactions) ? state.transactions : [];
+      const incomeTotal = list.filter(tx => tx.kind === 'income').reduce((s, tx) => s + Number(tx.amount || 0), 0);
+      const expenseTotal = list.filter(tx => tx.kind === 'expense').reduce((s, tx) => s + Number(tx.amount || 0), 0);
+      const netTotal = incomeTotal - expenseTotal;
+      document.getElementById('txIncomeTotal').textContent = money(incomeTotal);
+      document.getElementById('txExpenseTotal').textContent = money(expenseTotal);
+      document.getElementById('txNetTotal').textContent = money(netTotal);
+      document.getElementById('txCountTotal').textContent = String(list.length);
+    }
+
+    function renderTransactionList(){
+      const wrap = document.getElementById('txList');
+      if (!wrap) return;
+      const list = Array.isArray(state.transactions) ? [...state.transactions].sort((a,b) => String(b.createdAt || '').localeCompare(String(a.createdAt || ''))) : [];
+      if (!list.length) {
+        wrap.innerHTML = '<div class="txn-empty">当前月份还没有流水记录</div>';
+        return;
+      }
+      wrap.innerHTML = '';
+      list.forEach(tx => {
+        const item = document.createElement('div');
+        item.className = 'txn-item';
+        const badgeText = tx.kind === 'income' ? '收入' : tx.kind === 'transfer' ? '转移' : '开支';
+        const badgeClass = tx.kind === 'income' ? 'income' : tx.kind === 'transfer' ? 'transfer' : 'expense';
+        item.innerHTML = `
+          <div class="txn-item-head">
+            <div>
+              <span class="txn-badge ${badgeClass}">${badgeText}</span>
+              <div style="margin-top:8px;font-weight:700;color:#0f172a;">${tx.projectLabel || '-'}</div>
+              <div class="txn-meta">${tx.date || '-'} · ${tx.time || '-'}</div>
+            </div>
+            <div class="txn-actions">
+              <strong style="font-size:18px;color:${tx.kind === 'income' ? '#15803d' : tx.kind === 'transfer' ? '#1d4ed8' : '#b91c1c'};">${money(tx.amount)}</strong>
+              <button class="btn-ghost" data-tx-delete="${tx.id}">删除</button>
+            </div>
+          </div>
+          ${tx.note ? `<div class="txn-note">备注：${tx.note}</div>` : ''}
+        `;
+        wrap.appendChild(item);
+      });
+    }
+
+    function renderTransactionPage(){
+      renderTransactionTargets();
+      renderTransactionSummary();
+      renderTransactionList();
+    }
+
+    function addTransactionFromForm(){
+      const type = document.getElementById('txType')?.value || 'expense';
+      const amount = Number(document.getElementById('txAmount')?.value || 0);
+      const note = String(document.getElementById('txNote')?.value || '').trim();
+      if (!amount || amount <= 0) { alert('请先输入大于 0 的金额。'); return; }
+
+      const now = new Date();
+      const tx = { id:`${now.getTime()}_${Math.random().toString(36).slice(2,8)}`, kind:type, amount, note, date:formatDateDDMMYYYY(now), time:formatTime24(now), createdAt:now.toISOString(), projectLabel:'' };
+
+      if (type === 'transfer') {
+        const fromAssetId = document.getElementById('txFromAsset')?.value || '';
+        const toAssetId = document.getElementById('txToAsset')?.value || '';
+        if (!fromAssetId || !toAssetId) { alert('请先选择转出与转入账户。'); return; }
+        if (fromAssetId === toAssetId) { alert('转出账户和转入账户不能相同。'); return; }
+        tx.fromAssetId = fromAssetId;
+        tx.toAssetId = toAssetId;
+        tx.projectLabel = `${getAssetLabel(fromAssetId)} → ${getAssetLabel(toAssetId)}`;
+      } else {
+        const target = document.getElementById('txTarget')?.value || '';
+        const assetId = document.getElementById('txAsset')?.value || '';
+        if (!target || !assetId) { alert('请先选择项目与资产账户。'); return; }
+        tx.assetId = assetId;
+        if (type === 'income') {
+          const [, itemId] = target.split('|');
+          if (!state.income[itemId]) return;
+          tx.itemId = itemId;
+          tx.projectLabel = incomeDefs.find(i => i.id === itemId)?.label || itemId;
+        } else {
+          const [, catId, itemId] = target.split('|');
+          if (!state.categories[catId]?.[itemId]) return;
+          tx.catId = catId;
+          tx.itemId = itemId;
+          tx.projectLabel = `${categoryDefs.find(c => c.id === catId)?.title || catId} / ${state.categories[catId][itemId].name || itemId}`;
+        }
+      }
+
+      syncTransactionToInputs(tx, +1);
+      applyTransactionDelta(tx, +1);
+      state.transactions = Array.isArray(state.transactions) ? state.transactions : [];
+      state.transactions.push(tx);
+      document.getElementById('txAmount').value = '';
+      document.getElementById('txNote').value = '';
+      calculateAndRender();
+      renderTransactionPage();
+    }
+
+    function deleteTransaction(txId){
+      const list = Array.isArray(state.transactions) ? state.transactions : [];
+      const idx = list.findIndex(tx => tx.id === txId);
+      if (idx < 0) return;
+      const tx = list[idx];
+      syncTransactionToInputs(tx, -1);
+      applyTransactionDelta(tx, -1);
+      state.transactions.splice(idx, 1);
+      calculateAndRender();
+      renderTransactionPage();
     }
 
     function readFormIntoState(){
-      state.version = APP_VERSION;
-      state.currency = currencySelect.value;
-      state.fx = { MYR:Number(document.getElementById('rate_MYR').value || 1), SGD:Number(document.getElementById('rate_SGD').value || 0), USD:Number(document.getElementById('rate_USD').value || 0), CNY:Number(document.getElementById('rate_CNY').value || 0) };
-      incomeDefs.forEach(item => { state.income[item.id] = { plan:Number(document.getElementById(`income_${item.id}_plan`).value || 0), actual:Number(document.getElementById(`income_${item.id}_actual`).value || 0) }; });
-      categoryDefs.forEach(cat => {
-        state.categories[cat.id] = state.categories[cat.id] || {};
-        cat.items.forEach(([itemId, label]) => {
-          state.categories[cat.id][itemId] = {
-            name: String(document.getElementById(`${cat.id}_${itemId}_name`)?.value || label).trim() || label,
-            plan:Number(document.getElementById(`${cat.id}_${itemId}_plan`).value || 0),
-            actual:Number(document.getElementById(`${cat.id}_${itemId}_actual`).value || 0)
-          };
-        });
-      });
-      capsDefs.forEach(cat => { state.caps[cat.id] = Number(document.getElementById(`cap_${cat.id}`)?.value || 0); });
-      assetDefs.assets.forEach(([id]) => { state.assets[id] = Number(document.getElementById(`asset_${id}`)?.value || 0); });
-      assetDefs.liabilities.forEach(([id]) => { state.liabilities[id] = Number(document.getElementById(`liability_${id}`)?.value || 0); });
+      state.version=APP_VERSION;
+      state.currency=currencySelect.value;
+      state.fx={ MYR:Number(document.getElementById('rate_MYR').value||1), SGD:Number(document.getElementById('rate_SGD').value||0), USD:Number(document.getElementById('rate_USD').value||0), CNY:Number(document.getElementById('rate_CNY').value||0) };
+      incomeDefs.forEach(item=>{ state.income[item.id]={ plan:Number(document.getElementById(`income_${item.id}_plan`).value||0), actual:Number(document.getElementById(`income_${item.id}_actual`).value||0) }; });
+      categoryDefs.forEach(cat=>{ state.categories[cat.id]=state.categories[cat.id] || {}; cat.items.forEach(([itemId,label])=>{ state.categories[cat.id][itemId]={ name:String(document.getElementById(`${cat.id}_${itemId}_name`)?.value || label).trim() || label, plan:Number(document.getElementById(`${cat.id}_${itemId}_plan`).value||0), actual:Number(document.getElementById(`${cat.id}_${itemId}_actual`).value||0) }; }); });
+      capsDefs.forEach(cat=>{ state.caps[cat.id]=Number(document.getElementById(`cap_${cat.id}`)?.value||0); });
+      assetDefs.assets.forEach(([id])=>{ state.assets[id]=Number(document.getElementById(`asset_${id}`)?.value||0); });
+      assetDefs.liabilities.forEach(([id])=>{ state.liabilities[id]=Number(document.getElementById(`liability_${id}`)?.value||0); });
+      state.transactions=Array.isArray(state.transactions)?state.transactions:[];
     }
-
-    function getCategoryTotals(){
-      const totals = {};
-      categoryDefs.forEach(cat => {
-        let plan = 0, actual = 0;
-        cat.items.forEach(([itemId]) => { plan += Number(state.categories[cat.id]?.[itemId]?.plan || 0); actual += Number(state.categories[cat.id]?.[itemId]?.actual || 0); });
-        totals[cat.id] = { plan, actual, diff: actual - plan };
-      });
-      return totals;
-    }
+    function getCategoryTotals(){ const totals={}; categoryDefs.forEach(cat=>{ let plan=0,actual=0; cat.items.forEach(([itemId])=>{ plan+=Number(state.categories[cat.id]?.[itemId]?.plan || 0); actual+=Number(state.categories[cat.id]?.[itemId]?.actual || 0); }); totals[cat.id]={ plan, actual, diff:actual-plan }; }); return totals; }
 
     function drawExpenseChart(){
-      if (!expenseChart) return;
-      const ctx = expenseChart.getContext('2d');
-      const width = expenseChart.clientWidth || expenseChart.parentElement.clientWidth || 600;
-      const height = 300;
-      const dpr = window.devicePixelRatio || 1;
-      expenseChart.width = width * dpr; expenseChart.height = height * dpr; expenseChart.style.height = height + 'px'; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,width,height);
-      const totals = [];
-      categoryDefs.forEach(cat => { let sum=0; cat.items.forEach(([itemId]) => { sum += Number(state.categories[cat.id]?.[itemId]?.actual || 0); }); if (sum > 0) totals.push({ label: cat.title, value: sum }); });
-      const legendWrap = expenseLegend; legendWrap.innerHTML = '';
-      if (!totals.length){ ctx.fillStyle='#64748b'; ctx.font='14px Arial'; ctx.fillText('暂无支出数据', 20, 24); return; }
-      const total = totals.reduce((s,i)=>s+i.value,0); const colors=['#3b82f6','#22c55e','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#14b8a6','#64748b','#a855f7'];
-      const cx=150, cy=150, radius=105, inner=58; let start=-Math.PI/2;
-      totals.forEach((item,idx)=>{ const angle=(item.value/total)*Math.PI*2; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,radius,start,start+angle); ctx.closePath(); ctx.fillStyle=colors[idx%colors.length]; ctx.fill(); start+=angle; });
-      ctx.beginPath(); ctx.arc(cx,cy,inner,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.fillStyle='#0f172a'; ctx.textAlign='center'; ctx.font='700 18px Arial'; ctx.fillText(fmtMoney(total, currencySelect.value), cx, cy-4); ctx.font='12px Arial'; ctx.fillStyle='#64748b'; ctx.fillText('总支出', cx, cy+16); ctx.textAlign='left';
-      totals.forEach((item,idx)=>{ const chip=document.createElement('div'); chip.className='legend-item'; chip.innerHTML=`<span class="legend-dot" style="background:${colors[idx%colors.length]}"></span><span>${item.label}</span><strong>${fmtMoney(item.value, currencySelect.value)}</strong>`; legendWrap.appendChild(chip); });
+      if(!expenseChart) return; const ctx=expenseChart.getContext('2d'); const width=expenseChart.clientWidth || expenseChart.parentElement.clientWidth || 600; const height=300; const dpr=window.devicePixelRatio || 1; expenseChart.width=width*dpr; expenseChart.height=height*dpr; expenseChart.style.height=height+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,width,height);
+      const totals=[]; categoryDefs.forEach(cat=>{ let sum=0; cat.items.forEach(([itemId])=>{ sum+=Number(state.categories[cat.id]?.[itemId]?.actual || 0); }); if(sum>0) totals.push({label:cat.title,value:sum}); }); expenseLegend.innerHTML=''; if(!totals.length){ ctx.fillStyle='#64748b'; ctx.font='14px Arial'; ctx.fillText('暂无支出数据',20,24); return; }
+      const total=totals.reduce((s,i)=>s+i.value,0); const colors=['#3b82f6','#22c55e','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#14b8a6','#64748b','#a855f7']; const cx=150,cy=150,r=105,inner=58; let start=-Math.PI/2;
+      totals.forEach((item,idx)=>{ const angle=(item.value/total)*Math.PI*2; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,start,start+angle); ctx.closePath(); ctx.fillStyle=colors[idx%colors.length]; ctx.fill(); start+=angle; });
+      ctx.beginPath(); ctx.arc(cx,cy,inner,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill(); ctx.fillStyle='#0f172a'; ctx.textAlign='center'; ctx.font='700 18px Arial'; ctx.fillText(fmtMoney(total,currencySelect.value),cx,cy-4); ctx.font='12px Arial'; ctx.fillStyle='#64748b'; ctx.fillText('总支出',cx,cy+16); ctx.textAlign='left';
+      totals.forEach((item,idx)=>{ const chip=document.createElement('div'); chip.className='legend-item'; chip.innerHTML=`<span class="legend-dot" style="background:${colors[idx%colors.length]}"></span><span>${item.label}</span><strong>${fmtMoney(item.value,currencySelect.value)}</strong>`; expenseLegend.appendChild(chip); });
     }
-
     function drawIncomeChart(){
-      if (!incomeChart) return;
-      const ctx = incomeChart.getContext('2d');
-      const width = incomeChart.clientWidth || incomeChart.parentElement.clientWidth || 600;
-      const height = 300;
-      const dpr = window.devicePixelRatio || 1;
-      incomeChart.width = width * dpr; incomeChart.height = height * dpr; incomeChart.style.height = height + 'px'; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,width,height);
-      let planIncome=0, actualIncome=0, planExpense=0, actualExpense=0;
-      incomeDefs.forEach(item => { planIncome += Number(state.income[item.id]?.plan || 0); actualIncome += Number(state.income[item.id]?.actual || 0); });
-      categoryDefs.forEach(cat => { cat.items.forEach(([itemId]) => { planExpense += Number(state.categories[cat.id]?.[itemId]?.plan || 0); actualExpense += Number(state.categories[cat.id]?.[itemId]?.actual || 0); }); });
-      const values=[{label:'计划收入',value:planIncome,color:'#3b82f6'},{label:'实际收入',value:actualIncome,color:'#22c55e'},{label:'计划支出',value:planExpense,color:'#f59e0b'},{label:'实际支出',value:actualExpense,color:'#ef4444'}];
-      const legendWrap = incomeLegend; legendWrap.innerHTML=''; values.forEach(v=>{ const chip=document.createElement('div'); chip.className='legend-item'; chip.innerHTML=`<span class="legend-dot" style="background:${v.color}"></span><span>${v.label}</span><strong>${fmtMoney(v.value, currencySelect.value)}</strong>`; legendWrap.appendChild(chip); });
+      if(!incomeChart) return; const ctx=incomeChart.getContext('2d'); const width=incomeChart.clientWidth || incomeChart.parentElement.clientWidth || 600; const height=300; const dpr=window.devicePixelRatio || 1; incomeChart.width=width*dpr; incomeChart.height=height*dpr; incomeChart.style.height=height+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,width,height);
+      let planIncome=0,actualIncome=0,planExpense=0,actualExpense=0; incomeDefs.forEach(item=>{ planIncome+=Number(state.income[item.id]?.plan || 0); actualIncome+=Number(state.income[item.id]?.actual || 0); }); categoryDefs.forEach(cat=>{ cat.items.forEach(([itemId])=>{ planExpense+=Number(state.categories[cat.id]?.[itemId]?.plan || 0); actualExpense+=Number(state.categories[cat.id]?.[itemId]?.actual || 0); }); });
+      const values=[{label:'计划收入',value:planIncome,color:'#3b82f6'},{label:'实际收入',value:actualIncome,color:'#22c55e'},{label:'计划支出',value:planExpense,color:'#f59e0b'},{label:'实际支出',value:actualExpense,color:'#ef4444'}]; incomeLegend.innerHTML=''; values.forEach(v=>{ const chip=document.createElement('div'); chip.className='legend-item'; chip.innerHTML=`<span class="legend-dot" style="background:${v.color}"></span><span>${v.label}</span><strong>${fmtMoney(v.value,currencySelect.value)}</strong>`; incomeLegend.appendChild(chip); });
       const max=Math.max(...values.map(v=>v.value),1); const chartLeft=35, chartBottom=235, chartHeight=215, barAreaWidth=width-70, groupWidth=barAreaWidth/values.length, barWidth=Math.min(52,groupWidth*0.4);
-      ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(chartLeft,chartBottom); ctx.lineTo(width-20,chartBottom); ctx.stroke();
-      values.forEach((v,i)=>{ const barHeight=(v.value/max)*chartHeight; const x=chartLeft+i*groupWidth+(groupWidth-barWidth)/2; const y=chartBottom-barHeight; ctx.fillStyle=v.color; ctx.fillRect(x,y,barWidth,barHeight); ctx.fillStyle='#0f172a'; ctx.font='12px Arial'; ctx.textAlign='center'; const labelLines=wrapText(v.label,10); labelLines.forEach((line,idx)=>ctx.fillText(line,x+barWidth/2,chartBottom+18+idx*14)); ctx.fillStyle='#64748b'; ctx.fillText(fmtMoney(v.value, currencySelect.value), x+barWidth/2, y-6); }); ctx.textAlign='left';
+      ctx.strokeStyle='#cbd5e1'; ctx.beginPath(); ctx.moveTo(chartLeft,chartBottom); ctx.lineTo(width-20,chartBottom); ctx.stroke();
+      values.forEach((v,i)=>{ const h=(v.value/max)*chartHeight; const x=chartLeft+i*groupWidth+(groupWidth-barWidth)/2; const y=chartBottom-h; ctx.fillStyle=v.color; ctx.fillRect(x,y,barWidth,h); ctx.fillStyle='#0f172a'; ctx.font='12px Arial'; ctx.textAlign='center'; wrapText(v.label,10).forEach((line,idx)=>ctx.fillText(line,x+barWidth/2,chartBottom+18+idx*14)); ctx.fillStyle='#64748b'; ctx.fillText(fmtMoney(v.value,currencySelect.value),x+barWidth/2,y-6); }); ctx.textAlign='left';
     }
     function wrapText(text,maxLen){ const out=[]; let cur=''; for(const ch of text){ if((cur+ch).length>maxLen){ out.push(cur); cur=ch; } else cur+=ch; } if(cur) out.push(cur); return out; }
-    function renderCharts(){ drawExpenseChart(); drawIncomeChart(); }
+    function drawPieChart(canvas, legendEl, items, emptyText){
+      if(!canvas || !legendEl) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.clientWidth || canvas.parentElement.clientWidth || 600;
+      const height = 300;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.clearRect(0,0,width,height);
+      legendEl.innerHTML = '';
+      const filtered = items.filter(i => Number(i.value || 0) > 0);
+      if(!filtered.length){
+        ctx.fillStyle = '#64748b';
+        ctx.font = '14px Arial';
+        ctx.fillText(emptyText, 20, 24);
+        return;
+      }
+      const total = filtered.reduce((s,i)=>s+Number(i.value||0),0);
+      const colors = ['#3b82f6','#22c55e','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#f97316','#84cc16','#ec4899','#14b8a6','#64748b','#a855f7'];
+      const cx = 150, cy = 150, r = 105, inner = 58;
+      let start = -Math.PI/2;
+      filtered.forEach((item,idx)=>{ const angle = (item.value/total)*Math.PI*2; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,start,start+angle); ctx.closePath(); ctx.fillStyle = colors[idx % colors.length]; ctx.fill(); start += angle; });
+      ctx.beginPath(); ctx.arc(cx,cy,inner,0,Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.fillStyle = '#0f172a'; ctx.textAlign='center'; ctx.font='700 18px Arial'; ctx.fillText(fmtMoney(total,currencySelect.value),cx,cy-4); ctx.font='12px Arial'; ctx.fillStyle='#64748b'; ctx.fillText('总计',cx,cy+16); ctx.textAlign='left';
+      filtered.forEach((item,idx)=>{ const chip=document.createElement('div'); chip.className='legend-item'; chip.innerHTML=`<span class="legend-dot" style="background:${colors[idx%colors.length]}"></span><span>${item.label}</span><strong>${fmtMoney(item.value,currencySelect.value)}</strong>`; legendEl.appendChild(chip); });
+    }
+
+    function renderAssetLiabilityCharts(){
+      const assetItems = assetDefs.assets.map(([id,label]) => ({ label, value: Number(state.assets?.[id] || 0) }));
+      const liabilityItems = assetDefs.liabilities.map(([id,label]) => ({ label, value: Number(state.liabilities?.[id] || 0) }));
+      drawPieChart(assetChart, assetLegend, assetItems, '暂无资产数据');
+      drawPieChart(liabilityChart, liabilityLegend, liabilityItems, '暂无负债数据');
+    }
+
+    function renderCharts(){ drawExpenseChart(); drawIncomeChart(); renderAssetLiabilityCharts(); }
 
     function renderWarnings(){
-      const totals = getCategoryTotals();
-      let overCount = 0, warnCount = 0;
-      for (const cat of categoryDefs){
-        const t = totals[cat.id];
-        const cap = Number(state.caps[cat.id] || 0);
-        const spent = t.actual;
-        const level = budgetLevel(spent, cap);
-        const capInput = document.getElementById(`cap_${cat.id}`);
-        const spentCell = document.getElementById(`capSpent_${cat.id}`);
-        const rateCell = document.getElementById(`capRate_${cat.id}`);
-        const statusCell = document.getElementById(`capStatus_${cat.id}`);
-        if (capInput){ capInput.classList.remove('input-warning','input-danger'); if (level==='warning') capInput.classList.add('input-warning'); if (level==='danger') capInput.classList.add('input-danger'); }
-        if (spentCell){ spentCell.className=''; spentCell.textContent = money(spent); if (level==='warning') spentCell.classList.add('cell-warning'); if (level==='danger') spentCell.classList.add('cell-danger'); }
-        const rate = cap > 0 ? spent / cap : 0;
-        if (rateCell){ rateCell.textContent = cap > 0 ? `${Math.round(rate*100)}%` : '—'; rateCell.className = ''; if (level==='warning') rateCell.classList.add('cell-warning'); if (level==='danger') rateCell.classList.add('cell-danger'); }
-        if (statusCell){ statusCell.className=''; if (level==='warning'){ statusCell.textContent='80% 警告'; statusCell.classList.add('cell-warning'); warnCount++; } else if (level==='danger'){ statusCell.textContent='超支'; statusCell.classList.add('cell-danger'); overCount++; } else { statusCell.textContent='正常'; } }
-      }
-      const spentTotal = Object.values(totals).reduce((s,x)=>s+x.actual,0);
-      const capTotal = Object.values(state.caps).reduce((s,x)=>s+Number(x||0),0);
-      document.getElementById('capsTotalView').textContent = money(capTotal);
-      document.getElementById('capsSpentView').textContent = money(spentTotal);
-      document.getElementById('capsOverCountView').textContent = String(overCount);
-      document.getElementById('capsWarnCountView').textContent = String(warnCount);
-
-      const actualExpenseCard = document.getElementById('actualExpenseView');
-      const planExpenseCard = document.getElementById('planExpenseView');
-      const planExpense = Object.values(totals).reduce((s,x)=>s+x.plan,0);
-      if (actualExpenseCard) actualExpenseCard.classList.remove('value-warning','value-danger');
-      if (planExpense > 0 && spentTotal > planExpense) actualExpenseCard?.classList.add('value-danger');
-      else if (planExpense > 0 && spentTotal / planExpense >= 0.8) actualExpenseCard?.classList.add('value-warning');
-    }
-
-    function renderAssetsLiabilities(){
-      const assetsTotal = Object.values(state.assets).reduce((s,v)=>s+Number(v||0),0);
-      const liabilitiesTotal = Object.values(state.liabilities).reduce((s,v)=>s+Number(v||0),0);
-      const netAssets = assetsTotal - liabilitiesTotal;
-      const debtRatio = assetsTotal > 0 ? liabilitiesTotal / assetsTotal : 0;
-      document.getElementById('assetsTotalView').value = money(assetsTotal);
-      document.getElementById('liabilitiesTotalView').value = money(liabilitiesTotal);
-      document.getElementById('netAssetsView').value = money(netAssets);
-      document.getElementById('debtRatioView').value = assetsTotal > 0 ? `${Math.round(debtRatio*100)}%` : '—';
-    }
-
-    function renderAnnualStats(){
-      const year = Number(annualYear.value || getCurrentYear());
-      const months = getAllSavedMonths().filter(m => m.startsWith(String(year)));
-      const table = document.getElementById('annualTable');
-      table.innerHTML = '';
-      let yearlyIncome = 0, yearlyExpense = 0;
-      let highestExpense = 0, highestMonth = '-';
-      const overspentCount = {};
-      const overspentTotal = {};
-      for (const cat of categoryDefs){ overspentCount[cat.id] = 0; overspentTotal[cat.id] = 0; }
-
-      months.forEach(month => {
-        const data = loadStoredMonth(month) || createMonthTemplate();
-        let planIncome = 0, actualIncome = 0, planExpense = 0, actualExpense = 0, overCount = 0;
-        incomeDefs.forEach(item => { planIncome += Number(data.income[item.id]?.plan || 0); actualIncome += Number(data.income[item.id]?.actual || 0); });
-        categoryDefs.forEach(cat => {
-          let catPlan = 0, catActual = 0;
-          cat.items.forEach(([itemId]) => { catPlan += Number(data.categories[cat.id]?.[itemId]?.plan || 0); catActual += Number(data.categories[cat.id]?.[itemId]?.actual || 0); });
-          if (catActual > catPlan){ overCount++; overspentCount[cat.id]++; overspentTotal[cat.id] += (catActual - catPlan); }
-          planExpense += catPlan; actualExpense += catActual;
-        });
-        const balance = actualIncome - actualExpense;
-        yearlyIncome += actualIncome;
-        yearlyExpense += actualExpense;
-        if (actualExpense > highestExpense){ highestExpense = actualExpense; highestMonth = month; }
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${month}</td><td>${fmtMoney(actualIncome, data.currency || currencySelect.value)}</td><td>${fmtMoney(actualExpense, data.currency || currencySelect.value)}</td><td>${fmtMoney(balance, data.currency || currencySelect.value)}</td><td>${overCount}</td>`;
-        table.appendChild(tr);
+      const totals=getCategoryTotals(); let overCount=0,warnCount=0;
+      categoryDefs.forEach(cat=>{ const t=totals[cat.id]; const cap=Number(state.caps[cat.id]||0); const spent=t.actual; const level=budgetLevel(spent,cap); const capInput=document.getElementById(`cap_${cat.id}`); const spentCell=document.getElementById(`capSpent_${cat.id}`); const rateCell=document.getElementById(`capRate_${cat.id}`); const statusCell=document.getElementById(`capStatus_${cat.id}`);
+        if(capInput){ capInput.classList.remove('input-warning','input-danger'); if(level==='warning') capInput.classList.add('input-warning'); if(level==='danger') capInput.classList.add('input-danger'); }
+        if(spentCell){ spentCell.textContent=money(spent); spentCell.className=''; if(level==='warning') spentCell.classList.add('cell-warning'); if(level==='danger') spentCell.classList.add('cell-danger'); }
+        const rate=cap>0 ? spent/cap : 0; if(rateCell){ rateCell.textContent=cap>0 ? `${Math.round(rate*100)}%` : '—'; rateCell.className=''; if(level==='warning') rateCell.classList.add('cell-warning'); if(level==='danger') rateCell.classList.add('cell-danger'); }
+        if(statusCell){ statusCell.textContent=level==='danger'?'超支':level==='warning'?'80% 警告':'正常'; statusCell.className=''; if(level==='warning') statusCell.classList.add('cell-warning'); if(level==='danger') statusCell.classList.add('cell-danger'); }
+        if(level==='danger') overCount++; if(level==='warning') warnCount++; 
       });
+      const spentTotal=Object.values(totals).reduce((s,x)=>s+x.actual,0); const capTotal=Object.values(state.caps).reduce((s,x)=>s+Number(x||0),0); document.getElementById('capsTotalView').textContent=money(capTotal); document.getElementById('capsSpentView').textContent=money(spentTotal); document.getElementById('capsOverCountView').textContent=String(overCount); document.getElementById('capsWarnCountView').textContent=String(warnCount);
+    }
+    function renderAnnualStats(){
+      const year=Number(annualYear.value || getCurrentYear()); const months=getAllSavedMonths().filter(m=>m.startsWith(String(year))); const table=document.getElementById('annualTable'); table.innerHTML=''; let yearlyIncome=0,yearlyExpense=0,highestExpense=0,highestMonth='-'; const overspentTotal=Object.fromEntries(categoryDefs.map(c=>[c.id,0]));
+      months.forEach(month=>{ const data=loadStoredMonth(month) || createMonthTemplate(); let actualIncome=0,actualExpense=0,overCount=0; incomeDefs.forEach(item=>{ actualIncome+=Number(data.income[item.id]?.actual || 0); }); categoryDefs.forEach(cat=>{ let catPlan=0,catActual=0; cat.items.forEach(([itemId])=>{ catPlan+=Number(data.categories[cat.id]?.[itemId]?.plan || 0); catActual+=Number(data.categories[cat.id]?.[itemId]?.actual || 0); }); if(catActual>catPlan){ overCount++; overspentTotal[cat.id]+=(catActual-catPlan); } actualExpense+=catActual; }); const balance=actualIncome-actualExpense; yearlyIncome+=actualIncome; yearlyExpense+=actualExpense; if(actualExpense>highestExpense){ highestExpense=actualExpense; highestMonth=month; } const tr=document.createElement('tr'); tr.innerHTML=`<td>${month}</td><td>${fmtMoney(actualIncome,data.currency || currencySelect.value)}</td><td>${fmtMoney(actualExpense,data.currency || currencySelect.value)}</td><td>${fmtMoney(balance,data.currency || currencySelect.value)}</td><td>${overCount}</td>`; table.appendChild(tr); });
+      document.getElementById('annualIncomeTotal').textContent=money(yearlyIncome); document.getElementById('annualExpenseTotal').textContent=money(yearlyExpense); document.getElementById('annualBalanceTotal').textContent=money(yearlyIncome-yearlyExpense); document.getElementById('annualHighestExpenseAmount').textContent=money(highestExpense); document.getElementById('annualMonthCount').value=String(months.length); document.getElementById('annualHighestMonth').value=highestMonth; const mostOverspent=Object.entries(overspentTotal).sort((a,b)=>b[1]-a[1])[0]; document.getElementById('annualMostOverspent').value=mostOverspent ? `${categoryDefs.find(c=>c.id===mostOverspent[0])?.title || mostOverspent[0]}（超支 ${money(mostOverspent[1])}）` : '-';
+    }
+    function renderAssetsLiabilities(){ const assetsTotal=Object.values(state.assets).reduce((s,v)=>s+Number(v||0),0); const liabilitiesTotal=Object.values(state.liabilities).reduce((s,v)=>s+Number(v||0),0); const netAssets=assetsTotal-liabilitiesTotal; const debtRatio=assetsTotal>0 ? liabilitiesTotal/assetsTotal : 0; document.getElementById('assetsTotalView').value=money(assetsTotal); document.getElementById('liabilitiesTotalView').value=money(liabilitiesTotal); document.getElementById('netAssetsView').value=money(netAssets); document.getElementById('debtRatioView').value=assetsTotal>0 ? `${Math.round(debtRatio*100)}%` : '—'; }
+    function renderCaps(){ const totals=getCategoryTotals(); let capTotal=0,spentTotal=0,overCount=0,warnCount=0; capsDefs.forEach(cat=>{ const cap=Number(state.caps[cat.id]||0); const spent=Number(totals[cat.id]?.actual || 0); const level=budgetLevel(spent,cap); capTotal+=cap; spentTotal+=spent; if(level==='danger') overCount++; if(level==='warning') warnCount++; const status=document.getElementById(`capStatus_${cat.id}`); const rate=cap>0 ? spent/cap : 0; const spentCell=document.getElementById(`capSpent_${cat.id}`); const rateCell=document.getElementById(`capRate_${cat.id}`); const capInput=document.getElementById(`cap_${cat.id}`); if(spentCell){ spentCell.textContent=money(spent); spentCell.className=''; if(level==='warning') spentCell.classList.add('cell-warning'); if(level==='danger') spentCell.classList.add('cell-danger'); } if(rateCell){ rateCell.textContent=cap>0 ? `${Math.round(rate*100)}%` : '—'; rateCell.className=''; if(level==='warning') rateCell.classList.add('cell-warning'); if(level==='danger') rateCell.classList.add('cell-danger'); } if(status){ status.textContent=level==='danger'?'超支':level==='warning'?'80% 警告':'正常'; status.className=''; if(level==='warning') status.classList.add('cell-warning'); if(level==='danger') status.classList.add('cell-danger'); } if(capInput){ capInput.classList.remove('input-warning','input-danger'); if(level==='warning') capInput.classList.add('input-warning'); if(level==='danger') capInput.classList.add('input-danger'); } }); document.getElementById('capsTotalView').textContent=money(capTotal); document.getElementById('capsSpentView').textContent=money(spentTotal); document.getElementById('capsOverCountView').textContent=String(overCount); document.getElementById('capsWarnCountView').textContent=String(warnCount); }
+    function updateHomeStatus(){ document.getElementById('autoSaveHomeState').textContent=autoSaveEnabled?'开启':'关闭'; document.getElementById('monthHomeState').textContent=currentMonth || '-'; const totals=getCategoryTotals(); const planExpense=Object.values(totals).reduce((s,x)=>s+x.plan,0); const actualExpense=Object.values(totals).reduce((s,x)=>s+x.actual,0); document.getElementById('warningHomeState').textContent=planExpense>0 && actualExpense>planExpense ? '超支风险' : (planExpense>0 && actualExpense/planExpense>=0.8 ? '接近上限' : '正常'); const autoSaveStatus=document.getElementById('autoSaveStatus'); if(!autoSaveEnabled){ autoSaveStatus.textContent='自动保存未启用'; autoSaveStatus.className='autosave-status warn'; } else if(!autoSaveFolderHandle){ autoSaveStatus.textContent='自动保存已开启，但未选择文件夹'; autoSaveStatus.className='autosave-status warn'; } else { autoSaveStatus.textContent='自动保存已开启，已选择固定文件夹'; autoSaveStatus.className='autosave-status good'; } document.querySelectorAll('[data-action="toggle-autosave"]').forEach(btn=>btn.textContent=`自动保存：${autoSaveEnabled ? '开启' : '关闭'}`); }
 
-      document.getElementById('annualIncomeTotal').textContent = money(yearlyIncome);
-      document.getElementById('annualExpenseTotal').textContent = money(yearlyExpense);
-      document.getElementById('annualBalanceTotal').textContent = money(yearlyIncome - yearlyExpense);
-      document.getElementById('annualHighestExpenseAmount').textContent = money(highestExpense);
-      document.getElementById('annualMonthCount').value = String(months.length);
-      document.getElementById('annualHighestMonth').value = highestMonth;
-      const mostOverspent = Object.entries(overspentTotal).sort((a,b)=>b[1]-a[1])[0];
-      document.getElementById('annualMostOverspent').value = mostOverspent ? `${categoryDefs.find(c=>c.id===mostOverspent[0])?.title || mostOverspent[0]}（超支 ${money(mostOverspent[1])}）` : '-';
+    function renderTransactionPage(){ renderTransactionTargets(); renderTransactionSummary(); renderTransactionList(); }
+
+    function getReminderTargetLabel(catId, itemId){
+      const cat = categoryDefs.find(c => c.id === catId);
+      const item = cat?.items.find(([id]) => id === itemId);
+      return `${cat?.title || catId} / ${state.categories?.[catId]?.[itemId]?.name || item?.[1] || itemId}`;
     }
 
-    function updateHomeStatus(){
-      document.getElementById('autoSaveHomeState').textContent = autoSaveEnabled ? '开启' : '关闭';
-      document.getElementById('monthHomeState').textContent = currentMonth || '-';
-      const totalPlanExpense = Object.values(getCategoryTotals()).reduce((s,x)=>s+x.plan,0);
-      const totalActualExpense = Object.values(getCategoryTotals()).reduce((s,x)=>s+x.actual,0);
-      const status = totalPlanExpense > 0 && totalActualExpense >= totalPlanExpense ? '超支风险' : (totalPlanExpense > 0 && totalActualExpense / totalPlanExpense >= 0.8 ? '接近上限' : '正常');
-      document.getElementById('warningHomeState').textContent = status;
-      document.getElementById('jsonHomeState').textContent = '可用';
-      const autoSaveStatus = document.getElementById('autoSaveStatus');
-      if (!autoSaveEnabled){ autoSaveStatus.textContent = '自动保存未启用'; autoSaveStatus.className='autosave-status warn'; }
-      else if (!autoSaveFolderHandle){ autoSaveStatus.textContent = '自动保存已开启，但未选择文件夹'; autoSaveStatus.className='autosave-status warn'; }
-      else { autoSaveStatus.textContent = '自动保存已开启，已选择固定文件夹'; autoSaveStatus.className='autosave-status good'; }
-      document.querySelectorAll('[data-action="toggle-autosave"]').forEach(btn => btn.textContent = `自动保存：${autoSaveEnabled ? '开启' : '关闭'}`);
+    function buildReminderTargets(){
+      if (!reminderNewTarget) return;
+      reminderNewTarget.innerHTML = '';
+      categoryDefs.forEach(cat => {
+        const group = document.createElement('optgroup');
+        group.label = cat.title;
+        cat.items.forEach(([itemId, label]) => {
+          const opt = document.createElement('option');
+          opt.value = `${cat.id}|${itemId}`;
+          opt.textContent = `${cat.title} / ${state?.categories?.[cat.id]?.[itemId]?.name || label}`;
+          group.appendChild(opt);
+        });
+        reminderNewTarget.appendChild(group);
+      });
+      if (state?.reminders?.length) {
+        const first = state.reminders[0];
+        const wanted = `${first.catId}|${first.itemId}`;
+        if ([...reminderNewTarget.options].some(o => o.value === wanted)) reminderNewTarget.value = wanted;
+      }
     }
+
+    function getReminderActualAmount(reminder){
+      return Number(state.categories?.[reminder.catId]?.[reminder.itemId]?.actual || 0);
+    }
+
+    function renderReminders(){
+      if (!state) return;
+      state.reminders = Array.isArray(state.reminders) ? state.reminders : [];
+      buildReminderTargets();
+      const list = state.reminders;
+      const activeList = list.filter(r => r.active !== false);
+      const uncovered = activeList.filter(r => getReminderActualAmount(r) < Number(r.amount || 0));
+      const covered = activeList.length - uncovered.length;
+      if (reminderTotalCount) reminderTotalCount.textContent = String(list.length);
+      if (reminderCoveredCount) reminderCoveredCount.textContent = String(covered);
+      if (reminderUncoveredCount) reminderUncoveredCount.textContent = String(uncovered.length);
+      if (reminderNavState) reminderNavState.textContent = uncovered.length ? '需处理' : '正常';
+      const reminderBtn = sidebarButtons.find(btn => btn.dataset.page === 'reminders');
+      if (reminderBtn) reminderBtn.classList.toggle('alert', uncovered.length > 0);
+
+      if (!reminderList) return;
+      if (!list.length) {
+        reminderList.innerHTML = '<div class="txn-empty">还没有添加固定开支提醒</div>';
+        return;
+      }
+      reminderList.innerHTML = '';
+      list.forEach(reminder => {
+        const actual = getReminderActualAmount(reminder);
+        const need = Number(reminder.amount || 0);
+        const coveredFlag = actual >= need;
+        const card = document.createElement('div');
+        card.className = 'txn-item';
+        card.innerHTML = `
+          <div class="txn-item-head">
+            <div>
+              <span class="txn-badge ${reminder.active !== false ? (coveredFlag ? 'income' : 'expense') : 'transfer'}">${reminder.active === false ? '停用' : coveredFlag ? '已满足' : '提醒'}</span>
+              <div style="margin-top:8px;font-weight:700;color:#0f172a;">${reminder.name || getReminderTargetLabel(reminder.catId, reminder.itemId)}</div>
+              <div class="txn-meta">目标：${getReminderTargetLabel(reminder.catId, reminder.itemId)}</div>
+              <div class="txn-meta">需要：${money(need)} ｜ 已付：${money(actual)}</div>
+            </div>
+            <div class="txn-actions">
+              <strong style="font-size:18px;color:${coveredFlag ? '#15803d' : '#b91c1c'};">${coveredFlag ? '已覆盖' : '未覆盖'}</strong>
+              <button class="btn-ghost" data-reminder-toggle="${reminder.id}">${reminder.active === false ? '启用' : '停用'}</button>
+              <button class="btn-ghost" data-reminder-delete="${reminder.id}">删除</button>
+            </div>
+          </div>
+        `;
+        reminderList.appendChild(card);
+      });
+    }
+
+    function addReminderFromForm(){
+      const name = String(document.getElementById('reminderNewName')?.value || '').trim();
+      const target = document.getElementById('reminderNewTarget')?.value || '';
+      const amount = Number(document.getElementById('reminderNewAmount')?.value || 0);
+      const active = document.getElementById('reminderNewActive')?.value !== '0';
+      if (!target || !amount || amount <= 0) { alert('请先输入提醒名称、目标项目和大于 0 的金额。'); return; }
+      const [catId, itemId] = target.split('|');
+      if (!catId || !itemId || !state.categories?.[catId]?.[itemId]) { alert('目标项目无效。'); return; }
+      state.reminders = Array.isArray(state.reminders) ? state.reminders : [];
+      state.reminders.push({
+        id: `${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
+        name: name || getReminderTargetLabel(catId, itemId),
+        catId,
+        itemId,
+        amount,
+        active
+      });
+      document.getElementById('reminderNewName').value = '';
+      document.getElementById('reminderNewAmount').value = '';
+      calculateAndRender();
+      renderReminders();
+    }
+
+    function toggleReminderActive(reminderId){
+      const reminder = (state.reminders || []).find(r => r.id === reminderId);
+      if (!reminder) return;
+      reminder.active = reminder.active === false;
+      calculateAndRender();
+      renderReminders();
+    }
+
+    function deleteReminder(reminderId){
+      state.reminders = (state.reminders || []).filter(r => r.id !== reminderId);
+      calculateAndRender();
+      renderReminders();
+    }
+    function getBackupData(){ const months={}; getAllSavedMonths().forEach(m=>{ const raw=localStorage.getItem(monthKey(m)); if(raw){ try{ months[m]=JSON.parse(raw); }catch{} } }); return { appVersion:APP_VERSION, exportedAt:new Date().toISOString(), currentMonth, months, ui:loadUIState(), theme:loadThemeState(), tutorialSeen:localStorage.getItem(TUTORIAL_KEY) || '', autoSaveEnabled, autoSaveFolderSet:!!autoSaveFolderHandle }; }
+    function downloadJson(filename,data){ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function exportJSON(){ downloadJson(`budget-backup-${currentMonth}.json`, getBackupData()); }
+
+    function openDb(){ if(dbPromise) return dbPromise; dbPromise=new Promise((resolve,reject)=>{ const req=indexedDB.open(IDB_NAME,1); req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE); }; req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); return dbPromise; }
+    async function idbSetHandle(handle){ const db=await openDb(); return new Promise((resolve,reject)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).put(handle,IDB_KEY); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
+    async function idbGetHandle(){ try{ const db=await openDb(); return await new Promise((resolve,reject)=>{ const tx=db.transaction(IDB_STORE,'readonly'); const req=tx.objectStore(IDB_STORE).get(IDB_KEY); req.onsuccess=()=>resolve(req.result || null); req.onerror=()=>reject(req.error); }); } catch { return null; } }
+    async function ensureFolderPermission(handle){ if(!handle) return false; try{ if(typeof handle.queryPermission==='function'){ let perm=await handle.queryPermission({mode:'readwrite'}); if(perm==='granted') return true; if(typeof handle.requestPermission==='function') perm=await handle.requestPermission({mode:'readwrite'}); return perm==='granted'; } }catch{} return false; }
+    async function autoSaveBackupToFolder(){ if(!autoSaveEnabled || !autoSaveFolderHandle) return; if(!(await ensureFolderPermission(autoSaveFolderHandle))) return; try{ const fh=await autoSaveFolderHandle.getFileHandle('budget-backup.json',{create:true}); const writable=await fh.createWritable(); await writable.write(JSON.stringify(getBackupData(),null,2)); await writable.close(); } catch(err){ console.warn('自动保存失败',err); } }
+    function scheduleAutoSave(){ if(!autoSaveEnabled) return; clearTimeout(autoSaveTimer); autoSaveTimer=setTimeout(()=>{ autoSaveBackupToFolder(); },700); }
+    function importJSONFile(file){ const reader=new FileReader(); reader.onload=()=>{ try{ const parsed=JSON.parse(String(reader.result || '{}')); const ok=confirm('导入会覆盖当前本机的月份数据、主题与设置，确定继续吗？'); if(!ok) return; clearAllMonthData(); if(parsed.months && typeof parsed.months === 'object'){ for(const [month,data] of Object.entries(parsed.months)) localStorage.setItem(monthKey(month), JSON.stringify(normalizeMonthData(data))); } else if(parsed.currentMonth && parsed.data){ localStorage.setItem(monthKey(parsed.currentMonth), JSON.stringify(normalizeMonthData(parsed.data))); } else if(parsed.currency || parsed.categories){ localStorage.setItem(monthKey(parsed.currentMonth || currentMonth), JSON.stringify(normalizeMonthData(parsed))); } if(parsed.ui) saveUIState(parsed.ui); if(parsed.theme) saveThemeState(parsed.theme); if(parsed.tutorialSeen) localStorage.setItem(TUTORIAL_KEY, parsed.tutorialSeen); currentMonth = parsed.currentMonth || parsed.ui?.lastMonth || getCurrentMonth(); state = loadOrCreateMonth(currentMonth); applySavedTheme(); applyStateToUI(); updateHomeStatus(); alert('JSON 导入完成。'); } catch { alert('JSON 读取失败，请确认文件格式正确。'); } }; reader.readAsText(file,'utf-8'); }
+    async function chooseAutoSaveFolder(){ if(!window.showDirectoryPicker){ alert('当前浏览器不支持选择文件夹自动保存，请使用 Chrome 或 Edge 的 HTTPS / localhost 环境。'); return; } try{ const handle=await window.showDirectoryPicker({ mode:'readwrite' }); autoSaveFolderHandle=handle; await idbSetHandle(handle); updateHomeStatus(); await autoSaveBackupToFolder(); alert('已选择自动保存文件夹。'); } catch(err){ console.warn(err); } }
+    function collectCurrentPageData(){ saveUIState({ lastMonth: currentMonth }); saveMonth(currentMonth, state); }
+    function clearAllMonthsAndReload(){ clearAllMonthData(); state=createMonthTemplate(); applyStateToUI(); renderCharts(); renderAnnualStats(); renderAssetsLiabilities(); renderCaps(); renderTransactionPage(); }
+
+    function applyStateToUI(){ fillFormFromState(); calculateAndRender(); renderMonthList(); renderTransactionPage(); }
+    function handleMonthSelection(month){ if(!month || month===currentMonth) return; saveMonth(currentMonth,state); currentMonth=month; state=loadOrCreateMonth(month); applyStateToUI(); saveUIState({ lastMonth: currentMonth }); }
+    function handleAnyDataInput(){ calculateAndRender(); }
+    function applySavedTheme(){ const theme=loadThemeState(); applyTheme(theme); if(!theme.avatarImage){ const next={ ...theme, avatarImage:DEFAULT_AVATAR }; saveThemeState(next); applyTheme(next); } }
+    function toggleVersionLog(){ const log=document.getElementById('versionLog'); if(!log) return; log.style.display = log.style.display === 'block' ? 'none' : 'block'; }
+    window.toggleVersionLog = toggleVersionLog;
+    function showTutorialModal(){ tutorialShown=true; tutorialModal.classList.add('show'); tutorialModal.setAttribute('aria-hidden','false'); }
+    function closeTutorialModal(permanent){ tutorialModal.classList.remove('show'); tutorialModal.setAttribute('aria-hidden','true'); if(permanent) localStorage.setItem(TUTORIAL_KEY,'1'); tutorialShown=true; }
 
     function calculateAndRender(){
       readFormIntoState();
-      let planIncome = 0, actualIncome = 0, planExpense = 0, actualExpense = 0;
-      incomeDefs.forEach(item => { planIncome += state.income[item.id].plan; actualIncome += state.income[item.id].actual; });
-      const totals = getCategoryTotals();
-      categoryDefs.forEach(cat => {
-        const t = totals[cat.id];
-        planExpense += t.plan; actualExpense += t.actual;
-        cat.items.forEach(([itemId]) => {
-          const p = state.categories[cat.id][itemId].plan;
-          const a = state.categories[cat.id][itemId].actual;
-          const diff = a - p;
-          const diffEl = document.getElementById(`${cat.id}_${itemId}_diff`);
-          if (diffEl){ diffEl.textContent = money(diff); diffEl.className = 'difference ' + (diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'zero'); }
-          const actualInput = document.getElementById(`${cat.id}_${itemId}_actual`);
-          if (actualInput){ actualInput.classList.remove('input-warning','input-danger'); if (budgetLevel(a,p)==='warning') actualInput.classList.add('input-warning'); if (budgetLevel(a,p)==='danger') actualInput.classList.add('input-danger'); }
-        });
-        const catDiff = t.diff;
-        const pEl = document.getElementById(`${cat.id}_plan_total`); const aEl = document.getElementById(`${cat.id}_actual_total`); const dEl = document.getElementById(`${cat.id}_diff_total`);
-        if (pEl) pEl.textContent = money(t.plan);
-        if (aEl) aEl.textContent = money(t.actual);
-        if (dEl){ dEl.textContent = money(catDiff); dEl.className='difference ' + (catDiff > 0 ? 'positive' : catDiff < 0 ? 'negative' : 'zero'); }
-        const totalEl = document.getElementById(`cat_total_${cat.id}`); if (totalEl) totalEl.textContent = `计划：${money(t.plan)}｜实际：${money(t.actual)}｜差额：${money(catDiff)}`;
+      let planIncome=0, actualIncome=0, planExpense=0, actualExpense=0;
+      incomeDefs.forEach(item=>{ planIncome+=state.income[item.id].plan; actualIncome+=state.income[item.id].actual; });
+      const totals=getCategoryTotals();
+      categoryDefs.forEach(cat=>{
+        const t=totals[cat.id]; planExpense+=t.plan; actualExpense+=t.actual;
+        cat.items.forEach(([itemId])=>{ const p=state.categories[cat.id][itemId].plan; const a=state.categories[cat.id][itemId].actual; const diff=a-p; const diffEl=document.getElementById(`${cat.id}_${itemId}_diff`); if(diffEl){ diffEl.textContent=money(diff); diffEl.className='difference ' + (diff>0 ? 'positive' : diff<0 ? 'negative' : 'zero'); } const actualInput=document.getElementById(`${cat.id}_${itemId}_actual`); if(actualInput){ actualInput.classList.remove('input-warning','input-danger'); const level=budgetLevel(a,p); if(level==='warning') actualInput.classList.add('input-warning'); if(level==='danger') actualInput.classList.add('input-danger'); } });
+        const catDiff=t.diff; const pEl=document.getElementById(`${cat.id}_plan_total`); const aEl=document.getElementById(`${cat.id}_actual_total`); const dEl=document.getElementById(`${cat.id}_diff_total`); if(pEl) pEl.textContent=money(t.plan); if(aEl) aEl.textContent=money(t.actual); if(dEl){ dEl.textContent=money(catDiff); dEl.className='difference ' + (catDiff>0 ? 'positive' : catDiff<0 ? 'negative' : 'zero'); } const totalEl=document.getElementById(`cat_total_${cat.id}`); if(totalEl) totalEl.textContent=`计划：${money(t.plan)}｜实际：${money(t.actual)}｜差额：${money(catDiff)}`;
       });
-
-      const planBalance = planIncome - planExpense;
-      const actualBalance = actualIncome - actualExpense;
-      const incomeDiff = actualIncome - planIncome;
-      const expenseDiff = actualExpense - planExpense;
-      const balanceDiff = actualBalance - planBalance;
-
-      document.getElementById('planIncomeView').textContent = money(planIncome);
-      document.getElementById('planExpenseView').textContent = money(planExpense);
-      document.getElementById('planBalanceView').textContent = money(planBalance);
-      document.getElementById('actualIncomeView').textContent = money(actualIncome);
-      document.getElementById('actualExpenseView').textContent = money(actualExpense);
-      document.getElementById('actualBalanceView').textContent = money(actualBalance);
-      document.getElementById('incomeDiffView').textContent = money(incomeDiff);
-      document.getElementById('expenseDiffView').textContent = money(expenseDiff);
-      document.getElementById('balanceDiffView').textContent = money(balanceDiff);
-      document.getElementById('planBalanceView').className = 'value ' + (planBalance >= 0 ? 'good' : 'bad');
-      document.getElementById('actualBalanceView').className = 'value ' + (actualBalance >= 0 ? 'good' : 'bad');
-      document.getElementById('incomeDiffView').className = 'value ' + (incomeDiff > 0 ? 'bad' : incomeDiff < 0 ? 'good' : 'warn');
-      document.getElementById('expenseDiffView').className = 'value ' + (expenseDiff > 0 ? 'bad' : expenseDiff < 0 ? 'good' : 'warn');
-      document.getElementById('balanceDiffView').className = 'value ' + (balanceDiff > 0 ? 'bad' : balanceDiff < 0 ? 'good' : 'warn');
-      document.getElementById('actualExpenseView').className = 'value ' + (actualExpense > planExpense ? 'bad' : (planExpense > 0 && actualExpense / planExpense >= 0.8 ? 'warn' : 'good'));
-
-      saveMonth(currentMonth, state);
-      saveUIState({ lastMonth: currentMonth });
-      updateFxRates();
-      updateFx();
-      renderMonthList();
-      renderWarnings();
-      updateHomeStatus();
-      if (document.getElementById('page-charts')?.classList.contains('active')) renderCharts();
-      if (document.getElementById('page-annual')?.classList.contains('active')) renderAnnualStats();
-      if (document.getElementById('page-assets')?.classList.contains('active')) renderAssetsLiabilities();
-      if (document.getElementById('page-caps')?.classList.contains('active')) renderCaps();
+      const planBalance=planIncome-planExpense; const actualBalance=actualIncome-actualExpense; const incomeDiff=actualIncome-planIncome; const expenseDiff=actualExpense-planExpense; const balanceDiff=actualBalance-planBalance;
+      document.getElementById('planIncomeView').textContent=money(planIncome); document.getElementById('planExpenseView').textContent=money(planExpense); document.getElementById('planBalanceView').textContent=money(planBalance); document.getElementById('actualIncomeView').textContent=money(actualIncome); document.getElementById('actualExpenseView').textContent=money(actualExpense); document.getElementById('actualBalanceView').textContent=money(actualBalance); document.getElementById('incomeDiffView').textContent=money(incomeDiff); document.getElementById('expenseDiffView').textContent=money(expenseDiff); document.getElementById('balanceDiffView').textContent=money(balanceDiff);
+      document.getElementById('planBalanceView').className='value ' + (planBalance>=0 ? 'good' : 'bad'); document.getElementById('actualBalanceView').className='value ' + (actualBalance>=0 ? 'good' : 'bad'); document.getElementById('incomeDiffView').className='value ' + (incomeDiff>0 ? 'bad' : incomeDiff<0 ? 'good' : 'warn'); document.getElementById('expenseDiffView').className='value ' + (expenseDiff>0 ? 'bad' : expenseDiff<0 ? 'good' : 'warn'); document.getElementById('balanceDiffView').className='value ' + (balanceDiff>0 ? 'bad' : balanceDiff<0 ? 'good' : 'warn'); document.getElementById('actualExpenseView').className='value ' + (actualExpense>planExpense ? 'bad' : (planExpense>0 && actualExpense/planExpense>=0.8 ? 'warn' : 'good'));
+      saveMonth(currentMonth,state); saveUIState({ lastMonth: currentMonth }); updateFxRates(); updateFx(); renderMonthList(); renderWarnings(); updateHomeStatus(); renderTransactionPage(); if(document.getElementById('page-charts')?.classList.contains('active')) renderCharts(); if(document.getElementById('page-annual')?.classList.contains('active')) renderAnnualStats(); if(document.getElementById('page-assets')?.classList.contains('active')) renderAssetsLiabilities(); if(document.getElementById('page-caps')?.classList.contains('active')) renderCaps();
+      renderReminders();
       scheduleAutoSave();
-    }
-
-    function renderCaps(){
-      const totals = getCategoryTotals();
-      let capTotal = 0, spentTotal = 0, overCount = 0, warnCount = 0;
-      capsDefs.forEach(cat => {
-        const cap = Number(state.caps[cat.id] || 0);
-        const spent = Number(totals[cat.id]?.actual || 0);
-        const level = budgetLevel(spent, cap);
-        capTotal += cap; spentTotal += spent;
-        if (level === 'danger') overCount++;
-        if (level === 'warning') warnCount++;
-        const status = document.getElementById(`capStatus_${cat.id}`);
-        const rate = cap > 0 ? spent / cap : 0;
-        const spentCell = document.getElementById(`capSpent_${cat.id}`);
-        const rateCell = document.getElementById(`capRate_${cat.id}`);
-        const capInput = document.getElementById(`cap_${cat.id}`);
-        if (spentCell){ spentCell.textContent = money(spent); spentCell.className = ''; if (level === 'warning') spentCell.classList.add('cell-warning'); if (level === 'danger') spentCell.classList.add('cell-danger'); }
-        if (rateCell){ rateCell.textContent = cap > 0 ? `${Math.round(rate*100)}%` : '—'; rateCell.className = ''; if (level === 'warning') rateCell.classList.add('cell-warning'); if (level === 'danger') rateCell.classList.add('cell-danger'); }
-        if (status){ status.textContent = level === 'danger' ? '超支' : level === 'warning' ? '80% 警告' : '正常'; status.className = ''; if (level === 'warning') status.classList.add('cell-warning'); if (level === 'danger') status.classList.add('cell-danger'); }
-        if (capInput){ capInput.classList.remove('input-warning','input-danger'); if (level === 'warning') capInput.classList.add('input-warning'); if (level === 'danger') capInput.classList.add('input-danger'); }
-      });
-      document.getElementById('capsTotalView').textContent = money(capTotal);
-      document.getElementById('capsSpentView').textContent = money(spentTotal);
-      document.getElementById('capsOverCountView').textContent = String(overCount);
-      document.getElementById('capsWarnCountView').textContent = String(warnCount);
-    }
-
-    function renderAssetsLiabilities(){
-      const assetsTotal = Object.values(state.assets).reduce((s,v)=>s+Number(v||0),0);
-      const liabilitiesTotal = Object.values(state.liabilities).reduce((s,v)=>s+Number(v||0),0);
-      const netAssets = assetsTotal - liabilitiesTotal;
-      const debtRatio = assetsTotal > 0 ? liabilitiesTotal / assetsTotal : 0;
-      document.getElementById('assetsTotalView').value = money(assetsTotal);
-      document.getElementById('liabilitiesTotalView').value = money(liabilitiesTotal);
-      document.getElementById('netAssetsView').value = money(netAssets);
-      document.getElementById('debtRatioView').value = assetsTotal > 0 ? `${Math.round(debtRatio*100)}%` : '—';
-    }
-
-    function renderAnnualStats(){
-      const year = Number(annualYear.value || getCurrentYear());
-      const months = getAllSavedMonths().filter(m => m.startsWith(String(year)));
-      const table = document.getElementById('annualTable');
-      table.innerHTML = '';
-      let yearlyIncome = 0, yearlyExpense = 0;
-      let highestExpense = 0, highestMonth = '-';
-      const overspentTotal = Object.fromEntries(categoryDefs.map(c => [c.id, 0]));
-      months.forEach(month => {
-        const data = loadStoredMonth(month) || createMonthTemplate();
-        let actualIncome = 0, actualExpense = 0, overCount = 0;
-        incomeDefs.forEach(item => { actualIncome += Number(data.income[item.id]?.actual || 0); });
-        categoryDefs.forEach(cat => {
-          let catPlan = 0, catActual = 0;
-          cat.items.forEach(([itemId]) => { catPlan += Number(data.categories[cat.id]?.[itemId]?.plan || 0); catActual += Number(data.categories[cat.id]?.[itemId]?.actual || 0); });
-          if (catActual > catPlan){ overCount++; overspentTotal[cat.id] += (catActual - catPlan); }
-          actualExpense += catActual;
-        });
-        const balance = actualIncome - actualExpense;
-        yearlyIncome += actualIncome; yearlyExpense += actualExpense;
-        if (actualExpense > highestExpense){ highestExpense = actualExpense; highestMonth = month; }
-        const tr = document.createElement('tr'); tr.innerHTML = `<td>${month}</td><td>${fmtMoney(actualIncome, data.currency || currencySelect.value)}</td><td>${fmtMoney(actualExpense, data.currency || currencySelect.value)}</td><td>${fmtMoney(balance, data.currency || currencySelect.value)}</td><td>${overCount}</td>`; table.appendChild(tr);
-      });
-      document.getElementById('annualIncomeTotal').textContent = money(yearlyIncome);
-      document.getElementById('annualExpenseTotal').textContent = money(yearlyExpense);
-      document.getElementById('annualBalanceTotal').textContent = money(yearlyIncome - yearlyExpense);
-      document.getElementById('annualHighestExpenseAmount').textContent = money(highestExpense);
-      document.getElementById('annualMonthCount').value = String(months.length);
-      document.getElementById('annualHighestMonth').value = highestMonth;
-      const mostOverspent = Object.entries(overspentTotal).sort((a,b)=>b[1]-a[1])[0];
-      document.getElementById('annualMostOverspent').value = mostOverspent ? `${categoryDefs.find(c=>c.id===mostOverspent[0])?.title || mostOverspent[0]}（超支 ${money(mostOverspent[1])}）` : '-';
-    }
-
-    function updateHomeStatus(){
-      document.getElementById('autoSaveHomeState').textContent = autoSaveEnabled ? '开启' : '关闭';
-      document.getElementById('monthHomeState').textContent = currentMonth || '-';
-      const totals = getCategoryTotals();
-      const planExpense = Object.values(totals).reduce((s,x)=>s+x.plan,0);
-      const actualExpense = Object.values(totals).reduce((s,x)=>s+x.actual,0);
-      const status = planExpense > 0 && actualExpense > planExpense ? '超支风险' : (planExpense > 0 && actualExpense / planExpense >= 0.8 ? '接近上限' : '正常');
-      document.getElementById('warningHomeState').textContent = status;
-      const autoSaveStatus = document.getElementById('autoSaveStatus');
-      if (!autoSaveEnabled){ autoSaveStatus.textContent = '自动保存未启用'; autoSaveStatus.className='autosave-status warn'; }
-      else if (!autoSaveFolderHandle){ autoSaveStatus.textContent = '自动保存已开启，但未选择文件夹'; autoSaveStatus.className='autosave-status warn'; }
-      else { autoSaveStatus.textContent = '自动保存已开启，已选择固定文件夹'; autoSaveStatus.className='autosave-status good'; }
-      document.querySelectorAll('[data-action="toggle-autosave"]').forEach(btn => btn.textContent = `自动保存：${autoSaveEnabled ? '开启' : '关闭'}`);
-    }
-
-    function getBackupData(){
-      const months = {};
-      getAllSavedMonths().forEach(m => { const raw = localStorage.getItem(monthKey(m)); if (raw) { try { months[m] = JSON.parse(raw); } catch {} } });
-      return { version: APP_VERSION, appVersion: APP_VERSION, exportedAt: new Date().toISOString(), currentMonth, months, ui: loadUIState(), theme: loadThemeState(), tutorialSeen: localStorage.getItem(TUTORIAL_KEY) || '' };
-    }
-
-    function downloadText(filename, text){ const blob = new Blob([text], { type:'application/json;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
-    function exportJSON(){ downloadText(`budget-backup-${currentMonth}.json`, JSON.stringify(getBackupData(), null, 2)); }
-
-    function openDb(){
-      if (dbPromise) return dbPromise;
-      dbPromise = new Promise((resolve, reject) => {
-        const req = indexedDB.open(IDB_NAME, 1);
-        req.onupgradeneeded = () => {
-          const db = req.result;
-          if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
-        };
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-      return dbPromise;
-    }
-    async function idbSetHandle(handle){ const db = await openDb(); return new Promise((resolve,reject)=>{ const tx=db.transaction(IDB_STORE,'readwrite'); tx.objectStore(IDB_STORE).put(handle, IDB_KEY); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
-    async function idbGetHandle(){ try { const db = await openDb(); return await new Promise((resolve,reject)=>{ const tx=db.transaction(IDB_STORE,'readonly'); const req=tx.objectStore(IDB_STORE).get(IDB_KEY); req.onsuccess=()=>resolve(req.result || null); req.onerror=()=>reject(req.error); }); } catch { return null; } }
-
-    async function ensureFolderPermission(handle){
-      if (!handle) return false;
-      try {
-        if (typeof handle.queryPermission === 'function') {
-          let perm = await handle.queryPermission({ mode:'readwrite' });
-          if (perm === 'granted') return true;
-          if (typeof handle.requestPermission === 'function') perm = await handle.requestPermission({ mode:'readwrite' });
-          return perm === 'granted';
-        }
-      } catch {}
-      return false;
-    }
-
-    async function autoSaveBackupToFolder(){
-      if (!autoSaveEnabled || !autoSaveFolderHandle) return;
-      if (!(await ensureFolderPermission(autoSaveFolderHandle))) return;
-      try {
-        const fh = await autoSaveFolderHandle.getFileHandle('budget-backup.json', { create:true });
-        const writable = await fh.createWritable();
-        await writable.write(JSON.stringify(getBackupData(), null, 2));
-        await writable.close();
-      } catch (err) {
-        console.warn('自动保存失败', err);
-      }
-    }
-    function scheduleAutoSave(){ if (!autoSaveEnabled) return; clearTimeout(autoSaveTimer); autoSaveTimer = setTimeout(() => { autoSaveBackupToFolder(); }, 700); }
-
-    function renderWarnings(){
-      const totals = getCategoryTotals();
-      let overCount = 0, warnCount = 0;
-      for (const cat of categoryDefs){
-        const t = totals[cat.id];
-        const cap = Number(state.caps[cat.id] || 0);
-        const spent = t.actual;
-        const level = budgetLevel(spent, cap);
-        const capInput = document.getElementById(`cap_${cat.id}`);
-        const spentCell = document.getElementById(`capSpent_${cat.id}`);
-        const rateCell = document.getElementById(`capRate_${cat.id}`);
-        const statusCell = document.getElementById(`capStatus_${cat.id}`);
-        if (capInput){ capInput.classList.remove('input-warning','input-danger'); if (level==='warning') capInput.classList.add('input-warning'); if (level==='danger') capInput.classList.add('input-danger'); }
-        if (spentCell){ spentCell.textContent = money(spent); spentCell.className=''; if (level==='warning') spentCell.classList.add('cell-warning'); if (level==='danger') spentCell.classList.add('cell-danger'); }
-        const rate = cap > 0 ? spent / cap : 0;
-        if (rateCell){ rateCell.textContent = cap > 0 ? `${Math.round(rate*100)}%` : '—'; rateCell.className=''; if (level==='warning') rateCell.classList.add('cell-warning'); if (level==='danger') rateCell.classList.add('cell-danger'); }
-        if (statusCell){ statusCell.textContent = level === 'danger' ? '超支' : level === 'warning' ? '80% 警告' : '正常'; statusCell.className=''; if (level==='warning') statusCell.classList.add('cell-warning'); if (level==='danger') statusCell.classList.add('cell-danger'); }
-        if (level==='danger') overCount++; if (level==='warning') warnCount++;
-      }
-      const spentTotal = Object.values(totals).reduce((s,x)=>s+x.actual,0);
-      const capTotal = Object.values(state.caps).reduce((s,x)=>s+Number(x||0),0);
-      document.getElementById('capsTotalView').textContent = money(capTotal);
-      document.getElementById('capsSpentView').textContent = money(spentTotal);
-      document.getElementById('capsOverCountView').textContent = String(overCount);
-      document.getElementById('capsWarnCountView').textContent = String(warnCount);
-    }
-
-    function renderCharts(){ drawExpenseChart(); drawIncomeChart(); }
-
-    function applyStateToUI(){ fillFormFromState(); calculateAndRender(); renderMonthList(); }
-
-    function handleMonthSelection(month){ if (!month || month === currentMonth) return; saveMonth(currentMonth, state); currentMonth = month; state = loadOrCreateMonth(month); applyStateToUI(); saveUIState({ lastMonth: currentMonth }); }
-    function handleAnyDataInput(){ calculateAndRender(); }
-
-    function applySavedTheme(){ const theme = loadThemeState(); applyTheme(theme); if (!theme.avatarImage){ const next = { ...theme, avatarImage: DEFAULT_AVATAR }; saveThemeState(next); applyTheme(next); } }
-
-    function toggleVersionLog(){ const log = document.getElementById('versionLog'); if (!log) return; log.style.display = log.style.display === 'block' ? 'none' : 'block'; }
-    window.toggleVersionLog = toggleVersionLog;
-
-    function showTutorialModal(){ tutorialShown = true; tutorialModal.classList.add('show'); tutorialModal.setAttribute('aria-hidden','false'); }
-    function closeTutorialModal(permanent){ tutorialModal.classList.remove('show'); tutorialModal.setAttribute('aria-hidden','true'); if (permanent) localStorage.setItem(TUTORIAL_KEY,'1'); tutorialShown = true; }
-    function openTutorialPage(){ setActivePage('tutorial'); }
-
-    function collectCurrentPageData(){ saveUIState({ lastMonth: currentMonth }); saveMonth(currentMonth, state); }
-
-    function clearAllMonthsAndReload(){ clearAllMonthData(); state = createMonthTemplate(); applyStateToUI(); renderCharts(); renderAnnualStats(); renderAssetsLiabilities(); renderCaps(); }
-
-    async function chooseAutoSaveFolder(){
-      if (!window.showDirectoryPicker){ alert('当前浏览器不支持选择文件夹自动保存，请使用 Chrome 或 Edge 的 HTTPS / localhost 环境。'); return; }
-      try {
-        const handle = await window.showDirectoryPicker({ mode:'readwrite' });
-        autoSaveFolderHandle = handle;
-        await idbSetHandle(handle);
-        updateHomeStatus();
-        await autoSaveBackupToFolder();
-        alert('已选择自动保存文件夹。');
-      } catch (err) { console.warn(err); }
-    }
-
-    function importJSONFile(file){
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const parsed = JSON.parse(String(reader.result || '{}'));
-          const ok = confirm('导入会覆盖当前本机的月份数据、主题与设置，确定继续吗？');
-          if (!ok) return;
-          clearAllMonthData();
-          if (parsed.months && typeof parsed.months === 'object') {
-            for (const [month, data] of Object.entries(parsed.months)) localStorage.setItem(monthKey(month), JSON.stringify(normalizeMonthData(data)));
-          } else if (parsed.currentMonth && parsed.data) {
-            localStorage.setItem(monthKey(parsed.currentMonth), JSON.stringify(normalizeMonthData(parsed.data)));
-          } else if (parsed.currency || parsed.categories) {
-            localStorage.setItem(monthKey(parsed.currentMonth || currentMonth), JSON.stringify(normalizeMonthData(parsed)));
-          }
-          if (parsed.ui) saveUIState(parsed.ui);
-          if (parsed.theme) saveThemeState(parsed.theme);
-          if (parsed.tutorialSeen) localStorage.setItem(TUTORIAL_KEY, parsed.tutorialSeen);
-          currentMonth = parsed.currentMonth || parsed.ui?.lastMonth || getCurrentMonth();
-          state = loadOrCreateMonth(currentMonth);
-          applySavedTheme();
-          applyStateToUI();
-          updateHomeStatus();
-          alert('JSON 导入完成。');
-        } catch (err) { alert('JSON 读取失败，请确认文件格式正确。'); }
-      };
-      reader.readAsText(file, 'utf-8');
     }
 
     async function init(){
       buildIncome(); buildCategories(); buildAssetsLiabilities(); buildCaps();
-      const ui = loadUIState(); currentMonth = ui.lastMonth || getCurrentMonth(); monthPicker.value = currentMonth; monthPickerTop.value = currentMonth; annualYear.value = getCurrentYear();
-      autoSaveEnabled = localStorage.getItem(AUTO_SAVE_ENABLED_KEY) === '1';
-      autoSaveFolderHandle = await idbGetHandle();
-      applySavedTheme(); state = loadOrCreateMonth(currentMonth); applyStateToUI(); updateHomeStatus(); renderCharts(); renderAnnualStats(); renderAssetsLiabilities(); renderCaps(); setActivePage('home');
-
-      sidebarButtons.forEach(btn => btn.addEventListener('click', () => setActivePage(btn.dataset.page)));
-      monthPicker.addEventListener('input', () => handleMonthSelection(monthPicker.value));
-      monthPicker.addEventListener('change', () => handleMonthSelection(monthPicker.value));
-      monthPickerTop.addEventListener('input', () => handleMonthSelection(monthPickerTop.value));
-      monthPickerTop.addEventListener('change', () => handleMonthSelection(monthPickerTop.value));
-
-      document.addEventListener('input', (e) => { if (!e.target.matches('input, select, textarea')) return; if (['monthPicker','monthPickerTop'].includes(e.target.id)) return; handleAnyDataInput(); });
-      currencySelect.addEventListener('change', handleAnyDataInput);
-      annualYear.addEventListener('input', renderAnnualStats);
-      window.addEventListener('resize', () => renderCharts());
-
-      document.querySelectorAll('[data-action]').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const action = btn.dataset.action;
-          if (action === 'save') { collectCurrentPageData(); renderMonthList(); updateHomeStatus(); alert('已保存到本机浏览器。'); }
-          if (action === 'load') { state = loadOrCreateMonth(currentMonth); applyStateToUI(); renderMonthList(); updateHomeStatus(); alert('已读取当前月份的数据。'); }
-          if (action === 'reset') { state = createMonthTemplate(); applyStateToUI(); updateHomeStatus(); }
-          if (action === 'export') exportJSON();
-          if (action === 'import') importJsonInput.click();
-          if (action === 'choose-folder') await chooseAutoSaveFolder();
-          if (action === 'toggle-autosave') { autoSaveEnabled = !autoSaveEnabled; localStorage.setItem(AUTO_SAVE_ENABLED_KEY, autoSaveEnabled ? '1' : '0'); updateHomeStatus(); if (autoSaveEnabled) scheduleAutoSave(); }
-        });
+      const ui=loadUIState(); currentMonth=ui.lastMonth || getCurrentMonth(); monthPicker.value=currentMonth; monthPickerTop.value=currentMonth; annualYear.value=String(getCurrentYear());
+      autoSaveEnabled=localStorage.getItem(AUTO_SAVE_ENABLED_KEY) === '1';
+      autoSaveFolderHandle=await idbGetHandle();
+      applySavedTheme(); state=loadOrCreateMonth(currentMonth); applyStateToUI(); updateHomeStatus(); renderCharts(); renderAnnualStats(); renderAssetsLiabilities(); renderCaps(); renderTransactionPage(); setActivePage('home');
+      sidebarButtons.forEach(btn=>btn.addEventListener('click',()=>setActivePage(btn.dataset.page)));
+      monthPicker.addEventListener('input',()=>handleMonthSelection(monthPicker.value)); monthPicker.addEventListener('change',()=>handleMonthSelection(monthPicker.value)); monthPickerTop.addEventListener('input',()=>handleMonthSelection(monthPickerTop.value)); monthPickerTop.addEventListener('change',()=>handleMonthSelection(monthPickerTop.value));
+      document.addEventListener('input',(e)=>{ if(!e.target.matches('input, select, textarea')) return; if(['monthPicker','monthPickerTop'].includes(e.target.id)) return; handleAnyDataInput(); });
+      currencySelect.addEventListener('change',handleAnyDataInput); annualYear.addEventListener('input',renderAnnualStats); window.addEventListener('resize',()=>renderCharts());
+      document.querySelectorAll('[data-action]').forEach(btn=>{ btn.addEventListener('click', async ()=>{ const action=btn.dataset.action; if(action==='save'){ collectCurrentPageData(); renderMonthList(); updateHomeStatus(); alert('已保存到本机浏览器。'); } if(action==='load'){ state=loadOrCreateMonth(currentMonth); applyStateToUI(); renderMonthList(); updateHomeStatus(); alert('已读取当前月份的数据。'); } if(action==='reset'){ state=createMonthTemplate(); applyStateToUI(); updateHomeStatus(); } if(action==='export') exportJSON(); if(action==='import') importJsonInput.click(); if(action==='choose-folder') await chooseAutoSaveFolder(); if(action==='toggle-autosave'){ autoSaveEnabled=!autoSaveEnabled; localStorage.setItem(AUTO_SAVE_ENABLED_KEY, autoSaveEnabled?'1':'0'); updateHomeStatus(); if(autoSaveEnabled) scheduleAutoSave(); } }); });
+      document.getElementById('themeBtn').addEventListener('click',()=>themePanel.classList.toggle('open'));
+      document.getElementById('pickBgBtn').addEventListener('click',()=>bgInput.click());
+      document.getElementById('pickAvatarBtn').addEventListener('click',()=>avatarInput.click());
+      document.getElementById('clearBgBtn').addEventListener('click',()=>{ const theme=loadThemeState(); delete theme.backgroundImage; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
+      document.getElementById('clearAvatarBtn').addEventListener('click',()=>{ const theme=loadThemeState(); theme.avatarImage=DEFAULT_AVATAR; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
+      bgInput.addEventListener('change',async()=>{ const file=bgInput.files && bgInput.files[0]; if(!file) return; const dataUrl=await fileToDataUrl(file); const theme=loadThemeState(); theme.backgroundImage=dataUrl; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
+      avatarInput.addEventListener('change',async()=>{ const file=avatarInput.files && avatarInput.files[0]; if(!file) return; const dataUrl=await fileToDataUrl(file); const theme=loadThemeState(); theme.avatarImage=dataUrl; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
+      importJsonInput.addEventListener('change',()=>{ const file=importJsonInput.files && importJsonInput.files[0]; if(file) importJSONFile(file); importJsonInput.value=''; });
+      document.addEventListener('click',(e)=>{ const btn=e.target.closest('[data-month]'); if(!btn) return; handleMonthSelection(btn.dataset.month); });
+      document.getElementById('openTutorialModalBtn').addEventListener('click',()=>setActivePage('tutorial')); document.getElementById('txType')?.addEventListener('change',()=>renderTransactionTargets()); document.getElementById('txAddBtn')?.addEventListener('click',addTransactionFromForm); document.getElementById('txList')?.addEventListener('click',(e)=>{ const del=e.target.closest('[data-tx-delete]'); if(!del) return; deleteTransaction(del.dataset.txDelete); });
+      document.getElementById('reminderAddBtn')?.addEventListener('click', addReminderFromForm);
+      document.getElementById('reminderList')?.addEventListener('click', (e) => {
+        const t = e.target.closest('[data-reminder-toggle]');
+        const d = e.target.closest('[data-reminder-delete]');
+        if (t) toggleReminderActive(t.dataset.reminderToggle);
+        if (d) deleteReminder(d.dataset.reminderDelete);
       });
-
-      document.getElementById('themeBtn').addEventListener('click', () => themePanel.classList.toggle('open'));
-      document.getElementById('pickBgBtn').addEventListener('click', () => bgInput.click());
-      document.getElementById('pickAvatarBtn').addEventListener('click', () => avatarInput.click());
-      document.getElementById('clearBgBtn').addEventListener('click', () => { const theme = loadThemeState(); delete theme.backgroundImage; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
-      document.getElementById('clearAvatarBtn').addEventListener('click', () => { const theme = loadThemeState(); theme.avatarImage = DEFAULT_AVATAR; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
-      bgInput.addEventListener('change', async () => { const file = bgInput.files && bgInput.files[0]; if (!file) return; const dataUrl = await fileToDataUrl(file); const theme = loadThemeState(); theme.backgroundImage = dataUrl; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
-      avatarInput.addEventListener('change', async () => { const file = avatarInput.files && avatarInput.files[0]; if (!file) return; const dataUrl = await fileToDataUrl(file); const theme = loadThemeState(); theme.avatarImage = dataUrl; saveThemeState(theme); applyTheme(theme); calculateAndRender(); });
-      importJsonInput.addEventListener('change', () => { const file = importJsonInput.files && importJsonInput.files[0]; if (file) importJSONFile(file); importJsonInput.value=''; });
-      document.addEventListener('click', (e) => { const btn = e.target.closest('[data-month]'); if (!btn) return; handleMonthSelection(btn.dataset.month); });
-      document.getElementById('openTutorialModalBtn').addEventListener('click', showTutorialModal);
-      document.getElementById('closeTutorialModalBtn').addEventListener('click', () => closeTutorialModal(false));
-      document.getElementById('gotItTutorialBtn').addEventListener('click', () => closeTutorialModal(false));
-      document.getElementById('dontShowTutorialBtn').addEventListener('click', () => closeTutorialModal(true));
-      tutorialModal.addEventListener('click', (e) => { if (e.target === tutorialModal) closeTutorialModal(false); });
-
-      if (!localStorage.getItem(TUTORIAL_KEY)) showTutorialModal();
-      updateHomeStatus();
+      document.getElementById('closeTutorialModalBtn').addEventListener('click',()=>closeTutorialModal(false)); document.getElementById('gotItTutorialBtn').addEventListener('click',()=>closeTutorialModal(false)); document.getElementById('dontShowTutorialBtn').addEventListener('click',()=>closeTutorialModal(true)); tutorialModal.addEventListener('click',(e)=>{ if(e.target===tutorialModal) closeTutorialModal(false); });
+      if(!localStorage.getItem(TUTORIAL_KEY)) showTutorialModal(); updateHomeStatus(); renderTransactionPage();
     }
 
     init();
